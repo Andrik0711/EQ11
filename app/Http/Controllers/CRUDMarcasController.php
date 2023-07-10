@@ -20,11 +20,6 @@ class CRUDMarcasController extends Controller
     public function MarcaImageStore(Request $request)
     {
 
-        //validar que se este enviando una imagen
-        $request->validate([
-            'file' => 'required|image|max:2048'
-        ]);
-
         //identificar el archivo que se sube en dropzone
         $imagen = $request->file('file');
 
@@ -53,7 +48,7 @@ class CRUDMarcasController extends Controller
     public function MarcaStore(Request $request)
     {
 
-        dd($request->all());
+        // dd($request->all());
 
         // Validacion de los campos
         $request->validate([
@@ -70,5 +65,52 @@ class CRUDMarcasController extends Controller
             'descripcion_marca' => $request->descripcion_marca,
             'marca_creada_por' => $request->marca_creada_por
         ]);
+
+        // Redireccionar la misms vista
+        return back()->with('mensaje', 'Marca creada con exito');
+    }
+
+    // Metodo para mostrar las marcas
+    public function mostrarMarcas()
+    {
+        $marcas = Marca::all();
+        return view('tables.marcaTable', compact('marcas'));
+    }
+
+    // Metodo direccionar al formulario de editar
+    public function editarMarca($id)
+    {
+        $marca = Marca::findOrFail($id);
+        return view('update.marcaUpdate', compact('marca'));
+    }
+
+    // Metodo para actualizar los datos de la marca
+    public function MarcaUpdate(Request $request, $id)
+    {
+        // Validacion de los campos
+        $request->validate([
+            'nombre_marca' => 'required',
+            'descripcion_marca' => 'required',
+            'imagen' => 'required',
+            'marca_creada_por' => 'required'
+        ]);
+
+        // Almacenar los datos en la base de datos
+        Marca::where('id', $id)->update([
+            'imagen_marca' => $request->imagen,
+            'nombre_marca' => $request->nombre_marca,
+            'descripcion_marca' => $request->descripcion_marca,
+            'marca_creada_por' => $request->marca_creada_por
+        ]);
+
+        return back()->with('mensaje', 'Marca actualizada con exito');
+    }
+
+    // Metodo para eliminar una marca
+    public function eliminarMarca($id)
+    {
+        $marca = Marca::findOrFail($id);
+        $marca->delete();
+        return back()->with('mensaje', 'Marca eliminada con exito');
     }
 }

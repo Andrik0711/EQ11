@@ -2,7 +2,6 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
-    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 @endpush
 
 @section('styles-dropzone')
@@ -36,11 +35,12 @@
 
 
 
-    <div class="">
+    <div class="card-body px-4 pt-4 pb-2 flex items-center justify-center text-center">
 
         {{-- Formulario de dropzone --}}
         <form action="{{ route('marca-image-store') }}" method="post" enctype="multipart/form-data" id="dropzone"
-            class="dropzone " style="width: 100%; border:none;padding:0px; align-items:center">
+            class="dropzone border-dashed border-2 w-80 h-36 rounded"
+            style="width: 100%; border:none;padding:0px; align-items:center">
             @csrf
         </form>
 

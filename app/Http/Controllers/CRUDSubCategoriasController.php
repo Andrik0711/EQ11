@@ -9,6 +9,6 @@ class CRUDSubCategoriasController extends Controller
     // Metodo que manda a la vista de registrar SubCategorias
     public function registrarSubCategoria()
     {
-        return view('forms.subCategoriaForm');
+        return view('forms.subcategoriaForm');
     }
 }

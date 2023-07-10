@@ -1,13 +1,15 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-    <h1 class=" text-left font-semibold text-sm">Formulario de productos</h1>
+    <h1 class="text-left font-semibold text-sm">Formulario de productos</h1>
 
-    <div class=" rounded-3xl border-cyan-500 ">
-        {{-- Formulario para registrar una categoria --}}
-        <form action="{{ route('registrar-producto-store') }}" method="POST" novalidate>
+    <div class="rounded-3xl border-cyan-500">
+        {{-- Formulario para editar un producto --}}
+        <form action="{{ route('editar-producto-update', $producto->id) }}" method="POST" novalidate>
 
             @csrf
+            @method('PUT')
+
             {{-- Seleccion de la categoria --}}
             <div class="col-md-6">
                 <div class="form-group">
@@ -17,7 +19,8 @@
                     <select class="form-control" id="id_categoria_producto" name="id_categoria_producto">
                         <option value="">Seleccione una categoría</option>
                         @foreach ($categorias as $categoria)
-                            <option value="{{ $categoria->id }}">{{ $categoria->nombre_categoria }}</option>
+                            <option value="{{ $categoria->id }}" @if ($categoria->id == $producto->id_categoria_producto) selected @endif>
+                                {{ $categoria->nombre_categoria }}</option>
                         @endforeach
                     </select>
 
@@ -37,7 +40,8 @@
                     <select class="form-control" id="id_subcategoria_producto" name="id_subcategoria_producto">
                         <option value="">Seleccione una categoría</option>
                         @foreach ($subcategorias as $subcategoria)
-                            <option value="{{ $subcategoria->id }}">{{ $subcategoria->nombre_subcategoria }}</option>
+                            <option value="{{ $subcategoria->id }}" @if ($subcategoria->id == $producto->id_subcategoria_producto) selected @endif>
+                                {{ $subcategoria->nombre_subcategoria }}</option>
                         @endforeach
                     </select>
 
@@ -55,7 +59,7 @@
                     <label for="nombre_producto">Nombre del producto</label>
                     {{-- Input --}}
                     <input type="text" placeholder="Nombre del producto" class="form-control" id="nombre_producto"
-                        name="nombre_producto" value="{{ old('nombre_producto') }}" />
+                        name="nombre_producto" value="{{ $producto->nombre_producto }}" />
 
                     {{-- Mensaje de error --}}
                     @error('nombre_producto')
@@ -71,7 +75,8 @@
                     <label for="descripcion_producto">Descripción del producto</label>
                     {{-- Input --}}
                     <input type="text" placeholder="Descripción del producto" class="form-control"
-                        id="descripcion_producto" name="descripcion_producto" value="{{ old('descripcion_producto') }}" />
+                        id="descripcion_producto" name="descripcion_producto"
+                        value="{{ $producto->descripcion_producto }}" />
 
                     {{-- Mensaje de error --}}
                     @error('descripcion_producto')
@@ -87,7 +92,7 @@
                     <label for="precio_de_compra">Precio de compra</label>
                     {{-- Input --}}
                     <input type="number" placeholder="Precio de compra" class="form-control" id="precio_de_compra"
-                        name="precio_de_compra" value="{{ old('precio_de_compra') }}" />
+                        name="precio_de_compra" value="{{ $producto->precio_de_compra }}" />
 
                     {{-- Mensaje de error --}}
                     @error('precio_de_compra')
@@ -103,7 +108,7 @@
                     <label for="precio_de_venta">Precio de venta</label>
                     {{-- Input --}}
                     <input type="number" placeholder="Precio de venta" class="form-control" id="precio_de_venta"
-                        name="precio_de_venta" value="{{ old('precio_de_venta') }}" />
+                        name="precio_de_venta" value="{{ $producto->precio_de_venta }}" />
 
                     {{-- Mensaje de error --}}
                     @error('precio_de_venta')
@@ -119,7 +124,7 @@
                     <label for="unidades_disponibles">Unidades disponibles</label>
                     {{-- Input --}}
                     <input type="number" placeholder="Unidades disponibles" class="form-control" id="unidades_disponibles"
-                        name="unidades_disponibles" value="{{ old('unidades_disponibles') }}" />
+                        name="unidades_disponibles" value="{{ $producto->unidades_disponibles }}" />
 
                     {{-- Mensaje de error --}}
                     @error('unidades_disponibles')
@@ -131,11 +136,10 @@
             {{-- Campo oculto el cual pasa el nombre de quien creo la categoria --}}
             <input type="hidden" id="producto_creado_por" name="producto_creado_por" value="{{ auth()->user()->name }}">
 
-            {{-- Boton para enviar el registro de Producto --}}
-            <button class="btn bg-gradient-success" type="submit" value="Registrar Producto">
+            {{-- Boton para enviar la actualización del Producto --}}
+            <button class="btn bg-gradient-success" type="submit" value="Actualizar Producto">
                 Enviar
             </button>
-
 
         </form>
     </div>

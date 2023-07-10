@@ -82,8 +82,12 @@ class CRUDCategoriasController extends Controller
     // Metodo para eliminar una categoria
     public function CategoriaDestroy($id)
     {
-        // Eliminamos la categoria
-        Categoria::destroy($id);
+
+        // dd($id);
+
+        $categoria = Categoria::findOrFail($id);
+        // Eliminar la categoría de la base de datos
+        $categoria->delete();
 
         // Redireccionar a la misma vista con mensaje de exito
         return back()->with('mensaje', 'Categoria eliminada con exito');

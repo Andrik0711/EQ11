@@ -19,6 +19,9 @@
                                                 Creada por</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                ID</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                                 Nombre</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -29,15 +32,12 @@
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Creada</th>
-
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Editar</th>
-
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Eliminar</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,46 +56,56 @@
                                                     </div>
                                                 </td>
                                                 <td>
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $categoria->id }}</p>
+                                                </td>
+                                                <td>
                                                     <p class="text-xs font-weight-bold mb-0">
                                                         {{ $categoria->nombre_categoria }}</p>
                                                 </td>
-                                                <td class=" text-center text-sm">
+                                                <td class="text-center text-sm">
                                                     <span
                                                         class="badge badge-sm bg-gradient-success">{{ $categoria->codigo_categoria }}</span>
                                                 </td>
-                                                <td class=" text-center">
+                                                <td class="text-center">
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $categoria->descripcion_categoria }}</span>
                                                 </td>
-                                                <td class="">
+                                                <td>
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $categoria->created_at->format('d/m/Y') }}</span>
                                                 </td>
-                                                <td class="">
+                                                <td>
                                                     <a href="{{ route('editar-categoria-update', $categoria->id) }}"
                                                         class="btn bg-gradient-info">Editar</a>
                                                 </td>
-
-                                                <td class="">
+                                                <td>
                                                     <form action="{{ route('eliminar-categoria', $categoria->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('delete')
-                                                        <button type="submit"
-                                                            class="btn bg-gradient-danger">Eliminar</button>
+                                                        <button type="submit" class="btn bg-gradient-danger"
+                                                            onclick="return confirm('¿Estás seguro de eliminar esta categoría?')">Eliminar</button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7">No se encontraron categorías</td>
+                                                <td colspan="8">No se encontraron categorías</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
                                 </table>
 
+
                             </div>
                         </div>
                     </div>
+                    {{-- Alerta de éxito --}}
+                    @if (session('mensaje'))
+                        <div class="alert alert-success" role="alert">
+                            <strong>Success!</strong> {{ session('mensaje') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

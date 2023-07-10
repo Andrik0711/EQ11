@@ -1,14 +1,18 @@
 <?php
 
-use App\Http\Controllers\ChangePasswordController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Password;
+use App\Http\Controllers\ResetController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\ResetController;
 use App\Http\Controllers\SessionsController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CRUDMarcasController;
+use App\Http\Controllers\CRUDProductosController;
+use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\CRUDCategoriasController;
+use App\Http\Controllers\CRUDSubCategoriasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +71,25 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/login', function () {
 		return view('dashboard');
 	})->name('sign-up');
+
+	// Redirecciona a la vista donde se encuentra el formulario de registrar Categoria
+	Route::get('/registrar-categoria', [CRUDCategoriasController::class, 'registrarCategoria'])->name('registrar-categoria');
+
+
+
+	// Redirecciona a la vista donde se encuentra el formulario de registrar SubCategoria
+	Route::get('/registrar-subcategoria', [CRUDSubCategoriasController::class, 'registrarSubCategoria'])->name('registrar-subcategoria');
+
+
+
+	// Redirecciona a la vista donde se encuentra el formulario de registrar Producto
+	Route::get('/registrar-producto', [CRUDProductosController::class, 'registrarProducto'])->name('registrar-producto');
+
+
+
+
+	// Redirecciona a la vista donde se encuentra el formulario de registrar Marca
+	Route::get('/registrar-marca', [CRUDMarcasController::class, 'registrarMarca'])->name('registrar-marca');
 });
 
 

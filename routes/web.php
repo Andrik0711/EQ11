@@ -89,7 +89,16 @@ Route::group(['middleware' => 'auth'], function () {
 
 	// Redirecciona a la vista donde se encuentra el formulario de registrar SubCategoria
 	Route::get('/registrar-subcategoria', [CRUDSubCategoriasController::class, 'registrarSubCategoria'])->name('registrar-subcategoria-form');
-
+	// Ruta para registrar SubCategoria
+	Route::post('/registrar-subcategoria', [CRUDSubCategoriasController::class, 'SubCategoriaStore'])->name('registrar-subcategoria-store');
+	// Ruta para redireccionar a la vista de editar SubCategoria
+	Route::get('/editar-subcategoria/{id}', [CRUDSubCategoriasController::class, 'editarSubCategoria'])->name('editar-subcategoria');
+	// Ruta para editar SubCategoria
+	Route::put('/editar-subcategoria/{id}', [CRUDSubCategoriasController::class, 'SubCategoriaUpdate'])->name('editar-subcategoria-update');
+	// Ruta para eliminar SubCategoria
+	Route::delete('/eliminar-subcategoria/{id}', [CRUDSubCategoriasController::class, 'SubCategoriaDestroy'])->name('eliminar-subcategoria');
+	// Ruta para mostrar todas las subcategorias registradas
+	Route::get('/mostrar-subcategorias', [CRUDSubCategoriasController::class, 'mostrarSubCategorias'])->name('mostrar-subcategorias');
 
 
 	// Redirecciona a la vista donde se encuentra el formulario de registrar Producto

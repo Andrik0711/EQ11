@@ -95,7 +95,7 @@
 
             {{-- Registrar Categorias --}}
             <li class="nav-item pb-2">
-                <a class="nav-link " href="{{ route('registrar-categoria') }}">
+                <a class="nav-link " href="{{ route('registrar-categoria-form') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark "
@@ -107,7 +107,7 @@
 
             {{-- Registrar subcategoria --}}
             <li class="nav-item pb-2">
-                <a class="nav-link " href="{{ route('registrar-subcategoria') }}">
+                <a class="nav-link " href="{{ route('registrar-subcategoria-form') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark "
@@ -119,7 +119,7 @@
 
             {{-- Registrar producto --}}
             <li class="nav-item pb-2">
-                <a class="nav-link " href="{{ route('registrar-producto') }}">
+                <a class="nav-link " href="{{ route('registrar-producto-form') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark "
@@ -131,7 +131,7 @@
 
             {{-- Registrar Marca --}}
             <li class="nav-item pb-2">
-                <a class="nav-link " href="{{ route('registrar-marca') }}">
+                <a class="nav-link " href="{{ route('registrar-marca-form') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center text-dark "
@@ -149,7 +149,7 @@
 
             {{-- Tabla de categorias --}}
             <li class="nav-item">
-                <a class="nav-link " href="#">
+                <a class="nav-link " href="{{ route('mostrar-categorias') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1"

@@ -5,7 +5,7 @@
 
     <div class=" rounded-3xl border-cyan-500 ">
         {{-- Formulario para registrar una categoria --}}
-        <form action="" method="" novalidate>
+        <form action="{{ route('registrar-categoria-store') }}" method="POST" novalidate>
 
             @csrf
             {{-- Nombre de la categoria --}}
@@ -57,6 +57,8 @@
                 </div>
             </div>
 
+            {{-- Campo oculto el cual pasa el nombre de quien creo la categoria --}}
+            <input type="hidden" id="categoria_creada_por" name="categoria_creada_por" value="{{ auth()->user()->name }}">
 
             {{-- Boton para enviar el registro de categoria --}}
             <button class="btn bg-gradient-success" type="submit" value="Registrar Categoria">
@@ -66,4 +68,11 @@
 
         </form>
     </div>
+
+    {{-- Alerta de éxito --}}
+    @if (session('mensaje'))
+        <div class="alert alert-success" role="alert">
+            <strong>Success!</strong> {{ session('mensaje') }}
+        </div>
+    @endif
 @endsection

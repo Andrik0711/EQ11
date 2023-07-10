@@ -73,23 +73,33 @@ Route::group(['middleware' => 'auth'], function () {
 	})->name('sign-up');
 
 	// Redirecciona a la vista donde se encuentra el formulario de registrar Categoria
-	Route::get('/registrar-categoria', [CRUDCategoriasController::class, 'registrarCategoria'])->name('registrar-categoria');
+	Route::get('/registrar-categoria', [CRUDCategoriasController::class, 'registrarCategoria'])->name('registrar-categoria-form');
+	// Ruta para registrar Categoria
+	Route::post('/registrar-categoria', [CRUDCategoriasController::class, 'CategoriaStore'])->name('registrar-categoria-store');
+	// Ruta para redireccionar a la vista de editar Categoria
+	Route::get('/editar-categoria/{id}', [CRUDCategoriasController::class, 'editarCategoria'])->name('editar-categoria');
+	// Ruta para editar Categoria
+	Route::put('/editar-categoria/{id}', [CRUDCategoriasController::class, 'CategoriaUpdate'])->name('editar-categoria-update');
+	// Ruta para eliminar Categoria
+	Route::delete('/eliminar-categoria/{id}', [CRUDCategoriasController::class, 'CategoriaDestroy'])->name('eliminar-categoria');
+	// Ruta para mostrar todas las categorias registradas
+	Route::get('/mostrar-categorias', [CRUDCategoriasController::class, 'mostrarCategorias'])->name('mostrar-categorias');
 
 
 
 	// Redirecciona a la vista donde se encuentra el formulario de registrar SubCategoria
-	Route::get('/registrar-subcategoria', [CRUDSubCategoriasController::class, 'registrarSubCategoria'])->name('registrar-subcategoria');
+	Route::get('/registrar-subcategoria', [CRUDSubCategoriasController::class, 'registrarSubCategoria'])->name('registrar-subcategoria-form');
 
 
 
 	// Redirecciona a la vista donde se encuentra el formulario de registrar Producto
-	Route::get('/registrar-producto', [CRUDProductosController::class, 'registrarProducto'])->name('registrar-producto');
+	Route::get('/registrar-producto', [CRUDProductosController::class, 'registrarProducto'])->name('registrar-producto-form');
 
 
 
 
 	// Redirecciona a la vista donde se encuentra el formulario de registrar Marca
-	Route::get('/registrar-marca', [CRUDMarcasController::class, 'registrarMarca'])->name('registrar-marca');
+	Route::get('/registrar-marca', [CRUDMarcasController::class, 'registrarMarca'])->name('registrar-marca-form');
 });
 
 

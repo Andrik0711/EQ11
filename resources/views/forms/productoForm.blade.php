@@ -135,11 +135,8 @@
             <button class="btn bg-gradient-success" type="submit" value="Registrar Producto">
                 Enviar
             </button>
-
-
         </form>
     </div>
-
     {{-- Alerta de éxito --}}
     @if (session('mensaje'))
         <div class="alert alert-success" role="alert">

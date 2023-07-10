@@ -7,11 +7,8 @@
     {{-- Estilos de tailwind --}}
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
-    <title>Laravel</title>
-
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-
     <!-- Styles -->
     <style>
         /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -404,6 +401,16 @@
             font-family: 'Nunito', sans-serif;
         }
     </style>
+
+    {{-- Directiva para configurar diferetes estilos --}}
+    @stack('styles')
+
+    @stack('styles-dropzone')
+
+
+    <title>Laravel</title>
+
+
 </head>
 
 <body class="antialiased">

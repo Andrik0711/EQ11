@@ -118,16 +118,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 	// Redirecciona a la vista donde se encuentra el formulario de registrar Marca
 	Route::get('/registrar-marca', [CRUDMarcasController::class, 'registrarMarca'])->name('registrar-marca-form');
-	// // Ruta para registrar Marca
-	// Route::post('/registrar-marca', [CRUDMarcasController::class, 'MarcaStore'])->name('registrar-marca-store');
-	// // Ruta para redireccionar a la vista de editar Marca
-	// Route::get('/editar-marca/{id}', [CRUDMarcasController::class, 'editarMarca'])->name('editar-marca');
-	// // Ruta para editar Marca
-	// Route::put('/editar-marca/{id}', [CRUDMarcasController::class, 'MarcaUpdate'])->name('editar-marca-update');
-	// // Ruta para eliminar Marca
-	// Route::delete('/eliminar-marca/{id}', [CRUDMarcasController::class, 'MarcaDestroy'])->name('eliminar-marca');
-	// // Ruta para mostrar todas las marcas registradas
-	// Route::get('/mostrar-marcas', [CRUDMarcasController::class, 'mostrarMarcas'])->name('mostrar-marcas');
+	// Ruta para registrar Marca
+	Route::post('/registrar-marca', [CRUDMarcasController::class, 'MarcaStore'])->name('registrar-marca-store');
+	// Ruta para registrar Imagenes de Marca
+	Route::post('/imagenes', [CRUDMarcasController::class, 'MarcaImageStore'])->name('marca-image-store');
+	// Ruta para redireccionar a la vista de editar Marca
+	Route::get('/editar-marca/{id}', [CRUDMarcasController::class, 'editarMarca'])->name('editar-marca');
+	// Ruta para editar Marca
+	Route::put('/editar-marca/{id}', [CRUDMarcasController::class, 'MarcaUpdate'])->name('editar-marca-update');
+	// Ruta para eliminar Marca
+	Route::delete('/eliminar-marca/{id}', [CRUDMarcasController::class, 'MarcaDestroy'])->name('eliminar-marca');
+	// Ruta para mostrar todas las marcas registradas
+	Route::get('/mostrar-marcas', [CRUDMarcasController::class, 'mostrarMarcas'])->name('mostrar-marcas');
 });
 
 

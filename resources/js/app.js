@@ -1,8 +1,9 @@
 // require('./bootstrap');
 import Dropzone from "dropzone"
+
 Dropzone.autoDiscover = false;
 const dropzone = new Dropzone('#dropzone', {
-    dictDefaultMessage: 'Sube una imagen aquí',
+    dictDefaultMessage: 'Sube la imagen aquí',
     acceptedFiles: ".png,.jpg,.jpeg",
     addRemoveLinks: true,
     dictRemoveFile: "Borrar archivo",

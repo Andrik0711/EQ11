@@ -15,7 +15,7 @@
                                     <p class="mb-0">Email <b>admin@softui.com</b></p>
                                     <p class="mb-0">Password <b>secret</b></p>
                                     <p class="mb-0">Alumno: <b>JOSE ANDRIK MARTINEZ RODRIGUEZ</b></p>
-                                    <p class="mb-0">Alumno: <b>CHRISTPHER EMMANUEL PEREZ DUQUE</b></p>
+                                    <p class="mb-0">Alumno: <b>CHRISTOPHER EMMANUEL PEREZ DUQUE</b></p>
                                 </div>
                                 <div class="card-body">
                                     <form role="form" method="POST" action="/session">

@@ -402,11 +402,6 @@
         }
     </style>
 
-    {{-- Directiva para configurar diferetes estilos --}}
-    @stack('styles')
-
-    @stack('styles-dropzone')
-
 
     <title>Laravel</title>
 

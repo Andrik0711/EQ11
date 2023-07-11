@@ -24,7 +24,6 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    @vite('resources/js/app.js')
 
     @if (env('IS_DEMO'))
         <x-demo-metas></x-demo-metas>
@@ -45,6 +44,12 @@
     <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
+
+
+    @vite('resources/js/app.js')
+    {{-- @vite('resources/css/app.css') --}}
+
+    @stack('styles')
 </head>
 
 <body

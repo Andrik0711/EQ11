@@ -1,49 +1,38 @@
 @extends('layouts.user_type.auth')
 
 @push('styles')
-    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
-@endpush
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css" />
 
-@section('styles-dropzone')
     <style>
-        input:focus {
-            outline-color: #5e72e4;
+        .dropzone {
+            border: 2px solid #000000;
+            padding: 20px;
+            background-color: #f9f9f9;
+            min-height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        textarea:focus {
-            outline-color: #5e72e4;
-        }
-
-        input {
-            border-radius: 20px;
-        }
-
-        .mb-5 label {
-            margin-bottom: 0.5rem;
-
-        }
-
-        .dropzone.dz-clickable .dz-message,
-        .dropzone.dz-clickable .dz-message * {
-            width: 400px !important;
+        .dropzone .dz-message {
+            text-align: center;
+            font-size: 18px;
+            color: #7c7c7c;
         }
     </style>
-@endsection
+@endpush
 
 @section('content')
     <h1 class="text-left font-semibold text-sm">Formulario de registro de Marca</h1>
 
 
 
-    <div class="card-body px-4 pt-4 pb-2 flex items-center justify-center text-center">
-
-        {{-- Formulario de dropzone --}}
-        <form action="{{ route('marca-image-store') }}" method="post" enctype="multipart/form-data" id="dropzone"
-            class="dropzone border-dashed border-2 w-80 h-36 rounded"
-            style="width: 100%; border:none;padding:0px; align-items:center">
+    <div class="px-1">
+        <form action="{{ route('marca-image-store') }}" method="POST" enctype="multipart/form-data" id="dropzone"
+            class="dropzone border-dashed border-2 w-20 h-96 rounded flex justify-center items-center align-middle">
             @csrf
-        </form>
 
+        </form>
 
         {{-- Formulario para registrar una categoria --}}
         <form action="{{ route('registrar-marca-store') }}" method="POST" novalidate>
@@ -98,7 +87,6 @@
                 Enviar
             </button>
         </form>
-
     </div>
 
     {{-- Alerta de éxito --}}

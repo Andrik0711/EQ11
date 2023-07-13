@@ -1,5 +1,6 @@
 @extends('layouts.user_type.auth')
 
+
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
         <div class="container-fluid py-4">
@@ -7,7 +8,7 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0">
-                            <h6>Tabla de categorias</h6>
+                            <h6>Tabla de marcas</h6>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -18,7 +19,7 @@
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">
                                                 Creada por</th>
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">
                                                 ID</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
@@ -30,6 +31,10 @@
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Creada</th>
+
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Imagen</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Editar</th>
@@ -70,13 +75,18 @@
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $marca->created_at->format('d/m/Y') }}</span>
                                                 </td>
+                                                <td class="">
+                                                    <img src="{{ asset('uploads') . '/' . $marca->imagen_marca }}"
+                                                        alt="{{ $marca->nombre_marca }}" width="100px"
+                                                        class="border-radius-lg">
+                                                </td>
+
                                                 <td>
-                                                    <a href="{{ route('editar-categoria-update', $marca->id) }}"
+                                                    <a href="{{ route('editar-marca-update', $marca->id) }}"
                                                         class="btn bg-gradient-info">Editar</a>
                                                 </td>
                                                 <td>
-                                                    <form action="{{ route('eliminar-categoria', $marca->id) }}"
-                                                        method="POST">
+                                                    <form action="{{ route('eliminar-marca', $marca->id) }}" method="POST">
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit" class="btn bg-gradient-danger"
@@ -86,7 +96,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8">No se encontraron categorías</td>
+                                                <td colspan="8">No se encontraron marcas</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

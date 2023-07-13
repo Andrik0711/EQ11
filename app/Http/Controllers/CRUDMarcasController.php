@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Marca;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\Marca as ModelsMarca;
 use Intervention\Image\Facades\Image;
 
 class CRUDMarcasController extends Controller
@@ -52,14 +51,14 @@ class CRUDMarcasController extends Controller
 
         // Validacion de los campos
         $request->validate([
-            'nombre_marca' => 'required',
+            'nombre_marca' => 'required|unique:marcas,nombre_marca',
             'descripcion_marca' => 'required',
             'imagen' => 'required',
             'marca_creada_por' => 'required'
         ]);
 
         // Almacenar los datos en la base de datos
-        Marca::created([
+        Marca::create([
             'imagen_marca' => $request->imagen,
             'nombre_marca' => $request->nombre_marca,
             'descripcion_marca' => $request->descripcion_marca,
@@ -87,27 +86,30 @@ class CRUDMarcasController extends Controller
     // Metodo para actualizar los datos de la marca
     public function MarcaUpdate(Request $request, $id)
     {
+
+        // dd($request->all());
+
         // Validacion de los campos
         $request->validate([
             'nombre_marca' => 'required',
             'descripcion_marca' => 'required',
-            'imagen' => 'required',
-            'marca_creada_por' => 'required'
+            // 'imagen' => 'required',
+            // 'marca_creada_por' => 'required'
         ]);
 
         // Almacenar los datos en la base de datos
         Marca::where('id', $id)->update([
-            'imagen_marca' => $request->imagen,
+            // 'imagen_marca' => $request->imagen,
             'nombre_marca' => $request->nombre_marca,
             'descripcion_marca' => $request->descripcion_marca,
-            'marca_creada_por' => $request->marca_creada_por
+            // 'marca_creada_por' => $request->marca_creada_por
         ]);
 
         return back()->with('mensaje', 'Marca actualizada con exito');
     }
 
     // Metodo para eliminar una marca
-    public function eliminarMarca($id)
+    public function MarcaDestroy($id)
     {
         $marca = Marca::findOrFail($id);
         $marca->delete();

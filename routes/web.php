@@ -12,6 +12,7 @@ use App\Http\Controllers\CRUDMarcasController;
 use App\Http\Controllers\CRUDProductosController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\CRUDCategoriasController;
+use App\Http\Controllers\CRUDProveedoresController;
 use App\Http\Controllers\CRUDSubCategoriasController;
 
 /*
@@ -118,6 +119,22 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/eliminar-marca/{id}', [CRUDMarcasController::class, 'MarcaDestroy'])->name('eliminar-marca');
 	// Ruta para mostrar todas las marcas registradas
 	Route::get('/mostrar-marcas', [CRUDMarcasController::class, 'mostrarMarcas'])->name('mostrar-marcas');
+
+
+
+
+	// Ruta para mandar a la vista del formulario de proveedores
+	Route::get('/registrar-proveedor', [CRUDProveedoresController::class, 'registrarProveedor'])->name('registrar-proveedor-form');
+	// Ruta para registrar proveedor
+	Route::post('/registrar-proveedor', [CRUDProveedoresController::class, 'ProveedorStore'])->name('registrar-proveedor-store');
+	// Ruta para redireccionar a la vista de editar proveedor
+	Route::get('/editar-proveedor/{id}', [CRUDProveedoresController::class, 'editarProveedor'])->name('editar-proveedor');
+	// Ruta para editar proveedor
+	Route::put('/editar-proveedor/{id}', [CRUDProveedoresController::class, 'ProveedorUpdate'])->name('editar-proveedor-update');
+	// Ruta para eliminar proveedor
+	Route::delete('/eliminar-proveedor/{id}', [CRUDProveedoresController::class, 'ProveedorDestroy'])->name('eliminar-proveedor');
+	// Ruta para mostrar todas las proveedores registradas
+	Route::get('/mostrar-proveedores', [CRUDProveedoresController::class, 'mostrarProveedores'])->name('mostrar-proveedores');
 });
 
 

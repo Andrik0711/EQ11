@@ -6,8 +6,13 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
-                        <div class="card-header pb-0">
-                            <h6>Tabla de productos</h6>
+                        <div class="card-header pb-2">
+                            <div class="d-flex justify-content-between align-items-center mx-4">
+                                <h6 class="mb-0">Tabla de productos</h6>
+                                {{-- Boton de agregar productos --}}
+                                <a href="{{ route('registrar-producto-form') }}" class="btn bg-gradient-primary mt-4">Agregar
+                                    producto</a>
+                            </div>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -18,7 +23,7 @@
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">
                                                 Creada por</th>
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-start">
                                                 ID</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
@@ -65,10 +70,11 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $producto->id }}</p>
+                                                    <p class="text-xs font-weight-bold mb-0 text-start">{{ $producto->id }}
+                                                    </p>
                                                 </td>
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0">
+                                                    <p class="text-xs font-weight-bold mb-0 text-center">
                                                         {{ $producto->categoria->nombre_categoria }}</p>
                                                 </td>
                                                 <td class="text-center text-sm">
@@ -80,12 +86,12 @@
                                                         class="text-secondary text-xs font-weight-bold">{{ $producto->nombre_producto }}</span>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $producto->precio_de_compra }}</span>
+                                                    <span class="text-secondary text-xs font-weight-bold">$
+                                                        {{ $producto->precio_de_compra }}</span>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $producto->precio_de_venta }}</span>
+                                                    <span class="text-secondary text-xs font-weight-bold">$
+                                                        {{ $producto->precio_de_venta }}</span>
                                                 </td>
                                                 <td class="text-center">
                                                     <span
@@ -97,14 +103,14 @@
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('editar-producto-update', $producto->id) }}"
-                                                        class="btn bg-gradient-info">Editar</a>
+                                                        class="btn bg-gradient-info mt-3">Editar</a>
                                                 </td>
                                                 <td>
                                                     <form action="{{ route('eliminar-producto', $producto->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('delete')
-                                                        <button type="submit" class="btn bg-gradient-danger"
+                                                        <button type="submit" class="btn bg-gradient-danger mt-3"
                                                             onclick="return confirm('¿Estás seguro de eliminar este producto?')">Eliminar</button>
                                                     </form>
                                                 </td>

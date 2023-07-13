@@ -6,8 +6,14 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
-                        <div class="card-header pb-0">
-                            <h6>Tabla de subcategorias</h6>
+                        <div class="card-header pb-2">
+                            <div class="d-flex justify-content-between align-items-center mx-4">
+                                <h6 class="mb-0">Tabla de sub categorias</h6>
+                                {{-- Boton de agregar subcategoria --}}
+                                <a href="{{ route('registrar-subcategoria-form') }}"
+                                    class="btn bg-gradient-primary mt-4">Agregar
+                                    subcategoria</a>
+                            </div>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
@@ -94,14 +100,14 @@
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('editar-subcategoria-update', $subcategoria->id) }}"
-                                                        class="btn bg-gradient-info">Editar</a>
+                                                        class="btn bg-gradient-info mt-3">Editar</a>
                                                 </td>
                                                 <td>
                                                     <form action="{{ route('eliminar-subcategoria', $subcategoria->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('delete')
-                                                        <button type="submit" class="btn bg-gradient-danger"
+                                                        <button type="submit" class="btn bg-gradient-danger mt-3"
                                                             onclick="return confirm('¿Estás seguro de eliminar esta subcategoría?')">Eliminar</button>
                                                     </form>
                                                 </td>

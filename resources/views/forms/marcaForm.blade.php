@@ -71,13 +71,14 @@
                 </div>
             </div>
 
-            <div class="mb-5">
+            {{-- Campo oculto para la imagen --}}
+            <div class="col-md-6">
                 <input name="imagen" id="imagen" type="hidden" value="{{ old('value') }}" />
+                @error('imagen')
+                    <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{ $message }} </p>
+                @enderror
             </div>
 
-            @error('imagen')
-                <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{ $message }} </p>
-            @enderror
 
             {{-- Campo oculto el cual pasa el nombre de quien creo la categoria --}}
             <input type="hidden" id="marca_creada_por" name="marca_creada_por" value="{{ auth()->user()->name }}">

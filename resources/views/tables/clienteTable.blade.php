@@ -9,10 +9,10 @@
                     <div class="card mb-4">
                         <div class="card-header pb-2">
                             <div class="d-flex justify-content-between align-items-center mx-4">
-                                <h6 class="mb-0">Tabla de marcas</h6>
+                                <h6 class="mb-0">Tabla de clientes</h6>
                                 {{-- Boton de agregar marca --}}
-                                <a href="{{ route('registrar-marca-form') }}" class="btn bg-gradient-primary mt-4">Agregar
-                                    marca</a>
+                                <a href="{{ route('registrar-cliente-form') }}" class="btn bg-gradient-primary mt-4">Agregar
+                                    cliente</a>
                             </div>
                         </div>
 
@@ -33,14 +33,21 @@
 
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Descripción</th>
+                                                código</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Creada</th>
+                                                teléfono</th>
 
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                Imagen</th>
+                                                email</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Empresa</th>
+
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Creado</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Editar</th>
@@ -50,7 +57,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($marcas as $marca)
+                                        @forelse ($clientes as $cliente)
                                             <tr>
                                                 <td>
                                                     <div class="d-flex px-2 py-1 ">
@@ -59,51 +66,60 @@
                                                                 class="avatar avatar-sm me-3" alt="user1">
                                                         </div>
                                                         <div class="d-flex flex-column justify-content-center">
-                                                            <h6 class="mb-0 text-sm">{{ $marca->marca_creada_por }}
+                                                            <h6 class="mb-0 text-sm">{{ $cliente->cliente_creado_por }}
                                                             </h6>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0 text-start">{{ $marca->id }}
+                                                    <p class="text-xs font-weight-bold mb-0 text-start">{{ $cliente->id }}
                                                     </p>
                                                 </td>
 
                                                 </td>
                                                 <td class="text-center text-sm">
                                                     <span
-                                                        class="badge badge-sm bg-gradient-success">{{ $marca->nombre_marca }}</span>
+                                                        class="badge badge-sm bg-gradient-success">{{ $cliente->nombre_cliente }}</span>
                                                 </td>
                                                 <td class="text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $marca->descripcion_marca }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $cliente->codigo_cliente }}</span>
                                                 </td>
+                                                <td class="text-center text-sm">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $cliente->telefono_cliente }}</span>
+                                                </td>
+                                                <td class="text-center text-sm">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $cliente->email_cliente }}</span>
+                                                </td>
+                                                <td class="text-center text-sm">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $cliente->empresa_cliente }}</span>
+                                                </td>
+
                                                 <td>
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $marca->created_at->format('d/m/Y') }}</span>
-                                                </td>
-                                                <td class="">
-                                                    <img src="{{ asset('uploads') . '/' . $marca->imagen_marca }}"
-                                                        alt="{{ $marca->nombre_marca }}" width="100px"
-                                                        class="border-radius-lg">
+                                                        class="text-secondary text-xs font-weight-bold">{{ $cliente->created_at->format('d/m/Y') }}</span>
                                                 </td>
 
                                                 <td class=" align-middle">
-                                                    <a href="{{ route('editar-marca-update', $marca->id) }}"
+                                                    <a href="{{ route('editar-cliente-update', $cliente->id) }}"
                                                         class="btn bg-gradient-info mt-3">Editar</a>
                                                 </td>
                                                 <td class=" align-middle">
-                                                    <form action="{{ route('eliminar-marca', $marca->id) }}" method="POST">
+                                                    <form action="{{ route('eliminar-cliente', $cliente->id) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit" class="btn bg-gradient-danger mt-3"
-                                                            onclick="return confirm('¿Estás seguro de eliminar esta categoría?')">Eliminar</button>
+                                                            onclick="return confirm('¿Estás seguro de eliminar este cliente?')">Eliminar</button>
                                                     </form>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8">No se encontraron marcas</td>
+                                                <td colspan="8">No se encontraron clientes</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

@@ -7,7 +7,7 @@
                     <script>
                         document.write(new Date().getFullYear())
                     </script>, creadores <a href="" class="font-weight-bold" target="">Andrik y
-                        Chrisopher</a> &amp; <a style="color: #252f40;" href="" class="font-weight-bold ml-1"
+                        Christopher</a> &amp; <a style="color: #252f40;" href="" class="font-weight-bold ml-1"
                         target="">UPV</a>
                 </div>
             </div>

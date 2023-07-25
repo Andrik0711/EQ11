@@ -1,5 +1,8 @@
 @extends('layouts.user_type.auth')
 
+
+@section('title', 'Categorias')
+
 @push('styles')
     {{-- Agregamos del cdn de datatable --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css">

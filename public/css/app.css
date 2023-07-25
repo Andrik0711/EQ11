@@ -91,3 +91,11 @@ div.dataTables_wrapper div.dataTables_paginate .page-item .page-link,
 .page-item span.page-link {
     width: 40px;
 }
+
+/* ? Estilos de los modales */
+/* editar nombre en el modal  */
+.modal-edit-name {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #5e72e4;
+}

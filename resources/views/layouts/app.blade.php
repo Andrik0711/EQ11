@@ -76,6 +76,12 @@
     <script src="../assets/js/plugins/chartjs.min.js"></script>
     @stack('rtl')
     @stack('dashboard')
+
+
+    {{-- Modales --}}
+    @stack('modals')
+
+
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -91,6 +97,7 @@
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
 
+    {{-- Scripts  --}}
     @stack('scripts')
 </body>
 

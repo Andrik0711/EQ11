@@ -19,20 +19,30 @@
                                 <h6 class="mb-0">Tabla de Categorias</h6>
 
                                 <div class="d-flex justify-end">
+                                    {{-- Imagen para imprimir --}}
+                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                        <img src="{{ asset('images/icons/icon-printer.svg') }}" alt="print"
+                                            width="30px">
+                                    </a>
+
                                     {{-- Imagen para exportar pdf --}}
-                                    <a href="" class="btn bg-gradient-primary mt-4 mx-2">
+                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-pdf.svg') }}" alt="pdf" width="30px">
                                     </a>
 
                                     {{-- Imagen para exportar XML --}}
-                                    <a href="" class="btn bg-gradient-primary mt-4 mx-2">
+                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
                                     </a>
 
                                     {{-- Boton de agregar categorias --}}
                                     <a href="{{ route('registrar-categoria-form') }}"
-                                        class="btn bg-gradient-primary mt-4 mx-2 d-flex align-items-center">Agregar
-                                        categoria</a>
+                                        class="btn bg-gradient-primary mt-4 mx-2 d-flex align-items-center">
+                                        {{-- imagen de agregar --}}
+                                        <img src="{{ asset('images/icons/icon-add.svg') }}" alt="add" width="30px">
+                                        Agregar categoria
+                                    </a>
+
                                 </div>
                             </div>
                         </div>
@@ -41,6 +51,12 @@
                                 <table id="categorias-table" class="table align-items-center mb-0 text-center">
                                     <thead>
                                         <tr>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                {{--
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="check-all">
+                                                </div> --}}
+                                            </th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
                                                 Creada por</th>
@@ -70,6 +86,13 @@
                                     <tbody>
                                         @forelse ($categorias as $categoria)
                                             <tr>
+                                                <td>
+                                                    <!-- Checkbox for each row -->
+                                                    <div class="form-check d-flex justify-content-center">
+                                                        <input class="form-check-input checkbox-item" type="checkbox"
+                                                            id="check-{{ $categoria->id }}">
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div class="d-flex align-items-center justify-content-center px-2 py-1">
                                                         <div>
@@ -103,22 +126,24 @@
                                                         class="text-secondary text-xs font-weight-bold">{{ $categoria->created_at->format('d/m/Y') }}</span>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('editar-categoria-update', $categoria->id) }}"
-                                                        class="btn bg-gradient-info mt-3">Editar</a>
+                                                    <button type="button" class="btn bg-gradient-info mt-3"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modal-edit-{{ $categoria->id }}">
+                                                        <img src="{{ asset('images/icons/icon-edit.svg') }}" alt="edit"
+                                                            width="30px">
+                                                    </button>
                                                 </td>
                                                 <td>
-                                                    <form action="{{ route('eliminar-categoria', $categoria->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button type="submit" class="btn bg-gradient-danger mt-3"
-                                                            onclick="return confirm('¿Estás seguro de eliminar esta categoría?')">Eliminar</button>
-                                                    </form>
+                                                    <button type="button" class="btn bg-gradient-danger mt-3"
+                                                        data-bs-toggle="modal" data-bs-target="#modal-default">
+                                                        <img src="{{ asset('images/icons/icon-delete.svg') }}"
+                                                            alt="delete" width="30px">
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8">No se encontraron categorías</td>
+                                                <td colspan="9">No se encontraron categorías</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -138,12 +163,67 @@
     </main>
 @endsection
 
+@push('modals')
+    <!-- The Modal delete -->
+    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default"
+        aria-hidden="true">
+        <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="modal-title-default">¿Estás seguro de eliminar esta categoría?</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <!-- Form to handle the category deletion -->
+                    <form action="{{ route('eliminar-categoria', $categoria->id) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
+                    </form>
+                    <button type="button" class="btn bg-gradient-info ml-auto" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal para editar --}}
+    @foreach ($categorias as $categoria)
+        <div class="modal fade" id="modal-edit-{{ $categoria->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal-edit-{{ $categoria->id }}" aria-hidden="true">
+            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="modal-title-edit-{{ $categoria->id }}">¿Seguro qué quieres editar la
+                            categoria <span class="modal-edit-name">{{ $categoria->nombre_categoria }}</span>?
+                        </h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ route('editar-categoria-update', $categoria->id) }}">
+                            <button type="button" class="btn bg-gradient-info">SI</button>
+                        </a>
+                        <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+@endpush
+
 
 @push('scripts')
     {{-- Agregamos del cdn de datatable --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+    {{-- Modales --}}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+    {{-- Este script permite modificar los textos de el datatable --}}
     <script>
         $(document).ready(function() {
             // Initialize DataTable with drawCallback and language options

@@ -52,3 +52,6 @@ new DataTable('#categorias-table');
 
 //inicializar datatable	de subcategorias
 new DataTable('#subcategorias-table');
+
+//inicializar datatable	de productos
+new DataTable('#productos-table');

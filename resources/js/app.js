@@ -55,3 +55,6 @@ new DataTable('#subcategorias-table');
 
 //inicializar datatable	de productos
 new DataTable('#productos-table');
+
+//inicializar datatable de marcas
+new DataTable('#marcas-table');

@@ -85,7 +85,7 @@
                                                 </td>
                                                 <td>
                                                     <img src="{{ asset('uploads') . '/' . $marca->imagen_marca }}"
-                                                        alt="{{ $marca->nombre_marca }}" width="100px"
+                                                        alt="{{ $marca->nombre_marca }}" width="60px"
                                                         class="border-radius-lg">
                                                 </td>
                                                 <td class="text-center text-sm">
@@ -107,7 +107,8 @@
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn bg-gradient-danger mt-3"
-                                                        data-bs-toggle="modal" data-bs-target="#modal-default">
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modal-default-{{ $marca->id }}">
                                                         <img src="{{ asset('images/icons/icon-delete.svg') }}"
                                                             alt="delete" width="30px">
                                                     </button>
@@ -136,32 +137,33 @@
 @endsection
 
 @push('modals')
-    <!-- The Modal delete -->
-    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default"
-        aria-hidden="true">
-        <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="modal-title-default">¿Estás seguro de eliminar esta marca?</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-footer">
-                    <!-- Form to handle the category deletion -->
-                    <form action="{{ route('eliminar-marca', $marca->id) }}" method="POST">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
-                    </form>
-                    <button type="button" class="btn bg-gradient-info ml-auto" data-bs-dismiss="modal">Cerrar</button>
+    @foreach ($marcas as $marca)
+        <!-- The Modal delete -->
+        <div class="modal fade" id="modal-default-{{ $marca->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal-default-{{ $marca->id }}" aria-hidden="true">
+            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="modal-title-default-{{ $marca->id }}">¿Estás seguro de eliminar la
+                            marca <span class="modal-edit-name">{{ $marca->nombre_marca }}</span>?</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Form to handle the category deletion -->
+                        <form action="{{ route('eliminar-marca', $marca->id) }}" method="POST">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
+                        </form>
+                        <button type="button" class="btn bg-gradient-info ml-auto" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {{-- Modal para editar --}}
-    @foreach ($marcas as $marca)
+        {{-- Modal para editar --}}
         <div class="modal fade" id="modal-edit-{{ $marca->id }}" tabindex="-1" role="dialog"
             aria-labelledby="modal-edit-{{ $marca->id }}" aria-hidden="true">
             <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">

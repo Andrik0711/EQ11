@@ -58,19 +58,19 @@
                                                 </div> --}}
                                             </th>
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Creada por</th>
+                                            {{-- <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                ID</th> --}}
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-start">
-                                                ID</th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Categoría padre</th>
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Subcategoría</th>
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Nombre</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -81,15 +81,18 @@
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Unidades disponibles</th>
-                                            <th
+                                            {{-- <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Creado</th>
+                                                Creado</th> --}}
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Editar</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Eliminar</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Detalle</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -114,10 +117,10 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {{-- <td>
                                                     <p class="text-xs font-weight-bold mb-0 text-start">{{ $producto->id }}
                                                     </p>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0 text-center">
                                                         {{ $producto->categoria->nombre_categoria }}</p>
@@ -142,10 +145,10 @@
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $producto->unidades_disponibles }}</span>
                                                 </td>
-                                                <td>
+                                                {{-- <td>
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $producto->created_at->format('d/m/Y') }}</span>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <button type="button" class="btn bg-gradient-info mt-3"
                                                         data-bs-toggle="modal"
@@ -156,8 +159,17 @@
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn bg-gradient-danger mt-3"
-                                                        data-bs-toggle="modal" data-bs-target="#modal-default">
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modal-default-{{ $producto->id }}">
                                                         <img src="{{ asset('images/icons/icon-delete.svg') }}"
+                                                            alt="delete" width="30px">
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn bg-gradient-warning mt-3"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modal-detalle-{{ $producto->id }}">
+                                                        <img src="{{ asset('images/icons/icon-detalle.svg') }}"
                                                             alt="delete" width="30px">
                                                     </button>
                                                 </td>
@@ -185,32 +197,34 @@
 @endsection
 
 @push('modals')
-    <!-- The Modal delete -->
-    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default"
-        aria-hidden="true">
-        <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="modal-title-default">¿Estás seguro de eliminar este producto?</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-footer">
-                    <!-- Form to handle the category deletion -->
-                    <form action="{{ route('eliminar-producto', $producto->id) }}" method="POST">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
-                    </form>
-                    <button type="button" class="btn bg-gradient-info ml-auto" data-bs-dismiss="modal">Cerrar</button>
+    @foreach ($productos as $producto)
+        <!-- The Modal delete -->
+        <div class="modal fade" id="modal-default-{{ $producto->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal-default-{{ $producto->id }}" aria-hidden="true">
+            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="modal-title-default-{{ $producto->id }}">¿Estás seguro de eliminar el
+                            producto <span class="modal-edit-name">{{ $producto->nombre_producto }}</span>?</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Form to handle the category deletion -->
+                        <form action="{{ route('eliminar-producto', $producto->id) }}" method="POST">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
+                        </form>
+                        <button type="button" class="btn bg-gradient-info ml-auto"
+                            data-bs-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {{-- Modal para editar --}}
-    @foreach ($productos as $producto)
+        {{-- Modal para editar --}}
         <div class="modal fade" id="modal-edit-{{ $producto->id }}" tabindex="-1" role="dialog"
             aria-labelledby="modal-edit-{{ $producto->id }}" aria-hidden="true">
             <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
@@ -225,6 +239,29 @@
                     </div>
                     <div class="modal-footer">
                         <a href="{{ route('editar-producto-update', $producto->id) }}">
+                            <button type="button" class="btn bg-gradient-info">SI</button>
+                        </a>
+                        <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal para ver detalles --}}
+        <div class="modal fade" id="modal-detalle-{{ $producto->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal-detalle-{{ $producto->id }}" aria-hidden="true">
+            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="modal-title-detalle-{{ $producto->id }}">¿Seguro qué quieres mirar
+                            el producto <span class="modal-edit-name">{{ $producto->nombre_producto }}</span>?
+                        </h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#">
                             <button type="button" class="btn bg-gradient-info">SI</button>
                         </a>
                         <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Cerrar</button>

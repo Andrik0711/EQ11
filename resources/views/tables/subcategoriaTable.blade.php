@@ -58,15 +58,15 @@
                                                 </div> --}}
                                             </th>
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-start">
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                                                 Creada por
                                             </th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            {{-- <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
                                                 ID
-                                            </th>
+                                            </th> --}}
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                                                 Categoría padre
                                             </th>
                                             <th
@@ -74,17 +74,17 @@
                                                 Código
                                             </th>
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                                                 Nombre
                                             </th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Descripción
                                             </th>
-                                            <th
+                                            {{-- <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Creada
-                                            </th>
+                                            </th> --}}
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Editar
@@ -106,7 +106,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex align-items-center justify-content-center px-2 py-1">
                                                         <div>
                                                             <img src="../assets/img/team-2.jpg"
                                                                 class="avatar avatar-sm me-3" alt="user1">
@@ -118,9 +118,9 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {{-- <td>
                                                     <p class="text-xs font-weight-bold mb-0">{{ $subcategoria->id }}</p>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0">
                                                         {{ $subcategoria->categoria->nombre_categoria }}</p>
@@ -138,10 +138,10 @@
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $subcategoria->descripcion_subcategoria }}</span>
                                                 </td>
-                                                <td>
+                                                {{-- <td>
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $subcategoria->created_at->format('d/m/Y') }}</span>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <button type="button" class="btn bg-gradient-info mt-3"
                                                         data-bs-toggle="modal"
@@ -152,7 +152,8 @@
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn bg-gradient-danger mt-3"
-                                                        data-bs-toggle="modal" data-bs-target="#modal-default">
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modal-default-{{ $subcategoria->id }}">
                                                         <img src="{{ asset('images/icons/icon-delete.svg') }}"
                                                             alt="delete" width="30px">
                                                     </button>
@@ -182,32 +183,36 @@
 @endsection
 
 @push('modals')
-    <!-- The Modal delete -->
-    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default"
-        aria-hidden="true">
-        <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="modal-title-default">¿Estás seguro de eliminar esta subcategoría?</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-footer">
-                    <!-- Form to handle the category deletion -->
-                    <form action="{{ route('eliminar-subcategoria', $subcategoria->id) }}" method="POST">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
-                    </form>
-                    <button type="button" class="btn bg-gradient-info ml-auto" data-bs-dismiss="modal">Cerrar</button>
+    @foreach ($subcategorias as $subcategoria)
+        <!-- The Modal delete -->
+        <div class="modal fade" id="modal-default-{{ $subcategoria->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal-default-{{ $subcategoria->id }}" aria-hidden="true">
+            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="modal-title-default--{{ $subcategoria->id }}">¿Estás seguro de eliminar
+                            la subcategoría <span class="modal-edit-name">{{ $subcategoria->nombre_subcategoria }}</span>?
+                        </h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Form to handle the category deletion -->
+                        <form action="{{ route('eliminar-subcategoria', $subcategoria->id) }}" method="POST">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
+                        </form>
+                        <button type="button" class="btn bg-gradient-info ml-auto"
+                            data-bs-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {{-- Modal para editar --}}
-    @foreach ($subcategorias as $subcategoria)
+        {{-- Modal para editar --}}
+
         <div class="modal fade" id="modal-edit-{{ $subcategoria->id }}" tabindex="-1" role="dialog"
             aria-labelledby="modal-edit-{{ $subcategoria->id }}" aria-hidden="true">
             <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">

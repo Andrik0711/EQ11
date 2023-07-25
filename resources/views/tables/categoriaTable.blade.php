@@ -63,11 +63,11 @@
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
                                                 Creada por</th>
+                                            {{-- <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                                ID</th> --}}
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                ID</th>
-                                            <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
                                                 Nombre</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -75,9 +75,9 @@
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Descripción</th>
-                                            <th
+                                            {{-- <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Creada</th>
+                                                Creada</th> --}}
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Editar</th>
@@ -108,10 +108,10 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {{-- <td>
                                                     <p class="text-xs font-weight-bold mb-0">
                                                         {{ $categoria->id }}</p>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0">
                                                         {{ $categoria->nombre_categoria }}</p>
@@ -124,10 +124,10 @@
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $categoria->descripcion_categoria }}</span>
                                                 </td>
-                                                <td>
+                                                {{-- <td>
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $categoria->created_at->format('d/m/Y') }}</span>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <button type="button" class="btn bg-gradient-info mt-3"
                                                         data-bs-toggle="modal"
@@ -138,7 +138,8 @@
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn bg-gradient-danger mt-3"
-                                                        data-bs-toggle="modal" data-bs-target="#modal-default">
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modal-default-{{ $categoria->id }}">
                                                         <img src="{{ asset('images/icons/icon-delete.svg') }}"
                                                             alt="delete" width="30px">
                                                     </button>
@@ -146,7 +147,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="9">No se encontraron categorías</td>
+                                                <td colspan="7">No se encontraron categorías</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -167,32 +168,34 @@
 @endsection
 
 @push('modals')
-    <!-- The Modal delete -->
-    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default"
-        aria-hidden="true">
-        <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="modal-title-default">¿Estás seguro de eliminar esta categoría?</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-footer">
-                    <!-- Form to handle the category deletion -->
-                    <form action="{{ route('eliminar-categoria', $categoria->id) }}" method="POST">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
-                    </form>
-                    <button type="button" class="btn bg-gradient-info ml-auto" data-bs-dismiss="modal">Cerrar</button>
+    @foreach ($categorias as $categoria)
+        <!-- The Modal delete -->
+        <div class="modal fade" id="modal-default-{{ $categoria->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal-default-{{ $categoria->id }}" aria-hidden="true">
+            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="modal-title-default-{{ $categoria->id }}">¿Estás seguro de eliminar
+                            esta categoría <span class="modal-edit-name">{{ $categoria->nombre_categoria }}</span>?</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Form to handle the category deletion -->
+                        <form action="{{ route('eliminar-categoria', $categoria->id) }}" method="POST">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
+                        </form>
+                        <button type="button" class="btn bg-gradient-info ml-auto"
+                            data-bs-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {{-- Modal para editar --}}
-    @foreach ($categorias as $categoria)
+        {{-- Modal para editar --}}
         <div class="modal fade" id="modal-edit-{{ $categoria->id }}" tabindex="-1" role="dialog"
             aria-labelledby="modal-edit-{{ $categoria->id }}" aria-hidden="true">
             <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">

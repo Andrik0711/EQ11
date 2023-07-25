@@ -61,3 +61,6 @@ new DataTable('#marcas-table');
 
 //inicializar datatable de clientes
 new DataTable('#clientes-table');
+
+//inicializar datatable de proveedores
+new DataTable('#proveedores-table');

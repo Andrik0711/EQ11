@@ -28,10 +28,6 @@ const dropzone = new Dropzone('#dropzone', {
         }
     }
 });
-//eventos de dropzone
-/*dropzone.on('sending', function(file,xhr,formdata){
-    console.log(file);
-});*/
 
 //evento de envio de correo correcto
 dropzone.on('success', function (file, response) {
@@ -48,3 +44,7 @@ dropzone.on('error', function (file, message) {
 dropzone.on('removedfile', function () {
     document.querySelector('[name= "imagen"]').value = "";
 });
+
+
+//inicializar datatable	
+new DataTable('#categorias-table');

@@ -1,1 +1,93 @@
+/*? Estilos para todas la tablas */
 
+/* Custom styles for the DataTable wrapper */
+div.dataTables_wrapper {
+    /* Your styles for the table wrapper */
+    margin-top: 2px;
+}
+
+/* Custom styles for the DataTable filter input */
+div.dataTables_filter {
+    margin-right: 8%;
+    margin-top: 2px;
+    align-content: middle;
+}
+
+/* Custom styles for the search input field */
+div.dataTables_filter label input {
+    /* Your styles for the search input field */
+    border-radius: 5px;
+    border: 1px solid #000000;
+    padding: 3px;
+    margin: 2%;
+}
+
+/* Custom styles for the search label  */
+div.dataTables_wrapper div.dataTables_filter label {
+    font-size: inherit;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: 600;
+}
+
+/* Custom styles for the DataTable page length options */
+div.dataTables_length {
+    /* Your styles for the length options */
+    margin-left: 6%;
+    margin-top: 2px;
+}
+
+div.dataTables_wrapper div.dataTables_length label {
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+    font-size: inherit;
+}
+
+/* Custom styles for the DataTable select  */
+div.dataTables_length select.form-select.form-select-sm {
+    /* Your styles for the length option select */
+    border-radius: 10px;
+    border: 1px solid #000000;
+    background-position: right 0.2rem center;
+    margin: 4%;
+    padding-right: 12%;
+}
+
+/* Custom styles for the pagination buttons */
+/* Styles for the DataTable pagination */
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+    margin: 2px 0;
+    margin-top: 2px;
+    margin-right: 0px;
+    margin-bottom: 2px;
+    margin-left: 0px;
+    white-space: nowrap;
+    white-space-collapse: collapse;
+    text-wrap: nowrap;
+    justify-content: flex-end;
+}
+
+/* Style para la informacion de la tabla */
+div.dataTables_wrapper div.dataTables_info {
+    padding-left: 7%;
+    padding-top: 8px;
+
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+    font-size: inherit;
+}
+
+/* Style para el boton de siguiente y anterior */
+div.dataTables_wrapper div.dataTables_paginate li.paginate_button {
+    padding-right: 4%;
+    margin-bottom: 2px;
+    margin-right: 3%;
+}
+
+/* Style para el boton de siguiente y anterior */
+div.dataTables_wrapper div.dataTables_paginate .page-item .page-link,
+.page-item span.page-link {
+    width: 40px;
+}

@@ -1,6 +1,7 @@
 // require('./bootstrap');
 import Dropzone from "dropzone"
 
+// Dropzone para subir imagenes
 Dropzone.autoDiscover = false;
 const dropzone = new Dropzone('#dropzone', {
     dictDefaultMessage: 'Sube la imagen aquí',
@@ -46,5 +47,8 @@ dropzone.on('removedfile', function () {
 });
 
 
-//inicializar datatable	
+//inicializar datatable	de categorias
 new DataTable('#categorias-table');
+
+//inicializar datatable	de subcategorias
+new DataTable('#subcategorias-table');

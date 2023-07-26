@@ -73,29 +73,26 @@
                                     </form>
                                 </div>
                             </div>
-
                             {{-- Right Column - Dropzone para cargar imagen --}}
                             <div class="col">
                                 <div class="form-group mt-4">
                                     <form action="{{ route('marca-image-store') }}" method="POST"
-                                        enctype="multipart/form-data" id="marca_imagen"
+                                        enctype="multipart/form-data" id="cargar_imagen"
                                         class="dropzone d-flex justify-content-center items-content-center align-middle border border-success">
                                         @csrf
                                     </form>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
                 </div>
-
-                {{-- Alerta de éxito --}}
-                @if (session('mensaje'))
-                    <div class="alert alert-success" role="alert">
-                        <strong>Success!</strong> {{ session('mensaje') }}
-                    </div>
-                @endif
             </div>
+            {{-- Alerta de éxito --}}
+            @if (session('mensaje'))
+                <div class="alert alert-success" role="alert">
+                    <strong>Success!</strong> {{ session('mensaje') }}
+                </div>
+            @endif
+        </div>
     </main>
 @endsection

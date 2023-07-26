@@ -3,8 +3,8 @@ import Dropzone from "dropzone"
 
 // Dropzone para subir imagenes
 Dropzone.autoDiscover = false;
-const marca_imagen = new Dropzone('#marca_imagen', {
-    dictDefaultMessage: 'Suba la marca aquí',
+const subir_imagen = new Dropzone('#cargar_imagen', {
+    dictDefaultMessage: 'Suba tú imagen aquí',
     acceptedFiles: ".png,.jpg,.jpeg",
     addRemoveLinks: true,
     dictRemoveFile: "Borrar archivo",
@@ -31,15 +31,15 @@ const marca_imagen = new Dropzone('#marca_imagen', {
 });
 
 //evento de envio de correo correcto
-marca_imagen.on('success', function (file, response) {
+subir_imagen.on('success', function (file, response) {
     document.querySelector('[name= "imagen"]').value = response.imagen;
 });
 //envio cuando hay error
-marca_imagen.on('error', function (file, message) {
+subir_imagen.on('error', function (file, message) {
     console.log(message);
 });
 //remover un archivo
-marca_imagen.on('removedfile', function () {
+subir_imagen.on('removedfile', function () {
     document.querySelector('[name= "imagen"]').value = "";
 });
 
@@ -53,7 +53,7 @@ new DataTable('#subcategorias-table');
 //inicializar datatable	de productos
 new DataTable('#productos-table');
 
-//inicializar datatable de marcas
+// inicializar datatable de marcas
 new DataTable('#marcas-table');
 
 //inicializar datatable de clientes

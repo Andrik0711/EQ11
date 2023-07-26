@@ -1,26 +1,11 @@
 @extends('layouts.user_type.auth')
 
-@section('styles')
+@section('title', 'Actualizar marca')
+
+
+@push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css" />
-
-    <style>
-        .dropzone {
-            border: 2px solid #000000;
-            padding: 20px;
-            background-color: #f9f9f9;
-            min-height: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .dropzone .dz-message {
-            text-align: center;
-            font-size: 18px;
-            color: #7c7c7c;
-        }
-    </style>
-@endsection
+@endpush
 
 
 @section('content')
@@ -38,47 +23,90 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card-body px-4 pt-2 pb-2">
-                    <div class="px-4">
-                        <form action="{{ route('editar-marca-update', ['id' => $marca->id]) }}" method="POST" novalidate>
-                            @csrf
-                            @method('PUT')
-
-                            <div class="col-md-6">
+                    <div class="px-4 flex">
+                        <div class="row">
+                            <div class="col">
                                 <div class="form-group">
-                                    <h6 for="nombre_marca">Nombre de la Marca</h6>
-                                    <input type="text" placeholder="Nombre de la marca" class="form-control"
-                                        id="nombre_marca" name="nombre_marca" value="{{ $marca->nombre_marca }}" />
-                                    @error('nombre_marca')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                    <form action="{{ route('editar-marca-update', ['id' => $marca->id]) }}" method="POST"
+                                        novalidate>
+                                        @csrf
+                                        @method('PUT')
+
+                                        {{-- Nombre de la marca --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <h6 for="nombre_marca">Nombre de la Marca</h6>
+                                                <input type="text" placeholder="Nombre de la Marca" class="form-control"
+                                                    id="nombre_marca" name="nombre_marca"
+                                                    value="{{ $marca->nombre_marca }}" />
+                                                @error('nombre_marca')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- Descripcion de marca --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <h6 for="descripcion_marca">Descripción de la Marca</h6>
+                                                <input type="text" placeholder="Descripción de la Marca"
+                                                    class="form-control" id="descripcion_marca" name="descripcion_marca"
+                                                    value="{{ $marca->descripcion_marca }}" />
+                                                @error('descripcion_marca')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- Imagen actual de la marca --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <h6>Imagen actual</h6>
+                                                <div
+                                                    class=" d-flex justify-content-center items-content-center align-middle">
+                                                    <img class="border-radius-lg"
+                                                        src="{{ asset('uploads/' . $marca->imagen_marca) }}"
+                                                        alt="imagen actual de la marca" width="150">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- Campo oculto para la imagen actual (si deseas mantener la imagen actual) --}}
+                                        <input type="hidden" name="imagen_actual" value="{{ $marca->imagen_marca }}" />
+
+                                        {{-- Campo oculto para la imagen nueva --}}
+                                        <div class="col-md-6">
+                                            <input name="imagen" id="imagen" type="hidden"
+                                                value="{{ old('value') }}" />
+                                            @error('imagen')
+                                                <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">
+                                                    {{ $message }}</p>
+                                            @enderror
+                                        </div>
+
+                                        <button class="btn bg-gradient-success" type="submit"
+                                            value="Actualizar marca">Actualizar</button>
+                                    </form>
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
+                            {{-- Right Column - Dropzone para cargar imagen --}}
+                            <div class="col">
                                 <div class="form-group">
-                                    <h6 for="descripcion_marca">Descripción de la categoría</h6>
-                                    <input type="text" placeholder="Descripción de la marca" class="form-control"
-                                        id="descripcion_marca" name="descripcion_marca"
-                                        value="{{ $marca->descripcion_marca }}" />
-                                    @error('descripcion_marca')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                    <h6>Actualizar imagen</h6>
+                                    <form action="{{ route('marca-image-store') }}" method="POST"
+                                        enctype="multipart/form-data" id="cargar_imagen"
+                                        class="dropzone d-flex justify-content-center items-content-center align-middle border border-success">
+                                        @csrf
+                                    </form>
                                 </div>
                             </div>
-
-                            {{-- <div class="mb-5">
-                <input name="imagen" id="imagen" type="hidden" value="{{ $marca->imagen_marca }}" />
-            </div> --}}
-
-                            <button class="btn bg-gradient-success" type="submit"
-                                value="Actualizar marca">Actualizar</button>
-                        </form>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
-
             {{-- Alerta de éxito --}}
             @if (session('mensaje'))
                 <div class="alert alert-success" role="alert">

@@ -114,8 +114,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/editar-marca/{id}', [CRUDMarcasController::class, 'editarMarca'])->name('editar-marca');
 	// Ruta para editar Marca
 	Route::put('/editar-marca/{id}', [CRUDMarcasController::class, 'MarcaUpdate'])->name('editar-marca-update');
-	// Ruta para editar Imagen de Marca
-	// Route::post('/editar-imagen-marca/{id}', [CRUDMarcasController::class, 'editarImagenMarca'])->name('editar-imagen-marca');
 	// Ruta para eliminar Marca
 	Route::delete('/eliminar-marca/{id}', [CRUDMarcasController::class, 'MarcaDestroy'])->name('eliminar-marca');
 	// Ruta para mostrar todas las marcas registradas

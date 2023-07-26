@@ -6,6 +6,7 @@ use App\Models\Marca;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
 
 class CRUDMarcasController extends Controller
 {
@@ -89,23 +90,35 @@ class CRUDMarcasController extends Controller
 
         // dd($request->all());
 
-        // Validacion de los campos
+        // Validacion de los campos de nombre y descripcion
         $request->validate([
             'nombre_marca' => 'required',
             'descripcion_marca' => 'required',
-            // 'imagen' => 'required',
-            // 'marca_creada_por' => 'required'
         ]);
 
-        // Almacenar los datos en la base de datos
-        Marca::where('id', $id)->update([
-            // 'imagen_marca' => $request->imagen,
-            'nombre_marca' => $request->nombre_marca,
-            'descripcion_marca' => $request->descripcion_marca,
-            // 'marca_creada_por' => $request->marca_creada_por
-        ]);
+        // Obtenemos la información de la marca actual
+        $marca = Marca::findOrFail($id);
 
-        return back()->with('mensaje', 'Marca actualizada con exito');
+        // dd($request->imgen); // Si recibe null
+
+        // Verificamos si se cargó una nueva imagen
+        if ($request->imagen != null) {
+
+            // Eliminamos la imagen anterior de la carpeta uploads
+            File::delete(public_path('uploads') . '/' . $marca->imagen_marca);
+
+            // Guardamos el nombre de la nueva imagen en el modelo de la marca
+            $marca->imagen_marca = $request->imagen;
+        }
+
+        // Actualizamos el nombre y descripción de la marca
+        $marca->nombre_marca = $request->input('nombre_marca');
+        $marca->descripcion_marca = $request->input('descripcion_marca');
+
+        // Guardamos los cambios en la base de datos
+        $marca->save();
+
+        return back()->with('mensaje', 'Marca actualizada con éxito');
     }
 
     // Metodo para eliminar una marca

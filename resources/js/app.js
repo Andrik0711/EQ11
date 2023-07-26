@@ -3,8 +3,8 @@ import Dropzone from "dropzone"
 
 // Dropzone para subir imagenes
 Dropzone.autoDiscover = false;
-const dropzone = new Dropzone('#dropzone', {
-    dictDefaultMessage: 'Sube la imagen aquí',
+const marca_imagen = new Dropzone('#marca_imagen', {
+    dictDefaultMessage: 'Suba la marca aquí',
     acceptedFiles: ".png,.jpg,.jpeg",
     addRemoveLinks: true,
     dictRemoveFile: "Borrar archivo",
@@ -31,18 +31,15 @@ const dropzone = new Dropzone('#dropzone', {
 });
 
 //evento de envio de correo correcto
-dropzone.on('success', function (file, response) {
+marca_imagen.on('success', function (file, response) {
     document.querySelector('[name= "imagen"]').value = response.imagen;
 });
-
 //envio cuando hay error
-dropzone.on('error', function (file, message) {
+marca_imagen.on('error', function (file, message) {
     console.log(message);
 });
-
-
 //remover un archivo
-dropzone.on('removedfile', function () {
+marca_imagen.on('removedfile', function () {
     document.querySelector('[name= "imagen"]').value = "";
 });
 

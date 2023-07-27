@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('telefono_proveedor');
             $table->string('email_proveedor');
             $table->string('proveedor_creado_por');
+            $table->string('pais_proveedor');
+            $table->string('estado_proveedor');
+            $table->string('direccion_proveedor');
+            $table->string('descripcion_proveedor');
             $table->string('imagen_proveedor');
             $table->timestamps();
         });

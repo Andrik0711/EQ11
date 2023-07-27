@@ -128,6 +128,24 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
+	// Ruta para mandar a la vista del formulario de clientes
+	Route::get('/registrar-cliente', [CRUDClientesController::class, 'registrarCliente'])->name('registrar-cliente-form');
+	// Ruta para registrar cliente
+	Route::post('/registrar-cliente', [CRUDClientesController::class, 'ClienteStore'])->name('registrar-cliente-store');
+	// Ruta para registrar Imagenes de cliente
+	Route::post('/imagenes-cliente', [CRUDClientesController::class, 'ClienteImageStore'])->name('cliente-image-store');
+	// Ruta para redireccionar a la vista de editar cliente
+	Route::get('/editar-cliente/{id}', [CRUDClientesController::class, 'editarCliente'])->name('editar-cliente');
+	// Ruta para editar cliente
+	Route::put('/editar-cliente/{id}', [CRUDClientesController::class, 'ClienteUpdate'])->name('editar-cliente-update');
+	// Ruta para eliminar cliente
+	Route::delete('/eliminar-cliente/{id}', [CRUDClientesController::class, 'ClienteDestroy'])->name('eliminar-cliente');
+	// Ruta para mostrar todas las clientes registradas
+	Route::get('/mostrar-clientes', [CRUDClientesController::class, 'mostrarClientes'])->name('mostrar-clientes');
+
+
+
+
 	// Ruta para mandar a la vista del formulario de proveedores
 	Route::get('/registrar-proveedor', [CRUDProveedoresController::class, 'registrarProveedor'])->name('registrar-proveedor-form');
 	// Ruta para registrar proveedor
@@ -140,21 +158,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/eliminar-proveedor/{id}', [CRUDProveedoresController::class, 'ProveedorDestroy'])->name('eliminar-proveedor');
 	// Ruta para mostrar todas las proveedores registradas
 	Route::get('/mostrar-proveedores', [CRUDProveedoresController::class, 'mostrarProveedores'])->name('mostrar-proveedores');
-
-
-
-	// Ruta para mandar a la vista del formulario de clientes
-	Route::get('/registrar-cliente', [CRUDClientesController::class, 'registrarCliente'])->name('registrar-cliente-form');
-	// Ruta para registrar cliente
-	Route::post('/registrar-cliente', [CRUDClientesController::class, 'ClienteStore'])->name('registrar-cliente-store');
-	// Ruta para redireccionar a la vista de editar cliente
-	Route::get('/editar-cliente/{id}', [CRUDClientesController::class, 'editarCliente'])->name('editar-cliente');
-	// Ruta para editar cliente
-	Route::put('/editar-cliente/{id}', [CRUDClientesController::class, 'ClienteUpdate'])->name('editar-cliente-update');
-	// Ruta para eliminar cliente
-	Route::delete('/eliminar-cliente/{id}', [CRUDClientesController::class, 'ClienteDestroy'])->name('eliminar-cliente');
-	// Ruta para mostrar todas las clientes registradas
-	Route::get('/mostrar-clientes', [CRUDClientesController::class, 'mostrarClientes'])->name('mostrar-clientes');
 });
 
 

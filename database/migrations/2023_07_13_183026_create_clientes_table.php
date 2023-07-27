@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('email_cliente');
             $table->string('empresa_cliente');
             $table->string('cliente_creado_por');
+            $table->string('pais_cliente');
+            $table->string('estado_cliente');
+            $table->string('direccion_cliente');
+            $table->string('descripcion_cliente');
             $table->string('imagen_cliente');
             $table->timestamps();
         });

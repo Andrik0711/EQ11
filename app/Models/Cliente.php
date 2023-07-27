@@ -18,6 +18,10 @@ class Cliente extends Model
         'email_cliente',
         'empresa_cliente',
         'cliente_creado_por',
+        'pais_cliente',
+        'estado_cliente',
+        'direccion_cliente',
+        'descripcion_cliente',
         'imagen_cliente'
     ];
 }

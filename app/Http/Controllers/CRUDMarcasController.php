@@ -125,6 +125,8 @@ class CRUDMarcasController extends Controller
     public function MarcaDestroy($id)
     {
         $marca = Marca::findOrFail($id);
+        // Eliminar la marca de la base de datos y la imagen de la carpeta marcas
+        File::delete(public_path('marcas') . '/' . $marca->imagen_marca);
         $marca->delete();
         return back()->with('mensaje', 'Marca eliminada con exito');
     }

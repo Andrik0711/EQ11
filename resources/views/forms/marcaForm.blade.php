@@ -97,3 +97,56 @@
         </div>
     </main>
 @endsection
+
+
+
+
+@push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+    <script>
+        // Codigo para cargar Dropzone en la carpeta /categorias
+        Dropzone.autoDiscover = false;
+        // iniciarDropzoneCategorias();
+        const subir_imagen_categorias = new Dropzone('#cargar_imagen', {
+            dictDefaultMessage: 'Suba tú imagen aquí',
+            acceptedFiles: ".png,.jpg,.jpeg",
+            addRemoveLinks: true,
+            dictRemoveFile: "Borrar archivo",
+            maxFiles: 1,
+            uploadMultiple: false,
+            // Trabajando con imagen en el contenedor de dropzone
+            init: function() {
+                if (document.querySelector('[name= "imagen"]').value.trim()) {
+                    const imagenPublicada = {};
+                    imagenPublicada.size = 2000;
+                    imagenPublicada.name = document.querySelector('[name= "imagen"]').value;
+                    this.options.addedfile.call(this, imagenPublicada);
+                    this.options.thumbnail.call(
+                        this,
+                        imagenPublicada.name,
+                        '/marcas/${imagenPublicada.name}'
+                    );
+                    imagenPublicada.previewElement.classList.add(
+                        "dz-sucess",
+                        "dz-complete"
+                    )
+                }
+            }
+        });
+
+        // Evento de envío de correo correcto
+        subir_imagen_categorias.on('success', function(file, response) {
+            document.querySelector('[name= "imagen"]').value = response.imagen;
+        });
+
+        // Envío cuando hay error
+        subir_imagen_categorias.on('error', function(file, message) {
+            console.log(message);
+        });
+
+        // Remover un archivo
+        subir_imagen_categorias.on('removedfile', function() {
+            document.querySelector('[name= "imagen"]').value = "";
+        });
+    </script>
+@endpush

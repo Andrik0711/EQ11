@@ -84,7 +84,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <img src="{{ asset('uploads') . '/' . $marca->imagen_marca }}"
+                                                    <img src="{{ asset('marcas') . '/' . $marca->imagen_marca }}"
                                                         alt="{{ $marca->nombre_marca }}" width="60px"
                                                         class="border-radius-lg">
                                                 </td>
@@ -116,7 +116,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="6">No se encontraron productos</td>
+                                                <td colspan="6">No se encontraron marcas</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

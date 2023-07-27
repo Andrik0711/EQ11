@@ -130,7 +130,7 @@
             init: function() {
                 if (document.querySelector('[name= "imagen"]').value.trim()) {
                     const imagenPublicada = {};
-                    imagenPublicada.size = 2000;
+                    imagenPublicada.size = 4000;
                     imagenPublicada.name = document.querySelector('[name= "imagen"]').value;
                     this.options.addedfile.call(this, imagenPublicada);
                     this.options.thumbnail.call(

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Subcategoria;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
 
 class CRUDSubCategoriasController extends Controller
 {
@@ -15,6 +18,32 @@ class CRUDSubCategoriasController extends Controller
         $categorias = Categoria::all();
 
         return view('forms.subcategoriaForm', compact('categorias'));
+    }
+
+    // Metodo para almacenar la imagen 
+    public function SubCategoriaImageStore(Request $request)
+    {
+
+        //identificar el archivo que se sube en dropzone
+        $imagen = $request->file('file');
+
+        //genera un id unico para cada una de las imagenes que se cargan en el server
+        $nombreImagen = Str::uuid() . "." . $imagen->extension();
+
+        //implementar intervention Image 
+        $imagenServidor = Image::make($imagen);
+
+        //agregamos efectps de intervention image: indicamos la medida de cada imagen
+        $imagenServidor->fit(1000, 1000);
+
+        //movemos la imagen a un lugar fisico del servidor
+        $imagenPath = public_path('subcategorias') . '/' . $nombreImagen;
+
+        //pasamos la imagen de memoria al server
+        $imagenServidor->save($imagenPath);
+
+        ///verificamos que el nombre del archivo se ponga como unico
+        return response()->json(['imagen' => $nombreImagen]);
     }
 
     // Metodo que muestra todas las SubCategorias registradas
@@ -36,7 +65,8 @@ class CRUDSubCategoriasController extends Controller
             'codigo_subcategoria' => 'required|unique:subcategorias,codigo_subcategoria',
             'nombre_subcategoria' => 'required',
             'descripcion_subcategoria' => 'required',
-            'subcategoria_creada_por' => 'required'
+            'subcategoria_creada_por' => 'required',
+            'imagen' => 'required'
         ]);
 
         // Registrar SubCategoria
@@ -45,7 +75,8 @@ class CRUDSubCategoriasController extends Controller
             'codigo_subcategoria' => $request->codigo_subcategoria,
             'nombre_subcategoria' => $request->nombre_subcategoria,
             'descripcion_subcategoria' => $request->descripcion_subcategoria,
-            'subcategoria_creada_por' => $request->subcategoria_creada_por
+            'subcategoria_creada_por' => $request->subcategoria_creada_por,
+            'imagen_subcategoria' => $request->imagen
         ]);
 
         // Redireccionar a la misma vista con mensaje de exito
@@ -75,26 +106,43 @@ class CRUDSubCategoriasController extends Controller
             'subcategoria_creada_por' => 'required'
         ]);
 
-        // Actualizar SubCategoria
-        Subcategoria::findOrFail($id)->update([
-            'categoria_subcategoria' => $request->categoria_subcategoria,
-            'codigo_subcategoria' => $request->codigo_subcategoria,
-            'nombre_subcategoria' => $request->nombre_subcategoria,
-            'descripcion_subcategoria' => $request->descripcion_subcategoria,
-            'subcategoria_creada_por' => $request->subcategoria_creada_por
-        ]);
+        // Obtenemos la información de la SubCategoria actual
+        $subcategoria = Subcategoria::findOrFail($id);
+
+        // Verificamos si se cargó una nueva imagen
+        if ($request->imagen != null) {
+
+            // Eliminamos la imagen anterior de la carpeta uploads
+            File::delete(public_path('subcategorias') . '/' . $subcategoria->imagen_subcategoria);
+
+            // Guardamos el nombre de la nueva imagen en el modelo de la SubCategoria
+            $subcategoria->imagen_subcategoria = $request->imagen;
+        }
+
+        // Actualizamos los campos de la SubCategoria
+        $subcategoria->categoria_subcategoria = $request->input('categoria_subcategoria');
+        $subcategoria->codigo_subcategoria = $request->input('codigo_subcategoria');
+        $subcategoria->nombre_subcategoria = $request->input('nombre_subcategoria');
+        $subcategoria->descripcion_subcategoria = $request->input('descripcion_subcategoria');
+        $subcategoria->subcategoria_creada_por = $request->input('subcategoria_creada_por');
+
+        // Guardamos los cambios en la base de datos
+        $subcategoria->save();
 
         // Redireccionar a la misma vista con mensaje de exito
-        return back()->with('mensaje', 'SubCategoria actualizada con exito');
+        return back()->with('mensaje', 'Subcategoria actualizada con exito');
     }
 
     // Metodo para eliminar una SubCategoria
     public function SubCategoriaDestroy($id)
     {
         // Eliminar SubCategoria
-        Subcategoria::findOrFail($id)->delete();
+        $subcategoria = Subcategoria::findOrFail($id);
+        // Eliminar la Subcategoria de la base de datos y la imagen de la carpeta uploads
+        File::delete(public_path('subcategorias') . '/' . $subcategoria->imagen_subcategoria);
+        $subcategoria->delete();
 
         // Redireccionar a la misma vista con mensaje de exito
-        return back()->with('mensaje', 'SubCategoria eliminada con exito');
+        return back()->with('mensaje', 'Subcategoria eliminada con exito');
     }
 }

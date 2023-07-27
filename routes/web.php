@@ -81,6 +81,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/registrar-subcategoria', [CRUDSubCategoriasController::class, 'registrarSubCategoria'])->name('registrar-subcategoria-form');
 	// Ruta para registrar SubCategoria
 	Route::post('/registrar-subcategoria', [CRUDSubCategoriasController::class, 'SubCategoriaStore'])->name('registrar-subcategoria-store');
+	// Ruta para registrar Imagenes de SubCategoria
+	Route::post('/imagenes-subcategoria', [CRUDSubCategoriasController::class, 'SubCategoriaImageStore'])->name('subcategoria-image-store');
 	// Ruta para redireccionar a la vista de editar SubCategoria
 	Route::get('/editar-subcategoria/{id}', [CRUDSubCategoriasController::class, 'editarSubCategoria'])->name('editar-subcategoria');
 	// Ruta para editar SubCategoria

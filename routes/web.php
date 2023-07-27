@@ -97,6 +97,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/registrar-producto', [CRUDProductosController::class, 'registrarProducto'])->name('registrar-producto-form');
 	// Ruta para registrar Producto
 	Route::post('/registrar-producto', [CRUDProductosController::class, 'ProductoStore'])->name('registrar-producto-store');
+	// Ruta para registrar Imagenes de Producto
+	Route::post('/imagenes-producto', [CRUDProductosController::class, 'ProductoImageStore'])->name('producto-image-store');
 	// Ruta para redireccionar a la vista de editar Producto
 	Route::get('/editar-producto/{id}', [CRUDProductosController::class, 'editarProducto'])->name('editar-producto');
 	// Ruta para editar Producto

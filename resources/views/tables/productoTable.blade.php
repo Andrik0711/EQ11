@@ -60,9 +60,9 @@
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Creada por</th>
-                                            {{-- <th
+                                            <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                ID</th> --}}
+                                                Imagen</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Categoría padre</th>
@@ -81,9 +81,6 @@
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Unidades disponibles</th>
-                                            {{-- <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Creado</th> --}}
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Editar</th>
@@ -117,10 +114,11 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                {{-- <td>
-                                                    <p class="text-xs font-weight-bold mb-0 text-start">{{ $producto->id }}
-                                                    </p>
-                                                </td> --}}
+                                                <td>
+                                                    <img src="{{ asset('productos') . '/' . $producto->imagen_producto }}"
+                                                        alt="{{ $producto->nombre_producto }}" width="60px"
+                                                        class="border-radius-lg">
+                                                </td>
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0 text-center">
                                                         {{ $producto->categoria->nombre_categoria }}</p>
@@ -145,10 +143,6 @@
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $producto->unidades_disponibles }}</span>
                                                 </td>
-                                                {{-- <td>
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $producto->created_at->format('d/m/Y') }}</span>
-                                                </td> --}}
                                                 <td>
                                                     <button type="button" class="btn bg-gradient-info mt-3"
                                                         data-bs-toggle="modal"

@@ -138,7 +138,7 @@ class CRUDSubCategoriasController extends Controller
     {
         // Eliminar SubCategoria
         $subcategoria = Subcategoria::findOrFail($id);
-        // Eliminar la Subcategoria de la base de datos y la imagen de la carpeta uploads
+        // Eliminar la Subcategoria de la base de datos y la imagen de la carpeta subcategorias
         File::delete(public_path('subcategorias') . '/' . $subcategoria->imagen_subcategoria);
         $subcategoria->delete();
 

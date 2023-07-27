@@ -35,7 +35,7 @@ class CRUDMarcasController extends Controller
         $imagenServidor->fit(1000, 1000);
 
         //movemos la imagen a un lugar fisico del servidor
-        $imagenPath = public_path('uploads') . '/' . $nombreImagen;
+        $imagenPath = public_path('marcas') . '/' . $nombreImagen;
 
         //pasamos la imagen de memoria al server
         $imagenServidor->save($imagenPath);
@@ -105,7 +105,7 @@ class CRUDMarcasController extends Controller
         if ($request->imagen != null) {
 
             // Eliminamos la imagen anterior de la carpeta uploads
-            File::delete(public_path('uploads') . '/' . $marca->imagen_marca);
+            File::delete(public_path('marcas') . '/' . $marca->imagen_marca);
 
             // Guardamos el nombre de la nueva imagen en el modelo de la marca
             $marca->imagen_marca = $request->imagen;

@@ -19,7 +19,8 @@ class Producto extends Model
         'precio_de_compra',
         'precio_de_venta',
         'unidades_disponibles',
-        'producto_creado_por'
+        'producto_creado_por',
+        'imagen_producto'
     ];
 
     // Relacion donde un producto pertenece a una categoria

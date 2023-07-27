@@ -81,8 +81,7 @@
                                             <input name="imagen" id="imagen" type="hidden"
                                                 value="{{ old('value') }}" />
                                             @error('imagen')
-                                                <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">
-                                                    {{ $message }}</p>
+                                                <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
 
@@ -105,7 +104,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             {{-- Alerta de éxito --}}
             @if (session('mensaje'))

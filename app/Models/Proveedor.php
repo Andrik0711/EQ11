@@ -16,6 +16,7 @@ class Proveedor extends Model
         'codigo_proveedor',
         'telefono_proveedor',
         'email_proveedor',
-        'proveedor_creado_por'
+        'proveedor_creado_por',
+        'imagen_proveedor'
     ];
 }

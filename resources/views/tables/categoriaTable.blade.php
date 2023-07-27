@@ -63,9 +63,9 @@
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
                                                 Creada por</th>
-                                            {{-- <th
+                                            <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                                ID</th> --}}
+                                                Imagen</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
                                                 Nombre</th>
@@ -75,9 +75,6 @@
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Descripción</th>
-                                            {{-- <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Creada</th> --}}
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Editar</th>
@@ -108,10 +105,11 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                {{-- <td>
-                                                    <p class="text-xs font-weight-bold mb-0">
-                                                        {{ $categoria->id }}</p>
-                                                </td> --}}
+                                                <td>
+                                                    <img src="{{ asset('categorias') . '/' . $categoria->imagen_categoria }}"
+                                                        alt="{{ $categoria->nombre_categoria }}" width="60px"
+                                                        class="border-radius-lg">
+                                                </td>
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0">
                                                         {{ $categoria->nombre_categoria }}</p>
@@ -124,10 +122,6 @@
                                                     <span
                                                         class="text-secondary text-xs font-weight-bold">{{ $categoria->descripcion_categoria }}</span>
                                                 </td>
-                                                {{-- <td>
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $categoria->created_at->format('d/m/Y') }}</span>
-                                                </td> --}}
                                                 <td>
                                                     <button type="button" class="btn bg-gradient-info mt-3"
                                                         data-bs-toggle="modal"
@@ -147,7 +141,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7">No se encontraron categorías</td>
+                                                <td colspan="8">No se encontraron categorías</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

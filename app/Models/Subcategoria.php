@@ -16,7 +16,8 @@ class Subcategoria extends Model
         'codigo_subcategoria',
         'nombre_subcategoria',
         'descripcion_subcategoria',
-        'subcategoria_creada_por'
+        'subcategoria_creada_por',
+        'imagen_subcategoria'
     ];
 
     // Relacion donde una subcategoria pertenece a una categoria

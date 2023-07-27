@@ -17,6 +17,7 @@ class Cliente extends Model
         'telefono_cliente',
         'email_cliente',
         'empresa_cliente',
-        'cliente_creado_por'
+        'cliente_creado_por',
+        'imagen_cliente'
     ];
 }

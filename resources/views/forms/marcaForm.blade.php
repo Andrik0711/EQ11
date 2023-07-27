@@ -1,5 +1,7 @@
 @extends('layouts.user_type.auth')
 
+@section('title', 'Registrar marca')
+
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css" />
 @endpush
@@ -58,8 +60,7 @@
                                             <input name="imagen" id="imagen" type="hidden"
                                                 value="{{ old('value') }}" />
                                             @error('imagen')
-                                                <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">
-                                                    {{ $message }}</p>
+                                                <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
 

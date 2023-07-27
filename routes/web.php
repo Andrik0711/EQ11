@@ -64,6 +64,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/registrar-categoria', [CRUDCategoriasController::class, 'registrarCategoria'])->name('registrar-categoria-form');
 	// Ruta para registrar Categoria
 	Route::post('/registrar-categoria', [CRUDCategoriasController::class, 'CategoriaStore'])->name('registrar-categoria-store');
+	// Ruta para registrar Imagenes de Categoria
+	Route::post('/imagenes-categoria', [CRUDCategoriasController::class, 'CategoriaImageStore'])->name('categoria-image-store');
 	// Ruta para redireccionar a la vista de editar Categoria
 	Route::get('/editar-categoria/{id}', [CRUDCategoriasController::class, 'editarCategoria'])->name('editar-categoria');
 	// Ruta para editar Categoria
@@ -109,7 +111,7 @@ Route::group(['middleware' => 'auth'], function () {
 	// Ruta para registrar Marca
 	Route::post('/registrar-marca', [CRUDMarcasController::class, 'MarcaStore'])->name('registrar-marca-store');
 	// Ruta para registrar Imagenes de Marca
-	Route::post('/imagenes', [CRUDMarcasController::class, 'MarcaImageStore'])->name('marca-image-store');
+	Route::post('/imagenes-marca', [CRUDMarcasController::class, 'MarcaImageStore'])->name('marca-image-store');
 	// Ruta para redireccionar a la vista de editar Marca
 	Route::get('/editar-marca/{id}', [CRUDMarcasController::class, 'editarMarca'])->name('editar-marca');
 	// Ruta para editar Marca

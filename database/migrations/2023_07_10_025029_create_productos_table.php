@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('precio_de_venta', 8, 2);
             $table->integer('unidades_disponibles');
             $table->string('producto_creado_por');
+            $table->string('imagen_producto');
             $table->timestamps();
         });
     }

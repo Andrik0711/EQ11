@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('codigo_categoria');
             $table->string('descripcion_categoria');
             $table->string('categoria_creada_por');
+            $table->string('imagen_categoria');
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nombre_subcategoria');
             $table->string('descripcion_subcategoria');
             $table->string('subcategoria_creada_por');
+            $table->string('imagen_subcategoria');
             $table->timestamps();
         });
     }

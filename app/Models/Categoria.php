@@ -15,7 +15,8 @@ class Categoria extends Model
         'nombre_categoria',
         'codigo_categoria',
         'descripcion_categoria',
-        'categoria_creada_por'
+        'categoria_creada_por',
+        'imagen_categoria'
     ];
 
     // Relacion donde una categoria puede tener muchos productos

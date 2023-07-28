@@ -17,14 +17,12 @@ class CRUDClientesController extends Controller
     }
 
     // Metodo para almacenar la imagen 
-    public function MarcaImageStore(Request $request)
+    public function ClienteImageStore(Request $request)
     {
 
         //identificar el archivo que se sube en dropzone
         $imagen = $request->file('file');
 
-        //convertimos el arreglo input a formato json
-        //return response()->json(['imagen'=>$imagen->extension()]);
         //genera un id unico para cada una de las imagenes que se cargan en el server
         $nombreImagen = Str::uuid() . "." . $imagen->extension();
 
@@ -66,16 +64,27 @@ class CRUDClientesController extends Controller
             'telefono_cliente' => 'required',
             'email_cliente' => 'required',
             'empresa_cliente' => 'required',
-            'cliente_creado_por' => 'required'
+            'cliente_creado_por' => 'required',
+            'pais_cliente' => 'required',
+            'estado_cliente' => 'required',
+            'direccion_cliente' => 'required',
+            'descripcion_cliente' => 'required',
+            'imagen' => 'required'
         ]);
 
+        // Creamos al cliente
         Cliente::create([
             'nombre_cliente' => $request->nombre_cliente,
             'codigo_cliente' => $request->codigo_cliente,
             'telefono_cliente' => $request->telefono_cliente,
             'email_cliente' => $request->email_cliente,
             'empresa_cliente' => $request->empresa_cliente,
-            'cliente_creado_por' => $request->cliente_creado_por
+            'cliente_creado_por' => $request->cliente_creado_por,
+            'pais_cliente' => $request->pais_cliente,
+            'estado_cliente' => $request->estado_cliente,
+            'direccion_cliente' => $request->direccion_cliente,
+            'descripcion_cliente' => $request->descripcion_cliente,
+            'imagen_cliente' => $request->imagen
         ]);
 
         return back()->with('mensaje', 'Cliente registrador con exito');
@@ -102,19 +111,39 @@ class CRUDClientesController extends Controller
             'telefono_cliente' => 'required',
             'email_cliente' => 'required',
             'empresa_cliente' => 'required',
-            'cliente_creado_por' => 'required'
+            'cliente_creado_por' => 'required',
+            'pais_cliente' => 'required',
+            'estado_cliente' => 'required',
+            'direccion_cliente' => 'required',
+            'descripcion_cliente' => 'required'
         ]);
 
         $cliente = Cliente::findOrFail($id);
 
-        $cliente->update([
-            'nombre_cliente' => $request->nombre_cliente,
-            'codigo_cliente' => $request->codigo_cliente,
-            'telefono_cliente' => $request->telefono_cliente,
-            'email_cliente' => $request->email_cliente,
-            'empresa_cliente' => $request->empresa_cliente,
-            'cliente_creado_por' => $request->cliente_creado_por
-        ]);
+        // Verificamos si se cargó una nueva imagen
+        if ($request->imagen != null) {
+
+            // Eliminamos la imagen anterior de la carpeta uploads
+            File::delete(public_path('clientes') . '/' . $cliente->imagen_cliente);
+
+            // Guardamos el nombre de la nueva imagen en el modelo de la cliente
+            $cliente->imagen_cliente = $request->imagen;
+        }
+
+        // Actualizamos los campos de la cliente
+        $cliente->nombre_cliente = $request->input('nombre_cliente');
+        $cliente->codigo_cliente = $request->input('codigo_cliente');
+        $cliente->telefono_cliente = $request->input('telefono_cliente');
+        $cliente->email_cliente = $request->input('email_cliente');
+        $cliente->empresa_cliente = $request->input('empresa_cliente');
+        $cliente->cliente_creado_por = $request->input('cliente_creado_por');
+        $cliente->pais_cliente = $request->input('pais_cliente');
+        $cliente->estado_cliente = $request->input('estado_cliente');
+        $cliente->direccion_cliente = $request->input('direccion_cliente');
+        $cliente->descripcion_cliente = $request->input('descripcion_cliente');
+
+        // Guardamos los cambios en la base de datos
+        $cliente->save();
 
         return back()->with('mensaje', 'Cliente actualizado con exito');
     }
@@ -124,6 +153,8 @@ class CRUDClientesController extends Controller
     {
         $cliente = Cliente::findOrFail($id);
 
+        // Eliminar al cliente de la base de datos y la imagen de la carpeta clientes
+        File::delete(public_path('clientes') . '/' . $cliente->imagen_cliente);
         $cliente->delete();
 
         return back()->with('mensaje', 'Cliente eliminado con exito');

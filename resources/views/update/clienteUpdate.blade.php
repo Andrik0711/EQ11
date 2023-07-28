@@ -195,7 +195,7 @@
                                             </div>
                                         </div>
 
-                                        {{-- Imagen actual de la marca --}}
+                                        {{-- Imagen actual del cliente --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <h6>Imagen actual</h6>
@@ -203,7 +203,7 @@
                                                     class=" d-flex justify-content-center items-content-center align-middle">
                                                     <img class="border-radius-lg"
                                                         src="{{ asset('clientes/' . $cliente->imagen_cliente) }}"
-                                                        alt="imagen actual de la marca" width="150">
+                                                        alt="imagen actual del cliente" width="150">
                                                 </div>
                                             </div>
                                         </div>

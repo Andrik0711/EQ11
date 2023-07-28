@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Proveedor;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
 
 class CRUDProveedoresController extends Controller
 {
@@ -12,6 +15,33 @@ class CRUDProveedoresController extends Controller
     {
         return view('forms.proveedoresForm');
     }
+
+    // Metodo para almacenar la imagen 
+    public function ProveedorImageStore(Request $request)
+    {
+
+        //identificar el archivo que se sube en dropzone
+        $imagen = $request->file('file');
+
+        //genera un id unico para cada una de las imagenes que se cargan en el server
+        $nombreImagen = Str::uuid() . "." . $imagen->extension();
+
+        //implementar intervention Image 
+        $imagenServidor = Image::make($imagen);
+
+        //agregamos efectps de intervention image: indicamos la medida de cada imagen
+        $imagenServidor->fit(1000, 1000);
+
+        //movemos la imagen a un lugar fisico del servidor
+        $imagenPath = public_path('proveedores') . '/' . $nombreImagen;
+
+        //pasamos la imagen de memoria al server
+        $imagenServidor->save($imagenPath);
+
+        ///verificamos que el nombre del archivo se ponga como unico
+        return response()->json(['imagen' => $nombreImagen]);
+    }
+
 
     // Metodo para mostrar todos los proveedores
     public function mostrarProveedores()
@@ -33,7 +63,12 @@ class CRUDProveedoresController extends Controller
             'codigo_proveedor' => 'required',
             'telefono_proveedor' => 'required',
             'email_proveedor' => 'required',
-            'proveedor_creado_por' => 'required'
+            'proveedor_creado_por' => 'required',
+            'pais_proveedor' => 'required',
+            'estado_proveedor' => 'required',
+            'direccion_proveedor' => 'required',
+            'descripcion_proveedor' => 'required',
+            'imagen' => 'required'
         ]);
 
         Proveedor::create([
@@ -41,7 +76,12 @@ class CRUDProveedoresController extends Controller
             'codigo_proveedor' => $request->codigo_proveedor,
             'telefono_proveedor' => $request->telefono_proveedor,
             'email_proveedor' => $request->email_proveedor,
-            'proveedor_creado_por' => $request->proveedor_creado_por
+            'proveedor_creado_por' => $request->proveedor_creado_por,
+            'pais_proveedor' => $request->pais_proveedor,
+            'estado_proveedor' => $request->estado_proveedor,
+            'direccion_proveedor' => $request->direccion_proveedor,
+            'descripcion_proveedor' => $request->descripcion_proveedor,
+            'imagen_proveedor' => $request->imagen
         ]);
 
         return back()->with('mensaje', 'Proveedor registrador con exito');
@@ -67,18 +107,38 @@ class CRUDProveedoresController extends Controller
             'codigo_proveedor' => 'required',
             'telefono_proveedor' => 'required',
             'email_proveedor' => 'required',
-            'proveedor_creado_por' => 'required'
+            'proveedor_creado_por' => 'required',
+            'pais_proveedor' => 'required',
+            'estado_proveedor' => 'required',
+            'direccion_proveedor' => 'required',
+            'descripcion_proveedor' => 'required'
         ]);
 
         $proveedor = Proveedor::findOrFail($id);
 
-        $proveedor->update([
-            'nombre_proveedor' => $request->nombre_proveedor,
-            'codigo_proveedor' => $request->codigo_proveedor,
-            'telefono_proveedor' => $request->telefono_proveedor,
-            'email_proveedor' => $request->email_proveedor,
-            'proveedor_creado_por' => $request->proveedor_creado_por
-        ]);
+        // Verificamos si se cargó una nueva imagen
+        if ($request->imagen != null) {
+
+            // Eliminamos la imagen anterior de la carpeta uploads
+            File::delete(public_path('proveedores') . '/' . $proveedor->imagen_proveedor);
+
+            // Guardamos el nombre de la nueva imagen en el modelo de la proveedor
+            $proveedor->imagen_proveedor = $request->imagen;
+        }
+
+        // Actualizamos los campos de la proveedor
+        $proveedor->nombre_proveedor = $request->input('nombre_proveedor');
+        $proveedor->codigo_proveedor = $request->input('codigo_proveedor');
+        $proveedor->telefono_proveedor = $request->input('telefono_proveedor');
+        $proveedor->email_proveedor = $request->input('email_proveedor');
+        $proveedor->proveedor_creado_por = $request->input('proveedor_creado_por');
+        $proveedor->pais_proveedor = $request->input('pais_proveedor');
+        $proveedor->estado_proveedor = $request->input('estado_proveedor');
+        $proveedor->direccion_proveedor = $request->input('direccion_proveedor');
+        $proveedor->descripcion_proveedor = $request->input('descripcion_proveedor');
+
+        // Guardamos los cambios en la base de datos
+        $proveedor->save();
 
         return back()->with('mensaje', 'Proveedor actualizado con exito');
     }
@@ -87,6 +147,9 @@ class CRUDProveedoresController extends Controller
     public function ProveedorDestroy($id)
     {
         $proveedor = Proveedor::findOrFail($id);
+
+        // Eliminar al proveedor de la base de datos y la imagen de la carpeta proveedores
+        File::delete(public_path('proveedores') . '/' . $proveedor->imagen_proveedor);
 
         $proveedor->delete();
 

@@ -19,6 +19,7 @@ class Proveedor extends Model
         'proveedor_creado_por',
         'pais_proveedor',
         'estado_proveedor',
+        'direccion_proveedor',
         'descripcion_proveedor',
         'imagen_proveedor'
     ];

@@ -58,16 +58,13 @@
                                             </th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Creado por</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                ID</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Nombre</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Código</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Nombre</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Teléfono</th>
@@ -76,7 +73,7 @@
                                                 Email</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Creado</th>
+                                                Pais</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Editar</th>
@@ -96,21 +93,20 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex px-2 py-1 ">
                                                         <div>
-                                                            <img src="../assets/img/team-2.jpg"
-                                                                class="avatar avatar-sm me-3" alt="user1">
+                                                            <img src="{{ asset('proveedores') . '/' . $proveedor->imagen_proveedor }}"
+                                                                alt="{{ $proveedor->nombre_proveedor }}" width="50px"
+                                                                class="border-radius-lg">
                                                         </div>
-                                                        <div class="d-flex flex-column justify-content-center">
-                                                            <h6 class="mb-0 text-sm">
-                                                                {{ $proveedor->proveedor_creado_por }}
-                                                            </h6>
+                                                        <div class="d-flex flex-column justify-content-center px-2">
+                                                            <h6 class="mb-0 text-sm">{{ $proveedor->nombre_proveedor }}</h6>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0 text-start">
-                                                        {{ $proveedor->id }}
+                                                    <p class="text-xs font-weight-bold mb-0 text-center">
+                                                        {{ $proveedor->codigo_proveedor }}
                                                     </p>
                                                 </td>
                                                 <td>
@@ -119,20 +115,17 @@
                                                 </td>
                                                 <td class="text-center text-sm">
                                                     <span
-                                                        class="badge badge-sm bg-gradient-success">{{ $proveedor->codigo_proveedor }}</span>
+                                                        class="badge badge-sm bg-gradient-success">{{ $proveedor->telefono_proveedor }}</span>
                                                 </td>
                                                 <td class="text-center text-sm">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $proveedor->telefono_proveedor }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $proveedor->email_proveedor }}</span>
                                                 </td>
                                                 <td class="text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $proveedor->email_proveedor }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $proveedor->pais_proveedor }}</span>
                                                 </td>
-                                                <td>
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $proveedor->created_at->format('d/m/Y') }}</span>
-                                                </td>
+
                                                 <td>
                                                     <button type="button" class="btn bg-gradient-info mt-3"
                                                         data-bs-toggle="modal"

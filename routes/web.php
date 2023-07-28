@@ -150,6 +150,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/registrar-proveedor', [CRUDProveedoresController::class, 'registrarProveedor'])->name('registrar-proveedor-form');
 	// Ruta para registrar proveedor
 	Route::post('/registrar-proveedor', [CRUDProveedoresController::class, 'ProveedorStore'])->name('registrar-proveedor-store');
+	// Ruta para registrar Imagenes de proveedor
+	Route::post('/imagenes-proveedor', [CRUDProveedoresController::class, 'ProveedorImageStore'])->name('proveedor-image-store');
 	// Ruta para redireccionar a la vista de editar proveedor
 	Route::get('/editar-proveedor/{id}', [CRUDProveedoresController::class, 'editarProveedor'])->name('editar-proveedor');
 	// Ruta para editar proveedor

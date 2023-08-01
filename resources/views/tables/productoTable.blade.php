@@ -23,7 +23,7 @@
                                 <div class="d-flex justify-end">
                                     {{-- Imagen para imprimir --}}
                                     <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                        <img src="{{ asset('images/icons/icon-printer.svg') }}" alt="print"
+                                        <img src="{{ asset('images/icons/icon-import.svg') }}" alt="print"
                                             width="30px">
                                     </a>
 

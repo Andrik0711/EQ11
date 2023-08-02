@@ -107,8 +107,10 @@
                         <div class="col mb-4">
                             <div class="card">
                                 <div class="card">
-                                    <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
-                                        class="card-img-top" alt="Producto">
+                                    <a href="{{ route('producto-seleccionado', $producto->id) }}">
+                                        <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
+                                            class="card-img-top" alt="{{ $producto->nombre_producto }}">
+                                    </a>
                                     <div class="card-body">
                                         <span
                                             class="text-gradient text-primary text-uppercase text-xs font-weight-bold my-2">

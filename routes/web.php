@@ -31,10 +31,8 @@ use App\Http\Controllers\CRUDSubCategoriasController;
 
 Route::group(['middleware' => 'auth'], function () {
 
-	Route::get('/', [HomeController::class, 'home']);
-	Route::get('dashboard', function () {
-		return view('dashboard');
-	})->name('dashboard');
+	Route::get('/', [HomeController::class, 'index']);
+	Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
 
 
 

@@ -172,7 +172,8 @@
 
             {{-- Ventas --}}
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('') ? 'active' : '' }} " href="">
+                <a class="nav-link {{ Request::is('mostrar-ventas') ? 'active' : '' }} "
+                    href="{{ route('mostrar-ventas') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <img src="{{ asset('images/icons/icon-ventas.svg') }}" alt="ventas" width="15px">

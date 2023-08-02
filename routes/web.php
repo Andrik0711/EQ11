@@ -9,6 +9,7 @@ use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\CRUDMarcasController;
+use App\Http\Controllers\CRUDVentasController;
 use App\Http\Controllers\CRUDClientesController;
 use App\Http\Controllers\CRUDProductosController;
 use App\Http\Controllers\ChangePasswordController;
@@ -162,6 +163,11 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/eliminar-proveedor/{id}', [CRUDProveedoresController::class, 'ProveedorDestroy'])->name('eliminar-proveedor');
 	// Ruta para mostrar todas las proveedores registradas
 	Route::get('/mostrar-proveedores', [CRUDProveedoresController::class, 'mostrarProveedores'])->name('mostrar-proveedores');
+
+
+
+	// Ruta para mandar a la tabla de ventas
+	Route::get('/mostrar-ventas', [CRUDVentasController::class, 'MostrarVentas'])->name('mostrar-ventas');
 });
 
 

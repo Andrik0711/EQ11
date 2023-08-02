@@ -172,4 +172,10 @@ class CRUDProductosController extends Controller
         // Redireccionamos a la misma vista con mensaje de exito
         return back()->with('mensaje', 'Producto eliminado con exito');
     }
+
+    // Metodo que importa productos
+    public function importarProductos()
+    {
+        return view('forms.importarProductoForm');
+    }
 }

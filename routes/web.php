@@ -107,6 +107,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/eliminar-producto/{id}', [CRUDProductosController::class, 'ProductoDestroy'])->name('eliminar-producto');
 	// Ruta para mostrar todas las productos registradas
 	Route::get('/mostrar-productos', [CRUDProductosController::class, 'mostrarProductos'])->name('mostrar-productos');
+	// Ruta para importar productos
+	Route::get('/importar-productos', [CRUDProductosController::class, 'importarProductos'])->name('importar-productos');
 
 
 

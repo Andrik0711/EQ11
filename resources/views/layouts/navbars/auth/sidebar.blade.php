@@ -161,7 +161,8 @@
 
             {{-- Punto de venta --}}
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('') ? 'active' : '' }} " href="">
+                <a class="nav-link {{ Request::is('punto-de-venta') ? 'active' : '' }} "
+                    href="{{ route('punto-de-venta') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <img src="{{ asset('images/icons/icon-pos.svg') }}" alt="punto-venta" width="15px">

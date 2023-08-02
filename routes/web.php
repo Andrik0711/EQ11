@@ -16,6 +16,7 @@ use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\CRUDCategoriasController;
 use App\Http\Controllers\CRUDProveedoresController;
 use App\Http\Controllers\CRUDSubCategoriasController;
+use App\Http\Controllers\POSController;
 
 /*
 |--------------------------------------------------------------------------
@@ -166,6 +167,15 @@ Route::group(['middleware' => 'auth'], function () {
 
 	// Ruta para mandar a la tabla de ventas
 	Route::get('/mostrar-ventas', [CRUDVentasController::class, 'MostrarVentas'])->name('mostrar-ventas');
+
+
+	// Ruta para ir al punto de venta
+	Route::get('/punto-de-venta', [POSController::class, 'index'])->name('punto-de-venta');
+
+	// Ruta para filtrar productos por categoria
+	Route::get('/filtrar-productos/{categoriaId}', [POSController::class, 'filtrarProductos'])->name('filtrar-productos');
+	// Ruta para mandar a la vista del producto seleccionado
+	Route::get('/producto-seleccionado/{id}', [POSController::class, 'productoSeleccionado'])->name('producto-seleccionado');
 });
 
 

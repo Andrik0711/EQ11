@@ -18,7 +18,7 @@
                     <div class="card mb-4">
                         <div class="card-header pb-2">
                             <div class="d-flex justify-content-between align-items-center mx-4">
-                                <h6 class="mb-0">Tabla de productos</h6>
+                                <h6 class="mb-0">Tabla ventas</h6>
 
                                 <div class="d-flex justify-end">
                                     {{-- Imagen para imprimir --}}
@@ -38,11 +38,10 @@
                                     </a>
 
                                     {{-- Boton de agregar productos --}}
-                                    <a href="{{ route('registrar-producto-form') }}"
-                                        class="btn bg-gradient-primary mt-4"><img
+                                    <a href="#" class="btn bg-gradient-primary mt-4"><img
                                             src="{{ asset('images/icons/icon-add.svg') }}" alt="add"
-                                            width="30px">Agregar
-                                        producto</a>
+                                            width="30px">Punto de Venta
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -59,31 +58,31 @@
                                             </th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Cliente</th>
+                                                Cliente comprador</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Imagen del producto</th>
+                                                Estado</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Categoría padre</th>
+                                                Abono realizado</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Subcategoría</th>
+                                                Sub total</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Nombre</th>
+                                                Impuestos</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Precio de compra</th>
+                                                Costo total</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Precio de venta</th>
+                                                Productos vendidos</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Unidades disponibles</th>
+                                                Fecha de venta</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Editar</th>
+                                                Abonar</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Eliminar</th>
@@ -93,7 +92,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{--  
+
                                         @forelse ($ventas as $venta)
                                             <tr>
                                                 <td>
@@ -103,53 +102,51 @@
                                                             id="check-{{ $venta->id }}">
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div class="d-flex px-2 py-1">
-                                                        <div>
-                                                            <img src="../assets/img/team-2.jpg"
-                                                                class="avatar avatar-sm me-3" alt="user1">
-                                                        </div>
-                                                        <div class="d-flex flex-column justify-content-center">
-                                                            <h6 class="mb-0 text-sm">{{ $venta->producto_creado_por }}
-                                                            </h6>
-                                                        </div>
-                                                    </div>
+                                                <td class="text-center text-sm">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $venta->cliente->nombre_cliente }}</span>
                                                 </td>
                                                 <td>
-                                                    <img src="{{ asset('productos') . '/' . $venta->imagen_producto }}"
-                                                        alt="{{ $venta->nombre_producto }}" width="60px"
-                                                        class="border-radius-lg">
-                                                </td>
-                                                <td>
-                                                    <p class="text-xs font-weight-bold mb-0 text-center">
-                                                        {{ $venta->categoria->nombre_categoria }}</p>
+                                                    {{-- Si la venta es pendiente muestra success --}}
+                                                    @if ($venta->venta_status == 'Pendiente')
+                                                        <span
+                                                            class="badge badge-sm bg-gradient-success">{{ $venta->venta_status }}</span>
+                                                    @else
+                                                        <span
+                                                            class="badge badge-sm bg-gradient-danger">{{ $venta->venta_status }}</span>
+                                                    @endif
+
                                                 </td>
                                                 <td class="text-center text-sm">
                                                     <span
-                                                        class="badge badge-sm bg-gradient-success">{{ $venta->subcategoria->nombre_subcategoria }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $venta->venta_abono }}</span>
                                                 </td>
                                                 <td class="text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $venta->nombre_producto }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $venta->venta_subtotal }}</span>
                                                 </td>
                                                 <td class="text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">$
-                                                        {{ $venta->precio_de_compra }}</span>
+                                                        {{ $venta->venta_impuestos }}</span>
                                                 </td>
                                                 <td class="text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">$
-                                                        {{ $venta->precio_de_venta }}</span>
+                                                        {{ $venta->venta_total }}</span>
                                                 </td>
                                                 <td class="text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $venta->unidades_disponibles }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ $venta->venta_unidades_vendidas }}</span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span
+                                                        class="text-secondary text-xs font-weight-bold">{{ $venta->fecha_venta }}</span>
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn bg-gradient-info mt-3"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#modal-edit-{{ $venta->id }}">
-                                                        <img src="{{ asset('images/icons/icon-edit.svg') }}" alt="edit"
-                                                            width="30px">
+                                                        <img src="{{ asset('images/icons/icon-abonar.svg') }}"
+                                                            alt="edit" width="30px">
                                                     </button>
                                                 </td>
                                                 <td>
@@ -171,10 +168,9 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="12">No se encontraron ventas</td>
+                                                <td colspan="8">No se encontraron ventas</td>
                                             </tr>
                                         @endforelse
-                                        --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -192,27 +188,28 @@
     </main>
 @endsection
 
-@push('m')
-    {{-- @foreach ($ventas as $venta)
+@push('modals')
+    @foreach ($ventas as $venta)
         <div class="modal fade" id="modal-default-{{ $venta->id }}" tabindex="-1" role="dialog"
             aria-labelledby="modal-default-{{ $venta->id }}" aria-hidden="true">
             <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="modal-title-default-{{ $venta->id }}">¿Estás seguro de eliminar el
-                            producto <span class="modal-edit-name">{{ $venta->nombre_producto }}</span>?</h6>
+                        <h6 class="modal-title" id="modal-title-default-{{ $venta->id }}">¿Estás seguro de eliminar la
+                            venta <span class="modal-edit-name">{{ $venta->id }}</span>?</h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-footer">
                         <!-- Form to handle the category deletion -->
-                        <form action="{{ route('eliminar-producto', $venta->id) }}" method="POST">
+                        <form action="#" method="POST">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
                         </form>
-                        <button type="button" class="btn bg-gradient-info ml-auto" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn bg-gradient-info ml-auto"
+                            data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -224,29 +221,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="modal-title-edit-{{ $venta->id }}">¿Seguro qué quieres editar
-                            el producto <span class="modal-edit-name">{{ $venta->nombre_producto }}</span>?
-                        </h6>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="{{ route('editar-producto-update', $venta->id) }}">
-                            <button type="button" class="btn bg-gradient-info">SI</button>
-                        </a>
-                        <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="modal-detalle-{{ $venta->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="modal-detalle-{{ $venta->id }}" aria-hidden="true">
-            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="modal-title-detalle-{{ $venta->id }}">¿Seguro qué quieres mirar
-                            el producto <span class="modal-edit-name">{{ $venta->nombre_producto }}</span>?
+                            la venta <span class="modal-edit-name">{{ $venta->id }}</span>?
                         </h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
@@ -261,7 +236,29 @@
                 </div>
             </div>
         </div>
-    @endforeach --}}
+
+        <div class="modal fade" id="modal-detalle-{{ $venta->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal-detalle-{{ $venta->id }}" aria-hidden="true">
+            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="modal-title-detalle-{{ $venta->id }}">¿Seguro qué quieres mirar
+                            la venta <span class="modal-edit-name">{{ $venta->id }}</span>?
+                        </h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#">
+                            <button type="button" class="btn bg-gradient-info">SI</button>
+                        </a>
+                        <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 @endpush
 
 

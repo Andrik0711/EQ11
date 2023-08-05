@@ -169,7 +169,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 	// Ruta para mandar a la tabla de ventas
-	Route::get('/mostrar-ventas', [VentasController::class, 'MostrarVentas'])->name('mostrar-ventas');
+	Route::get('/mostrar-ventas', [VentasController::class, 'mostrarVentas'])->name('mostrar-ventas');
 
 
 	// Ruta para ir al punto de venta

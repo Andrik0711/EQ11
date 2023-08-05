@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('ventas_de_productos', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('rol');
-            $table->rememberToken();
+            $table->foreignId('venta_id')->constrained('ventas');
+            $table->foreignId('producto_id')->constrained('productos');
+            $table->integer('cantidad_vendida');
+            $table->decimal('precio_unitario', 8, 2);
+            $table->decimal('subtotal', 10, 2);
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('ventas_de_productos');
     }
 };

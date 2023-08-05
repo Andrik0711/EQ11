@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_categoria_producto')->constrained('categorias')->onDelete('cascade');
-            $table->integer('id_subcategoria_producto');
+            $table->foreignId('id_categoria_producto')->constrained('categorias');
+            $table->foreignId('id_subcategoria_producto')->constrained('subcategorias');
+            $table->foreignId('id_marca_producto')->constrained('marcas');
             $table->string('nombre_producto');
             $table->string('descripcion_producto');
             $table->decimal('precio_de_compra', 8, 2);

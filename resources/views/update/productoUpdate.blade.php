@@ -8,7 +8,7 @@
 
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg">
-        <div class="container-fluid py-4">
+        <div class="container-fluid my-4">
             <div class="card mb-4">
                 <div class="card-header pb-2">
                     <div class="d-flex justify-content-between align-items-center mx-4">
@@ -74,6 +74,29 @@
 
                                                 {{-- Mensaje de error --}}
                                                 @error('id_subcategoria_producto')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- Seleccion de una marca --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{-- Label --}}
+                                                <h6 for="id_marca_producto">Seleccione una marca</h6>
+                                                {{-- Select --}}
+                                                <select class="form-control" id="id_marca_producto"
+                                                    name="id_marca_producto">
+                                                    <option value="">Seleccione una marca</option>
+                                                    @foreach ($marcas as $marca)
+                                                        <option value="{{ $marca->id }}"
+                                                            @if ($marca->id == $producto->id_marca_producto) selected @endif>
+                                                            {{ $marca->nombre_marca }}</option>
+                                                    @endforeach
+                                                </select>
+
+                                                {{-- Mensaje de error --}}
+                                                @error('id_marca_producto')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>

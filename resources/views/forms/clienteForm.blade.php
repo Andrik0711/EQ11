@@ -4,6 +4,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -127,10 +128,7 @@
                                                 <h6 for="pais_cliente">País del cliente</h6>
                                                 <select class="form-control" id="pais_cliente" name="pais_cliente">
                                                     <option value="">Seleccione el país</option>
-                                                    {{-- Agregar opciones de países aquí --}}
-                                                    <option value="pais1">País 1</option>
-                                                    <option value="pais2">País 2</option>
-                                                    {{-- Agregar más opciones si es necesario --}}
+                                                    {{-- Opciones de países se agregarán dinámicamente con JavaScript --}}
                                                 </select>
                                                 {{-- Mensaje de error --}}
                                                 @error('pais_cliente')
@@ -139,15 +137,13 @@
                                             </div>
                                         </div>
 
-                                        {{-- Select para el estado del cliente dependiendo el pais --}}
+                                        {{-- Select para el estado del cliente dependiendo del pais --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <h6 for="estado_cliente">Estado del cliente</h6>
                                                 <select class="form-control" id="estado_cliente" name="estado_cliente">
                                                     <option value="">Seleccione el estado</option>
-                                                    <option value="estado1">Estado 1</option>
-                                                    <option value="estado2">Estado 2</option>
-
+                                                    {{-- Opciones de estados se agregarán dinámicamente con JavaScript --}}
                                                 </select>
                                                 {{-- Mensaje de error --}}
                                                 @error('estado_cliente')
@@ -227,6 +223,7 @@
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
         // Codigo para cargar Dropzone en la carpeta /categorias
         Dropzone.autoDiscover = false;
@@ -271,6 +268,45 @@
         // Remover un archivo
         subir_imagen_categorias.on('removedfile', function() {
             document.querySelector('[name= "imagen"]').value = "";
+        });
+
+        // Obtener la lista de países
+        $.ajax({
+            url: 'https://restcountries.com/v2/all',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                var options = '';
+                data.forEach(function(country) {
+                    options += '<option value="' + country.alpha2Code + '">' + country.name +
+                        '</option>';
+                });
+                $('#pais_cliente').html(options);
+                $('#pais_cliente').select2(); // Inicializar Select2 en el campo de país
+            }
+        });
+
+        // Cargar los estados dependiendo del país seleccionado
+        $('#pais_cliente').on('change', function() {
+            var countryCode = $(this).val();
+            $.ajax({
+                url: 'http://api.geonames.org/children',
+                data: {
+                    geonameId: countryCode,
+                    username: 'chris_laravel' // Reemplaza con tu usuario de Geonames
+                },
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var options = '';
+                    data.geonames.forEach(function(state) {
+                        options += '<option value="' + state.geonameId + '">' + state.name +
+                            '</option>';
+                    });
+                    $('#estado_cliente').html(options);
+                    $('#estado_cliente').select2(); // Inicializar Select2 en el campo de estado
+                }
+            });
         });
     </script>
 @endpush

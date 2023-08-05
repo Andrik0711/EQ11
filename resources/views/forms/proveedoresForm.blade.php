@@ -8,7 +8,7 @@
 
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg">
-        <div class="container-fluid py-4">
+        <div class="container-fluid my-4">
             <div class="card mb-4">
                 <div class="card-header pb-2">
                     <div class="d-flex justify-content-between align-items-center mx-4">

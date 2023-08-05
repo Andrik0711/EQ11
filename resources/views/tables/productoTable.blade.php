@@ -71,6 +71,9 @@
                                                 Subcategoría</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Marca</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Nombre</th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -126,6 +129,10 @@
                                                 <td class="text-center text-sm">
                                                     <span
                                                         class="badge badge-sm bg-gradient-success">{{ $producto->subcategoria->nombre_subcategoria }}</span>
+                                                </td>
+                                                <td class="text-center text-sm">
+                                                    <span
+                                                        class="badge badge-sm bg-gradient-success">{{ $producto->marca->nombre_marca }}</span>
                                                 </td>
                                                 <td class="text-center">
                                                     <span

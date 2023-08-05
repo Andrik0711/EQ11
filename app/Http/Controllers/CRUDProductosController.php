@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categoria;
+use App\Models\Marca;
 use App\Models\Producto;
-use App\Models\Subcategoria;
+use App\Models\Categoria;
 use Illuminate\Support\Str;
+use App\Models\Subcategoria;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 
 class CRUDProductosController extends Controller
 {
@@ -21,7 +22,10 @@ class CRUDProductosController extends Controller
         // Le pasamos las subcategorias
         $subcategorias = Subcategoria::all();
 
-        return view('forms.productoForm', compact('categorias', 'subcategorias'));
+        // Le pasamos las marcas
+        $marcas = Marca::all();
+
+        return view('forms.productoForm', compact('categorias', 'subcategorias', 'marcas'));
     }
 
     // Metodo para almacenar la imagen 
@@ -68,7 +72,8 @@ class CRUDProductosController extends Controller
         $request->validate([
             'id_categoria_producto' => 'required',
             'id_subcategoria_producto' => 'required',
-            'nombre_producto' => 'required',
+            'id_marca_producto' => 'required',
+            'nombre_producto' => 'required|unique:productos,nombre_producto',
             'descripcion_producto' => 'required',
             'precio_de_compra' => 'required',
             'precio_de_venta' => 'required',
@@ -82,6 +87,7 @@ class CRUDProductosController extends Controller
         Producto::create([
             'id_categoria_producto' => $request->id_categoria_producto,
             'id_subcategoria_producto' => $request->id_subcategoria_producto,
+            'id_marca_producto' => $request->id_marca_producto,
             'nombre_producto' => $request->nombre_producto,
             'descripcion_producto' => $request->descripcion_producto,
             'precio_de_compra' => $request->precio_de_compra,
@@ -104,10 +110,13 @@ class CRUDProductosController extends Controller
         // Le pasamos las subcategorias
         $subcategorias = Subcategoria::all();
 
+        // Le pasamos las marcas
+        $marcas = Marca::all();
+
         // Buscamos el producto
         $producto = Producto::findOrFail($id);
 
-        return view('update.productoUpdate', compact('categorias', 'subcategorias', 'producto'));
+        return view('update.productoUpdate', compact('categorias', 'subcategorias', 'producto', 'marcas'));
     }
 
     // Metodo que edita un producto
@@ -120,7 +129,8 @@ class CRUDProductosController extends Controller
         $request->validate([
             'id_categoria_producto' => 'required',
             'id_subcategoria_producto' => 'required',
-            'nombre_producto' => 'required',
+            'id_marca_producto' => 'required',
+            'nombre_producto' => 'required|unique:productos,nombre_producto',
             'descripcion_producto' => 'required',
             'precio_de_compra' => 'required',
             'precio_de_venta' => 'required',
@@ -144,6 +154,7 @@ class CRUDProductosController extends Controller
         // Actualizamos los campos de la producto
         $producto->id_categoria_producto = $request->input('id_categoria_producto');
         $producto->id_subcategoria_producto = $request->input('id_subcategoria_producto');
+        $producto->id_marca_producto = $request->input('id_marca_producto');
         $producto->nombre_producto = $request->input('nombre_producto');
         $producto->descripcion_producto = $request->input('descripcion_producto');
         $producto->precio_de_compra = $request->input('precio_de_compra');
@@ -177,5 +188,12 @@ class CRUDProductosController extends Controller
     public function importarProductos()
     {
         return view('forms.importarProductoForm');
+    }
+
+    public function getSubcategoriasByCategoria($categoriaId)
+    {
+        $subcategorias = Subcategoria::where('categoria_subcategoria', $categoriaId)->get();
+
+        return response()->json($subcategorias);
     }
 }

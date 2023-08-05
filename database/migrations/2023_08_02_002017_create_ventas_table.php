@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('ventas', function (Blueprint $table) {
             $table->id();
+            $table->timestamp('fecha_venta');
+            $table->foreignId('cliente_id')->constrained('clientes');
+            $table->string('venta_status');
+            $table->decimal('venta_abono', 10, 2);
+            $table->decimal('venta_subtotal', 10, 2);
+            $table->decimal('venta_impuestos', 10, 2);
+            $table->decimal('venta_total', 10, 2);
+            $table->integer('venta_unidades_vendidas');
             $table->timestamps();
         });
     }

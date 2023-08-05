@@ -57,7 +57,7 @@ class CRUDCategoriasController extends Controller
 
         // Validacion de campos
         $request->validate([
-            'nombre_categoria' => 'required',
+            'nombre_categoria' => 'required|unique:categorias,nombre_categoria',
             'codigo_categoria' => 'required|unique:categorias,codigo_categoria',
             'descripcion_categoria' => 'required',
             'categoria_creada_por' => 'required',
@@ -92,8 +92,8 @@ class CRUDCategoriasController extends Controller
 
         // Validacion de campos
         $request->validate([
-            'nombre_categoria' => 'required',
-            'codigo_categoria' => 'required',
+            'nombre_categoria' => 'required|unique:categorias,nombre_categoria',
+            'codigo_categoria' => 'required|unique:categorias,codigo_categoria',
             'descripcion_categoria' => 'required',
             'categoria_creada_por' => 'required'
         ]);

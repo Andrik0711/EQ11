@@ -17,6 +17,7 @@ use App\Http\Controllers\CRUDCategoriasController;
 use App\Http\Controllers\CRUDProveedoresController;
 use App\Http\Controllers\CRUDSubCategoriasController;
 use App\Http\Controllers\POSController;
+use App\Http\Controllers\VentasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/registrar-producto', [CRUDProductosController::class, 'registrarProducto'])->name('registrar-producto-form');
 	// Ruta para registrar Producto
 	Route::post('/registrar-producto', [CRUDProductosController::class, 'ProductoStore'])->name('registrar-producto-store');
+	// Ruta para obtener las subcategorías de una categoría específica
+	Route::get('/api/subcategorias/{categoria}', [CRUDProductosController::class, 'getSubcategoriasByCategoria']);
 	// Ruta para registrar Imagenes de Producto
 	Route::post('/imagenes-producto', [CRUDProductosController::class, 'ProductoImageStore'])->name('producto-image-store');
 	// Ruta para redireccionar a la vista de editar Producto
@@ -166,16 +169,23 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 	// Ruta para mandar a la tabla de ventas
-	Route::get('/mostrar-ventas', [CRUDVentasController::class, 'MostrarVentas'])->name('mostrar-ventas');
+	Route::get('/mostrar-ventas', [VentasController::class, 'MostrarVentas'])->name('mostrar-ventas');
 
 
 	// Ruta para ir al punto de venta
 	Route::get('/punto-de-venta', [POSController::class, 'index'])->name('punto-de-venta');
-
 	// Ruta para filtrar productos por categoria
 	Route::get('/filtrar-productos/{categoriaId}', [POSController::class, 'filtrarProductos'])->name('filtrar-productos');
-	// Ruta para mandar a la vista del producto seleccionado
-	Route::get('/producto-seleccionado/{id}', [POSController::class, 'productoSeleccionado'])->name('producto-seleccionado');
+	// Ruta para mostrar el carrito
+	Route::get('/carrito', [POSController::class, 'mostrarCarrito'])->name('carrito.vista');
+	// Ruta para agregar productos al carrito
+	Route::post('/agregar-al-carrito', [POSController::class, 'agregarCarrito'])->name('agregar-al-carrito');
+	// Ruta para actualizar la cantidad de productos del carrito
+	Route::post('/actualizar-cantidad-producto/{productoId}', [POSController::class, 'actualizarCantidadProducto'])->name('actualizar-cantidad-producto');
+	// Ruta para almacenar la venta
+	Route::post('/almacenar-venta', [POSController::class, 'almacenarVenta'])->name('venta-store');
+	// Ruta para eliminar productos del carrito
+	Route::delete('/eliminar-del-carrito', [POSController::class, 'eliminarCarrito'])->name('eliminar-del-carrito');
 });
 
 

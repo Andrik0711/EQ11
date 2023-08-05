@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('subcategorias', function (Blueprint $table) {
             $table->id();
             // llave foranea a la tabla categorias
-            $table->foreignId('categoria_subcategoria')->constrained('categorias')->onDelete('cascade');
+            $table->foreignId('categoria_subcategoria')->constrained('categorias');
             $table->string('codigo_subcategoria');
             $table->string('nombre_subcategoria');
             $table->string('descripcion_subcategoria');

@@ -4,6 +4,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -34,10 +35,8 @@
                                         {{-- Seleccion de la categoria --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                {{-- Label --}}
                                                 <h6 for="id_categoria_producto">Seleccione una categoría</h6>
-                                                {{-- Select --}}
-                                                <select class="form-control" id="id_categoria_producto"
+                                                <select class="form-control select2" id="id_categoria_producto"
                                                     name="id_categoria_producto">
                                                     <option value="">Seleccione una categoría</option>
                                                     @foreach ($categorias as $categoria)
@@ -45,36 +44,51 @@
                                                             {{ $categoria->nombre_categoria }}</option>
                                                     @endforeach
                                                 </select>
-
-                                                {{-- Mensaje de error --}}
                                                 @error('id_categoria_producto')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                         </div>
 
-                                        {{-- Seleccion de la sub categoria --}}
+                                        {{-- Seleccion de la subcategoria --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                {{-- Label --}}
                                                 <h6 for="id_subcategoria_producto">Seleccione una Sub categoría</h6>
-                                                {{-- Select --}}
-                                                <select class="form-control" id="id_subcategoria_producto"
+                                                <select class="form-control select2" id="id_subcategoria_producto"
                                                     name="id_subcategoria_producto">
                                                     <option value="">Seleccione una sub categoría</option>
-                                                    @foreach ($subcategorias as $subcategoria)
-                                                        <option value="{{ $subcategoria->id }}">
-                                                            {{ $subcategoria->nombre_subcategoria }}
-                                                        </option>
-                                                    @endforeach
+                                                    <!-- Aquí no incluiremos las opciones, las cargaremos dinámicamente mediante JavaScript -->
                                                 </select>
-
-                                                {{-- Mensaje de error --}}
                                                 @error('id_subcategoria_producto')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                         </div>
+
+
+
+                                        {{-- Seleccion de la marca --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{-- Label --}}
+                                                <h6 for="id_marca_producto">Seleccione una marca</h6>
+                                                {{-- Select con la clase select2 --}}
+                                                <select class="form-control select2" id="id_marca_producto"
+                                                    name="id_marca_producto">
+                                                    <option value="">Seleccione una marca</option>
+                                                    @foreach ($marcas as $marca)
+                                                        <option value="{{ $marca->id }}">
+                                                            {{ $marca->nombre_marca }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                {{-- Mensaje de error --}}
+                                                @error('id_marca_producto')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+
 
                                         {{-- Nombre del producto --}}
                                         <div class="col-md-6">
@@ -177,7 +191,8 @@
                                             value="{{ auth()->user()->name }}">
 
                                         {{-- Boton para enviar el registro de Producto --}}
-                                        <button class="btn bg-gradient-success" type="submit" value="Registrar Producto">
+                                        <button class="btn bg-gradient-success" type="submit"
+                                            value="Registrar Producto">
                                             Enviar
                                         </button>
                                     </form>
@@ -208,6 +223,10 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
     <script>
         // Codigo para cargar Dropzone en la carpeta /categorias
@@ -253,6 +272,46 @@
         // Remover un archivo
         subir_imagen_categorias.on('removedfile', function() {
             document.querySelector('[name= "imagen"]').value = "";
+        });
+
+
+
+
+
+        $(document).ready(function() {
+            // Inicializar el plugin Select2 en el select de categorías
+            $('.select2').select2();
+
+            // Cargar las subcategorías dependiendo de la categoría seleccionada
+            $('#id_categoria_producto').on('change', function() {
+                var categoriaId = $(this).val();
+
+                // Realizar una petición AJAX para obtener las subcategorías de la categoría seleccionada
+                $.ajax({
+                    url: '/api/subcategorias/' +
+                    categoriaId, // Ruta para obtener las subcategorías, puedes cambiarla según tu estructura de rutas
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        // Limpiar el select de subcategorías
+                        $('#id_subcategoria_producto').empty();
+
+                        // Agregar las opciones correspondientes a las subcategorías
+                        $.each(data, function(index, subcategoria) {
+                            $('#id_subcategoria_producto').append(
+                                $('<option></option>').attr('value', subcategoria
+                                    .id).text(subcategoria.nombre_subcategoria)
+                            );
+                        });
+
+                        // Actualizar el plugin Select2 para reflejar los cambios
+                        $('#id_subcategoria_producto').trigger('change');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
         });
     </script>
 @endpush

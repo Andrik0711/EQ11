@@ -60,9 +60,9 @@ class CRUDProveedoresController extends Controller
         // validamos los datos 
         $request->validate([
             'nombre_proveedor' => 'required',
-            'codigo_proveedor' => 'required',
-            'telefono_proveedor' => 'required',
-            'email_proveedor' => 'required',
+            'codigo_proveedor' => 'required|unique:proveedores,codigo_proveedor',
+            'telefono_proveedor' => 'required|unique:proveedores,telefono_proveedor',
+            'email_proveedor' => 'required|unique:proveedores,email_proveedor',
             'proveedor_creado_por' => 'required',
             'pais_proveedor' => 'required',
             'estado_proveedor' => 'required',
@@ -104,9 +104,9 @@ class CRUDProveedoresController extends Controller
         // validamos los datos 
         $request->validate([
             'nombre_proveedor' => 'required',
-            'codigo_proveedor' => 'required',
-            'telefono_proveedor' => 'required',
-            'email_proveedor' => 'required',
+            'codigo_proveedor' => 'required|unique:proveedores,codigo_proveedor',
+            'telefono_proveedor' => 'required|unique:proveedores,telefono_proveedor',
+            'email_proveedor' => 'required|unique:proveedores,email_proveedor',
             'proveedor_creado_por' => 'required',
             'pais_proveedor' => 'required',
             'estado_proveedor' => 'required',

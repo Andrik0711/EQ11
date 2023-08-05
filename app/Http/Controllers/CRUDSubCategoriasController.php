@@ -63,7 +63,7 @@ class CRUDSubCategoriasController extends Controller
         $request->validate([
             'categoria_subcategoria' => 'required',
             'codigo_subcategoria' => 'required|unique:subcategorias,codigo_subcategoria',
-            'nombre_subcategoria' => 'required',
+            'nombre_subcategoria' => 'required|unique:subcategorias,nombre_subcategoria',
             'descripcion_subcategoria' => 'required',
             'subcategoria_creada_por' => 'required',
             'imagen' => 'required'
@@ -100,8 +100,8 @@ class CRUDSubCategoriasController extends Controller
         // Validacion de campos
         $request->validate([
             'categoria_subcategoria' => 'required',
-            'codigo_subcategoria' => 'required',
-            'nombre_subcategoria' => 'required',
+            'codigo_subcategoria' => 'required|unique:subcategorias,codigo_subcategoria',
+            'nombre_subcategoria' => 'required|unique:subcategorias,nombre_subcategoria',
             'descripcion_subcategoria' => 'required',
             'subcategoria_creada_por' => 'required'
         ]);

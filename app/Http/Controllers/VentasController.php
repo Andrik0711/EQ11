@@ -13,4 +13,11 @@ class VentasController extends Controller
         $ventas = Venta::all();
         return view('tables.ventasTable', compact('ventas'));
     }
+
+    // Muestra el ticket de la venta realizada
+    public function mostrarTicket($id)
+    {
+        $venta_realizada = Venta::findOrFail($id);
+        return view('tickets.ventaTicket', compact('venta_realizada'));
+    }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.user_type.auth')
 
-@section('title', 'Productos')
+@section('title', 'Ventas')
 
 @push('styles')
     {{-- Agregamos del cdn de datatable --}}
@@ -250,7 +250,7 @@
                         </button>
                     </div>
                     <div class="modal-footer">
-                        <a href="#">
+                        <a href="{{ route('mostrar-ticket', $venta->id) }}">
                             <button type="button" class="btn bg-gradient-info">SI</button>
                         </a>
                         <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Cerrar</button>

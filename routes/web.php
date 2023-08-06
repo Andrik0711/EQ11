@@ -170,7 +170,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 	// Ruta para mandar a la tabla de ventas
 	Route::get('/mostrar-ventas', [VentasController::class, 'mostrarVentas'])->name('mostrar-ventas');
-
+	// Ruta para mostrar el ticket de la venta
+	Route::get('/mostrar-ticket/{id}', [VentasController::class, 'mostrarTicket'])->name('mostrar-ticket');
 
 	// Ruta para ir al punto de venta
 	Route::get('/punto-de-venta', [POSController::class, 'index'])->name('punto-de-venta');

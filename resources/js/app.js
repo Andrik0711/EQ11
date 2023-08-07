@@ -19,3 +19,6 @@ new DataTable('#clientes-table');
 
 //inicializar datatable de proveedores
 new DataTable('#proveedores-table');
+
+// inicializar datatable de cotizaciones
+new DataTable('#cotizaciones-table');

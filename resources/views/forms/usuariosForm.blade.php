@@ -1,6 +1,6 @@
 @extends('layouts.user_type.auth')
 
-@section('title', 'Registrar Producto')
+@section('title', 'Registrar Usuarios')
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css" />
@@ -13,10 +13,10 @@
             <div class="card mb-4">
                 <div class="card-header pb-2">
                     <div class="d-flex justify-content-between align-items-center mx-4">
-                        <h6 class="mb-0">Formulario para registrar productos</h6>
+                        <h6 class="mb-0">Formulario para registrar usuarios</h6>
                         <div class="d-flex justify-end">
                             {{-- Boton de regresar --}}
-                            <a href="{{ route('mostrar-productos') }}" class="btn bg-gradient-primary mt-4 mx-2">
+                            <a href="{{ route('mostrar-usuarios') }}" class="btn bg-gradient-primary mt-4 mx-2">
                                 Regresar
                             </a>
                         </div>
@@ -29,153 +29,162 @@
                             <div class="col">
                                 <div class="form-group">
                                     {{-- Formulario para registrar una categoria --}}
-                                    <form action="{{ route('registrar-producto-store') }}" method="POST" novalidate>
+                                    <form action="{{ route('registrar-usuario-store') }}" method="POST" novalidate>
 
                                         @csrf
-                                        {{-- Seleccion de la categoria --}}
+
+                                        {{-- Nombre del usuario --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <h6 for="id_categoria_producto">Seleccione una categoría</h6>
-                                                <select class="form-control select2" id="id_categoria_producto"
-                                                    name="id_categoria_producto">
-                                                    <option value="">Seleccione una categoría</option>
-                                                    @foreach ($categorias as $categoria)
-                                                        <option value="{{ $categoria->id }}">
-                                                            {{ $categoria->nombre_categoria }}</option>
-                                                    @endforeach
+                                                {{-- Label --}}
+                                                <h6 for="name">Nombre del usuario</h6>
+                                                {{-- Input --}}
+                                                <input type="text" placeholder="Nombre del usuario" class="form-control"
+                                                    id="name" name="name" value="{{ old('name') }}" />
+
+                                                {{-- Mensaje de error --}}
+                                                @error('name')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+
+                                        {{-- Apellido del usuario --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{-- Label --}}
+                                                <h6 for="apellido">Apellido del usuario</h6>
+                                                {{-- Input --}}
+                                                <input type="text" placeholder="Apellido del usuario"
+                                                    class="form-control" id="apellido" name="apellido"
+                                                    value="{{ old('apellido') }}" />
+
+                                                {{-- Mensaje de error --}}
+                                                @error('apellido')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+
+
+                                        {{-- Username del usuario --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{-- Label --}}
+                                                <h6 for="username">Username</h6>
+                                                {{-- Input --}}
+                                                <input type="text" placeholder="Username" class="form-control"
+                                                    id="username" name="username" value="{{ old('username') }}" />
+
+                                                {{-- Mensaje de error --}}
+                                                @error('username')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+
+
+                                        {{-- Telefono del usuario --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{-- Label --}}
+                                                <h6 for="telefono">Teléfono</h6>
+                                                {{-- Input --}}
+                                                <input type="number" placeholder="Telefono" class="form-control"
+                                                    id="telefono" name="telefono" value="{{ old('telefono') }}" />
+
+                                                {{-- Mensaje de error --}}
+                                                @error('telefono')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+
+
+                                        {{-- Email del usuario --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{-- Label --}}
+                                                <h6 for="email">Email</h6>
+                                                {{-- Input --}}
+                                                <input type="email" placeholder="Email" class="form-control"
+                                                    id="email" name="email" value="{{ old('email') }}" />
+
+                                                {{-- Mensaje de error --}}
+                                                @error('email')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+
+
+
+                                        {{-- Password del usuario --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{-- Label --}}
+                                                <h6 for="password">Contraseña</h6>
+                                                {{-- Input --}}
+                                                <input type="password" placeholder="Contraseña" class="form-control"
+                                                    id="password" name="password" value="{{ old('password') }}" />
+
+                                                {{-- Mensaje de error --}}
+                                                @error('password')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+
+
+                                        {{-- Password del usuario --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{-- Label --}}
+                                                <h6 for="password">Contraseña</h6>
+                                                {{-- Input --}}
+                                                <input type="password" placeholder="Contraseña" class="form-control"
+                                                    id="password" name="password" value="{{ old('password') }}" />
+
+                                                {{-- Mensaje de error --}}
+                                                @error('password')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+
+
+                                        {{-- Rol del usuario --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{-- Label --}}
+                                                <h6 for="rol">Rol</h6>
+                                                {{-- Select --}}
+                                                <select class="form-control" id="rol" name="rol">
+                                                    <option value="">Seleccionar Rol</option>
+                                                    <option value="Admin" {{ old('rol') === 'Admin' ? 'selected' : '' }}>
+                                                        Admin</option>
+                                                    <option value="Usuario"
+                                                        {{ old('rol') === 'Usuario' ? 'selected' : '' }}>Usuario</option>
                                                 </select>
-                                                @error('id_categoria_producto')
-                                                    <small class="text-danger">{{ $message }}</small>
-                                                @enderror
-                                            </div>
-                                        </div>
 
-                                        {{-- Seleccion de la subcategoria --}}
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <h6 for="id_subcategoria_producto">Seleccione una Sub categoría</h6>
-                                                <select class="form-control select2" id="id_subcategoria_producto"
-                                                    name="id_subcategoria_producto">
-                                                    <option value="">Seleccione una sub categoría</option>
-                                                    <!-- Aquí no incluiremos las opciones, las cargaremos dinámicamente mediante JavaScript -->
-                                                </select>
-                                                @error('id_subcategoria_producto')
-                                                    <small class="text-danger">{{ $message }}</small>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-
-
-                                        {{-- Seleccion de la marca --}}
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{-- Label --}}
-                                                <h6 for="id_marca_producto">Seleccione una marca</h6>
-                                                {{-- Select con la clase select2 --}}
-                                                <select class="form-control select2" id="id_marca_producto"
-                                                    name="id_marca_producto">
-                                                    <option value="">Seleccione una marca</option>
-                                                    @foreach ($marcas as $marca)
-                                                        <option value="{{ $marca->id }}">
-                                                            {{ $marca->nombre_marca }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                {{-- Mensaje de error --}}
-                                                @error('id_marca_producto')
-                                                    <small class="text-danger">{{ $message }}</small>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-
-                                        {{-- Nombre del producto --}}
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{-- Label --}}
-                                                <h6 for="nombre_producto">Nombre del producto</h6>
-                                                {{-- Input --}}
-                                                <input type="text" placeholder="Nombre del producto" class="form-control"
-                                                    id="nombre_producto" name="nombre_producto"
-                                                    value="{{ old('nombre_producto') }}" />
 
                                                 {{-- Mensaje de error --}}
-                                                @error('nombre_producto')
+                                                @error('rol')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                         </div>
 
-                                        {{-- Descripción del producto --}}
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{-- Label --}}
-                                                <h6 for="descripcion_producto">Descripción del producto</h6>
-                                                {{-- Input --}}
-                                                <input type="text" placeholder="Descripción del producto"
-                                                    class="form-control" id="descripcion_producto"
-                                                    name="descripcion_producto"
-                                                    value="{{ old('descripcion_producto') }}" />
 
-                                                {{-- Mensaje de error --}}
-                                                @error('descripcion_producto')
-                                                    <small class="text-danger">{{ $message }}</small>
-                                                @enderror
-                                            </div>
-                                        </div>
 
-                                        {{-- Precio de compra --}}
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{-- Label --}}
-                                                <h6 for="precio_de_compra">Precio de compra</h6>
-                                                {{-- Input --}}
-                                                <input type="number" placeholder="Precio de compra" class="form-control"
-                                                    id="precio_de_compra" name="precio_de_compra"
-                                                    value="{{ old('precio_de_compra') }}" />
 
-                                                {{-- Mensaje de error --}}
-                                                @error('precio_de_compra')
-                                                    <small class="text-danger">{{ $message }}</small>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                        {{-- Precio de venta --}}
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{-- Label --}}
-                                                <h6 for="precio_de_venta">Precio de venta</h6>
-                                                {{-- Input --}}
-                                                <input type="number" placeholder="Precio de venta" class="form-control"
-                                                    id="precio_de_venta" name="precio_de_venta"
-                                                    value="{{ old('precio_de_venta') }}" />
-
-                                                {{-- Mensaje de error --}}
-                                                @error('precio_de_venta')
-                                                    <small class="text-danger">{{ $message }}</small>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                        {{-- Unidades disponibles --}}
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{-- Label --}}
-                                                <h6 for="unidades_disponibles">Unidades disponibles</h6>
-                                                {{-- Input --}}
-                                                <input type="number" placeholder="Unidades disponibles"
-                                                    class="form-control" id="unidades_disponibles"
-                                                    name="unidades_disponibles"
-                                                    value="{{ old('unidades_disponibles') }}" />
-
-                                                {{-- Mensaje de error --}}
-                                                @error('unidades_disponibles')
-                                                    <small class="text-danger">{{ $message }}</small>
-                                                @enderror
-                                            </div>
-                                        </div>
 
                                         {{-- Campo oculto para la imagen --}}
                                         <div class="col-md-6">
@@ -186,13 +195,9 @@
                                             @enderror
                                         </div>
 
-                                        {{-- Campo oculto el cual pasa el nombre de quien creo la categoria --}}
-                                        <input type="hidden" id="producto_creado_por" name="producto_creado_por"
-                                            value="{{ auth()->user()->name }}">
 
-                                        {{-- Boton para enviar el registro de Producto --}}
-                                        <button class="btn bg-gradient-success" type="submit"
-                                            value="Registrar Producto">
+                                        {{-- Boton para enviar el registro del usuario --}}
+                                        <button class="btn bg-gradient-success" type="submit" value="Registrar usuario">
                                             Enviar
                                         </button>
                                     </form>
@@ -248,7 +253,7 @@
                     this.options.thumbnail.call(
                         this,
                         imagenPublicada.name,
-                        '/productos/${imagenPublicada.name}'
+                        '/usuarios/${imagenPublicada.name}'
                     );
                     imagenPublicada.previewElement.classList.add(
                         "dz-sucess",

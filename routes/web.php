@@ -2,22 +2,24 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\POSController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\ResetController;
+use App\Http\Controllers\VentasController;
+use App\Http\Controllers\ComprasController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\CotizacionController;
+use App\Http\Controllers\CRUDUsuariosController;
 use App\Http\Controllers\CRUDMarcasController;
-use App\Http\Controllers\CRUDVentasController;
 use App\Http\Controllers\CRUDClientesController;
 use App\Http\Controllers\CRUDProductosController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\CRUDCategoriasController;
 use App\Http\Controllers\CRUDProveedoresController;
 use App\Http\Controllers\CRUDSubCategoriasController;
-use App\Http\Controllers\POSController;
-use App\Http\Controllers\VentasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +62,34 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/login', function () {
 		return view('dashboard');
 	})->name('sign-up');
+
+
+
+	// Ruta para mandar a la vista del formulario de usuarios
+	Route::get('/registrar-usuario', [CRUDUsuariosController::class, 'registrarUsuario'])->name('registrar-usuario-form');
+	// Ruta para registrar usuario
+	Route::post('/registrar-usuario', [CRUDUsuariosController::class, 'UsuarioStore'])->name('registrar-usuario-store');
+	// Ruta para registrar Imagenes de usuario
+	Route::post('/imagenes-usuario', [CRUDUsuariosController::class, 'UsuarioImageStore'])->name('usuario-image-store');
+	// Ruta para redireccionar a la vista de editar usuario
+	Route::get('/editar-usuario/{id}', [CRUDUsuariosController::class, 'editarUsuario'])->name('editar-usuario');
+	// Ruta para editar usuario
+	Route::put('/editar-usuario/{id}', [CRUDUsuariosController::class, 'UsuarioUpdate'])->name('editar-usuario-update');
+	// Ruta para eliminar usuario
+	Route::delete('/eliminar-usuario/{id}', [CRUDUsuariosController::class, 'UsuarioDestroy'])->name('eliminar-usuario');
+	// Ruta para mostrar todas las usuarios registradas
+	Route::get('/mostrar-usuarios', [CRUDUsuariosController::class, 'mostrarUsuarios'])->name('mostrar-usuarios');
+
+
+
+
+
+
+
+
+
+
+
 
 	// Redirecciona a la vista donde se encuentra el formulario de registrar Categoria
 	Route::get('/registrar-categoria', [CRUDCategoriasController::class, 'registrarCategoria'])->name('registrar-categoria-form');
@@ -187,6 +217,29 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/almacenar-venta', [POSController::class, 'almacenarVenta'])->name('venta-store');
 	// Ruta para eliminar productos del carrito
 	Route::delete('/eliminar-del-carrito', [POSController::class, 'eliminarCarrito'])->name('eliminar-del-carrito');
+
+
+	// Ruta para mostrar la tabla de cotizaciones
+	Route::get('/mostrar-cotizaciones', [CotizacionController::class, 'mostrarCotizaciones'])->name('mostrar-cotizaciones');
+	// Ruta para mostrar el formulario de cotización
+	Route::get('/registrar-cotizacion', [CotizacionController::class, 'crearCotizacion'])->name('registrar-cotizacion-form');
+	// Ruta para filtrar productos por categoria de la cotización
+	Route::get('/filtrar-productos-cotizacion/{categoriaId}', [CotizacionController::class, 'filtrarProductosCotizacion'])->name('filtrar-productos-cotizacion');
+	// Ruta para generar una cotización
+	Route::post('/generar-cotizacion', [CotizacionController::class, 'registrarCotizacion'])->name('registrar-cotizacion-store');
+	// Ruta para agregar productos a la cotización
+	Route::post('/agregar-a-cotizacion', [CotizacionController::class, 'agregarProductoCotizacion'])->name('agregar-cotizacion');
+	// Ruta para eliminar productos de la cotización
+	Route::delete('/eliminar-de-cotizacion', [CotizacionController::class, 'eliminarProductoCotizacion'])->name('eliminar-cotizacion');
+	// Ruta para guardar la cotización
+	Route::post('/almacenar-cotizacion', [CotizacionController::class, 'almacenarCotizacion'])->name('cotizacion-store');
+	// Ruta para actualizar el estado de la cotización
+	Route::put('/actualizar-estado-cotizacion/{id}', [CotizacionController::class, 'actualizarEstadoCotizacion'])->name('actualizar-estado-cotizacion');
+
+
+
+	// Ruta para ir a la vista de compras
+	Route::get('/mostrar-compras', [ComprasController::class, 'index'])->name('compras');
 });
 
 

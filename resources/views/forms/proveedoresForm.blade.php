@@ -4,6 +4,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -104,16 +105,14 @@
                                             value="{{ auth()->user()->name }}">
 
 
+
                                         {{-- Select para el pais del proveedor --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <h6 for="pais_proveedor">País del proveedor</h6>
                                                 <select class="form-control" id="pais_proveedor" name="pais_proveedor">
-                                                    <option value="">Seleccione el país</option>
-                                                    {{-- Agregar opciones de países aquí --}}
-                                                    <option value="pais1">País 1</option>
-                                                    <option value="pais2">País 2</option>
-                                                    {{-- Agregar más opciones si es necesario --}}
+                                                    <option value="{{ old('pais_proveedor') }}">Seleccione el país</option>
+                                                    {{-- Opciones de países se agregarán dinámicamente con JavaScript --}}
                                                 </select>
                                                 {{-- Mensaje de error --}}
                                                 @error('pais_proveedor')
@@ -127,10 +126,9 @@
                                             <div class="form-group">
                                                 <h6 for="estado_proveedor">Estado del proveedor</h6>
                                                 <select class="form-control" id="estado_proveedor" name="estado_proveedor">
-                                                    <option value="">Seleccione el estado</option>
-                                                    <option value="estado1">Estado 1</option>
-                                                    <option value="estado2">Estado 2</option>
-
+                                                    <option value="{{ old('estado_proveedor') }}">Seleccione el estado
+                                                    </option>
+                                                    {{-- Opciones de estados se agregarán dinámicamente con JavaScript --}}
                                                 </select>
                                                 {{-- Mensaje de error --}}
                                                 @error('estado_proveedor')
@@ -139,13 +137,16 @@
                                             </div>
                                         </div>
 
+
+
                                         {{-- Dirección del proveedor --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <h6 for="direccion_proveedor">Dirección del proveedor</h6>
                                                 <input class="form-control" id="direccion_proveedor"
                                                     name="direccion_proveedor" rows="3"
-                                                    placeholder="Dirección del proveedor">{{ old('direccion_proveedor') }}</input>
+                                                    placeholder="Dirección del proveedor"
+                                                    value="{{ old('direccion_proveedor') }}"></input>
                                                 {{-- Mensaje de error --}}
                                                 @error('direccion_proveedor')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -208,8 +209,13 @@
     </main>
 @endsection
 
+
+
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <script>
         // Codigo para cargar Dropzone en la carpeta /categorias
         Dropzone.autoDiscover = false;
@@ -231,7 +237,7 @@
                     this.options.thumbnail.call(
                         this,
                         imagenPublicada.name,
-                        '/proveedores/${imagenPublicada.name}'
+                        '/clientes/${imagenPublicada.name}'
                     );
                     imagenPublicada.previewElement.classList.add(
                         "dz-sucess",
@@ -254,6 +260,83 @@
         // Remover un archivo
         subir_imagen_categorias.on('removedfile', function() {
             document.querySelector('[name= "imagen"]').value = "";
+        });
+
+        $(document).ready(function() {
+            const geonamesUsername = 'chris_laravel'; // Reemplaza con tu nombre de usuario de Geonames
+
+            // Obtener la lista de países desde la API
+            $.get('https://restcountries.com/v2/all', function(data) {
+                const paises = data.map(function(pais) {
+                    return {
+                        id: pais.name,
+                        text: pais.name,
+                        latlng: pais.latlng // Agregar latitud y longitud a los datos del país
+                    };
+                });
+
+                // Inicializar el select2 con la lista de países
+                $('#pais_proveedor').select2({
+                    data: paises,
+                    placeholder: 'Seleccione el país',
+                    allowClear: true,
+                    width: '100%',
+                });
+
+                // Manejar el cambio de país seleccionado para proveedor
+                $('#pais_proveedor').on('change', function() {
+                    const selectedCountry = $(this).select2('data')[0];
+
+                    // Verificar si se tiene información de latitud y longitud del país
+                    if (selectedCountry && selectedCountry.latlng && geonamesUsername) {
+                        const lat = selectedCountry.latlng[0];
+                        const lng = selectedCountry.latlng[1];
+
+                        // Realizar una solicitud AJAX para obtener los estados del país seleccionado desde Geonames
+                        const url =
+                            `http://api.geonames.org/countrySubdivision?lat=${lat}&lng=${lng}&maxRows=10000&radius=200&username=${geonamesUsername}`;
+
+                        $.ajax({
+                            url: url,
+                            dataType: "xml",
+                            success: function(response) {
+                                const estados = [];
+                                $(response).find('countrySubdivision').each(function() {
+                                    const estado = {
+                                        id: $(this).find('adminName1')
+                                            .text(),
+                                        text: $(this).find('adminName1')
+                                            .text()
+                                    };
+                                    estados.push(estado);
+                                });
+
+                                // Llenar el select de estados con los datos obtenidos
+                                $('#estado_proveedor').empty().trigger('change');
+                                $('#estado_proveedor').select2({
+                                    data: estados,
+                                    placeholder: 'Seleccione el estado',
+                                    allowClear: true,
+                                    width: '100%',
+                                });
+
+                                // Actualizar el valor seleccionado en el campo de estado del proveedor
+                                const selectedState = $('#estado_proveedor').val();
+                                if (selectedState) {
+                                    $('#estado_proveedor').val(selectedState).trigger(
+                                        'change');
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.log(errorThrown);
+                            }
+                        });
+                    } else {
+                        // Si no se tiene la clave de acceso o no se ha seleccionado un país con latitud y longitud, limpiar el select de estados
+                        $('#estado_proveedor').empty().trigger('change');
+                    }
+                });
+            });
         });
     </script>
 @endpush

@@ -154,6 +154,36 @@
                 </a>
             </li>
 
+
+            {{-- Tabla de usuarios --}}
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('mostrar-usuarios') ? 'active' : '' }} "
+                    href="{{ route('mostrar-usuarios') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <img src="{{ asset('images/icons/user-circle-svgrepo-com.svg') }}" alt="proveedor"
+                            width="15px">
+                    </div>
+                    <span class="nav-link-text ms-1">Usuarios</span>
+                </a>
+            </li>
+
+            {{-- Compras --}}
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Compras</h6>
+            </li>
+
+            {{-- Punto de venta --}}
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('compras') ? 'active' : '' }} " href="{{ route('compras') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <img src="{{ asset('images/icons/icon-shop.svg') }}" alt="punto-venta" width="15px">
+                    </div>
+                    <span class="nav-link-text ms-1">Compra</span>
+                </a>
+            </li>
+
             {{-- Ventas --}}
             <li class="nav-item mt-2">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Ventas</h6>
@@ -209,7 +239,8 @@
 
             {{-- Cotizaciones --}}
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('') ? 'active' : '' }} " href="">
+                <a class="nav-link {{ Request::is('mostrar-cotizaciones') ? 'active' : '' }} "
+                    href="{{ route('mostrar-cotizaciones') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
 

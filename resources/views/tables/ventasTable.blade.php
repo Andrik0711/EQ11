@@ -168,7 +168,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8">No se encontraron ventas</td>
+                                                <td colspan="11">No se encontraron ventas</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

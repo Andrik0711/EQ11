@@ -5,6 +5,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 @endpush
 
 @section('content')
@@ -124,22 +125,18 @@
                                         <input type="hidden" id="cliente_creado_por" name="cliente_creado_por"
                                             value="{{ $cliente->cliente_creado_por }}">
 
+
                                         {{-- Select para el pais del cliente --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                {{-- Label --}}
-                                                <h6 for="pais_cliente">Seleccione una pais</h6>
-                                                {{-- Select --}}
+                                                <h6 for="pais_cliente">País del cliente</h6>
                                                 <select class="form-control" id="pais_cliente" name="pais_cliente">
-                                                    <option value="{{ $cliente->id }}">{{ $cliente->pais_cliente }}
+                                                    <option value="{{ $cliente->pais_cliente }}">
+                                                        {{ $cliente->pais_cliente }}
                                                     </option>
-                                                    {{-- @foreach ($categorias as $categoria)
-                                                        <option value="{{ $categoria->id }}"
-                                                            @if ($subcategoria->pais_cliente == $categoria->id) selected @endif>
-                                                            {{ $categoria->nombre_categoria }}</option>
-                                                    @endforeach --}}
+                                                    <!-- <option value="">Seleccione el país</option> -->
+                                                    {{-- Opciones de países se agregarán dinámicamente con JavaScript --}}
                                                 </select>
-
                                                 {{-- Mensaje de error --}}
                                                 @error('pais_cliente')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -147,28 +144,74 @@
                                             </div>
                                         </div>
 
-                                        {{-- Select para el estado del cliente --}}
+                                        {{-- Select para el estado del cliente dependiendo del pais --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                {{-- Label --}}
-                                                <h6 for="estado_cliente">Seleccione un estado</h6>
-                                                {{-- Select --}}
+                                                <h6 for="estado_cliente">Estado del cliente</h6>
                                                 <select class="form-control" id="estado_cliente" name="estado_cliente">
-                                                    <option value="{{ $cliente->id }}">{{ $cliente->estado_cliente }}
+                                                    <option value="{{ $cliente->estado_cliente }}">
+                                                        {{ $cliente->estado_cliente }}
                                                     </option>
-                                                    {{-- @foreach ($categorias as $categoria)
-                                                        <option value="{{ $categoria->id }}"
-                                                            @if ($subcategoria->estado_cliente == $categoria->id) selected @endif>
-                                                            {{ $categoria->nombre_categoria }}</option>
-                                                    @endforeach --}}
+                                                    <!-- <option value="">Seleccione el estado</option> -->
+                                                    {{-- Opciones de estados se agregarán dinámicamente con JavaScript --}}
                                                 </select>
-
                                                 {{-- Mensaje de error --}}
                                                 @error('estado_cliente')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                         </div>
+
+
+
+
+
+
+                                        <!-- {{-- Select para el pais del cliente --}}
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                {{-- Label --}}
+                                                                                <h6 for="pais_cliente">Seleccione una pais</h6>
+                                                                                {{-- Select --}}
+                                                                                <select class="form-control" id="pais_cliente" name="pais_cliente">
+                                                                                    <option value="{{ $cliente->id }}">{{ $cliente->pais_cliente }}
+                                                                                    </option>
+                                                                                    {{-- @foreach ($categorias as $categoria)
+                                                        <option value="{{ $categoria->id }}"
+                                                            @if ($subcategoria->pais_cliente == $categoria->id) selected @endif>
+                                                            {{ $categoria->nombre_categoria }}</option>
+                                                    @endforeach --}}
+                                                                                </select>
+
+                                                                                {{-- Mensaje de error --}}
+                                                                                @error('pais_cliente')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
+                                                                            </div>
+                                                                        </div>
+
+                                                                        {{-- Select para el estado del cliente --}}
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                {{-- Label --}}
+                                                                                <h6 for="estado_cliente">Seleccione un estado</h6>
+                                                                                {{-- Select --}}
+                                                                                <select class="form-control" id="estado_cliente" name="estado_cliente">
+                                                                                    <option value="{{ $cliente->id }}">{{ $cliente->estado_cliente }}
+                                                                                    </option>
+                                                                                    {{-- @foreach ($categorias as $categoria)
+                                                        <option value="{{ $categoria->id }}"
+                                                            @if ($subcategoria->estado_cliente == $categoria->id) selected @endif>
+                                                            {{ $categoria->nombre_categoria }}</option>
+                                                    @endforeach --}}
+                                                                                </select>
+
+                                                                                {{-- Mensaje de error --}}
+                                                                                @error('estado_cliente')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
+                                                                            </div>
+                                                                        </div> -->
 
                                         {{-- Direccion del cliente --}}
                                         <div class="col-md-6">
@@ -255,7 +298,10 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <script>
         // Codigo para cargar Dropzone en la carpeta /categorias
         Dropzone.autoDiscover = false;
@@ -300,6 +346,83 @@
         // Remover un archivo
         subir_imagen_categorias.on('removedfile', function() {
             document.querySelector('[name= "imagen"]').value = "";
+        });
+
+        $(document).ready(function() {
+            const geonamesUsername = 'chris_laravel'; // Reemplaza con tu nombre de usuario de Geonames
+
+            // Obtener la lista de países desde la API
+            $.get('https://restcountries.com/v2/all', function(data) {
+                const paises = data.map(function(pais) {
+                    return {
+                        id: pais.name,
+                        text: pais.name,
+                        latlng: pais.latlng // Agregar latitud y longitud a los datos del país
+                    };
+                });
+
+                // Inicializar el select2 con la lista de países
+                $('#pais_cliente').select2({
+                    data: paises,
+                    placeholder: 'Seleccione el país',
+                    allowClear: true,
+                    width: '100%',
+                });
+
+                // Manejar el cambio de país seleccionado
+                $('#pais_cliente').on('change', function() {
+                    const selectedCountry = $(this).select2('data')[0];
+
+                    // Verificar si se tiene información de latitud y longitud del país
+                    if (selectedCountry && selectedCountry.latlng && geonamesUsername) {
+                        const lat = selectedCountry.latlng[0];
+                        const lng = selectedCountry.latlng[1];
+
+                        // Realizar una solicitud AJAX para obtener los estados del país seleccionado desde Geonames
+                        const url =
+                            `http://api.geonames.org/countrySubdivision?lat=${lat}&lng=${lng}&maxRows=10000&radius=200&username=${geonamesUsername}`;
+
+                        $.ajax({
+                            url: url,
+                            dataType: "xml",
+                            success: function(response) {
+                                const estados = [];
+                                $(response).find('countrySubdivision').each(function() {
+                                    const estado = {
+                                        id: $(this).find('adminName1')
+                                            .text(),
+                                        text: $(this).find('adminName1')
+                                            .text()
+                                    };
+                                    estados.push(estado);
+                                });
+
+                                // Llenar el select de estados con los datos obtenidos
+                                $('#estado_cliente').empty().trigger('change');
+                                $('#estado_cliente').select2({
+                                    data: estados,
+                                    placeholder: 'Seleccione el estado',
+                                    allowClear: true,
+                                    width: '100%',
+                                });
+
+                                // Actualizar el valor seleccionado en el campo de estado del cliente
+                                const selectedState = $('#estado_cliente').val();
+                                if (selectedState) {
+                                    $('#estado_cliente').val(selectedState).trigger(
+                                        'change');
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.log(errorThrown);
+                            }
+                        });
+                    } else {
+                        // Si no se tiene la clave de acceso o no se ha seleccionado un país con latitud y longitud, limpiar el select de estados
+                        $('#estado_cliente').empty().trigger('change');
+                    }
+                });
+            });
         });
     </script>
 @endpush

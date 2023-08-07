@@ -1,6 +1,6 @@
 @extends('layouts.user_type.auth')
 
-@section('title', 'Compra')
+@section('title', 'Registrar cotización')
 
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg">
@@ -8,7 +8,7 @@
             <div class="card mb-4">
                 <div class="card-header pb-2">
                     <div class="d-flex justify-content-between align-items-center mx-4">
-                        <h6 class="mb-0">Generar una compra</h6>
+                        <h6 class="mb-0">Generar una cotizacion</h6>
                         <div class="d-flex justify-end">
                             {{-- Boton de regresar --}}
                             <a href="{{ route('mostrar-cotizaciones') }}" class="btn bg-gradient-primary mt-4 mx-2">

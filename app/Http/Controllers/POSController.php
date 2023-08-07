@@ -52,10 +52,7 @@ class POSController extends Controller
         $accion = $request->get('agregar');
 
         // dd($accion);
-
-
         // Validamos si se recibe un add
-
         // Si se recibe un add, se agrega un producto al carrito
         if ($accion === 'add') {
 

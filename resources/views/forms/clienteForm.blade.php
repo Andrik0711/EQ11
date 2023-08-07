@@ -122,12 +122,13 @@
                                         <input type="hidden" id="cliente_creado_por" name="cliente_creado_por"
                                             value="{{ auth()->user()->name }}">
 
+
                                         {{-- Select para el pais del cliente --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <h6 for="pais_cliente">País del cliente</h6>
                                                 <select class="form-control" id="pais_cliente" name="pais_cliente">
-                                                    <option value="">Seleccione el país</option>
+                                                    <option value="{{ old('pais_cliente') }}">Seleccione el país</option>
                                                     {{-- Opciones de países se agregarán dinámicamente con JavaScript --}}
                                                 </select>
                                                 {{-- Mensaje de error --}}
@@ -142,7 +143,8 @@
                                             <div class="form-group">
                                                 <h6 for="estado_cliente">Estado del cliente</h6>
                                                 <select class="form-control" id="estado_cliente" name="estado_cliente">
-                                                    <option value="">Seleccione el estado</option>
+                                                    <option value="{{ old('estado_cliente') }}">Seleccione el estado
+                                                    </option>
                                                     {{-- Opciones de estados se agregarán dinámicamente con JavaScript --}}
                                                 </select>
                                                 {{-- Mensaje de error --}}
@@ -152,13 +154,14 @@
                                             </div>
                                         </div>
 
+
                                         {{-- Dirección del cliente --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <h6 for="direccion_cliente">Dirección del cliente</h6>
                                                 <input class="form-control" id="direccion_cliente" name="direccion_cliente"
-                                                    rows="3"
-                                                    placeholder="Dirección del cliente">{{ old('direccion_cliente') }}</input>
+                                                    rows="3" placeholder="Dirección del cliente"
+                                                    value="{{ old('direccion_cliente') }}"></input>
                                                 {{-- Mensaje de error --}}
                                                 @error('direccion_cliente')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -221,9 +224,12 @@
     </main>
 @endsection
 
+
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <script>
         // Codigo para cargar Dropzone en la carpeta /categorias
         Dropzone.autoDiscover = false;
@@ -270,42 +276,80 @@
             document.querySelector('[name= "imagen"]').value = "";
         });
 
-        // Obtener la lista de países
-        $.ajax({
-            url: 'https://restcountries.com/v2/all',
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                var options = '';
-                data.forEach(function(country) {
-                    options += '<option value="' + country.alpha2Code + '">' + country.name +
-                        '</option>';
-                });
-                $('#pais_cliente').html(options);
-                $('#pais_cliente').select2(); // Inicializar Select2 en el campo de país
-            }
-        });
+        $(document).ready(function() {
+            const geonamesUsername = 'chris_laravel'; // Reemplaza con tu nombre de usuario de Geonames
 
-        // Cargar los estados dependiendo del país seleccionado
-        $('#pais_cliente').on('change', function() {
-            var countryCode = $(this).val();
-            $.ajax({
-                url: 'http://api.geonames.org/children',
-                data: {
-                    geonameId: countryCode,
-                    username: 'chris_laravel' // Reemplaza con tu usuario de Geonames
-                },
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    var options = '';
-                    data.geonames.forEach(function(state) {
-                        options += '<option value="' + state.geonameId + '">' + state.name +
-                            '</option>';
-                    });
-                    $('#estado_cliente').html(options);
-                    $('#estado_cliente').select2(); // Inicializar Select2 en el campo de estado
-                }
+            // Obtener la lista de países desde la API
+            $.get('https://restcountries.com/v2/all', function(data) {
+                const paises = data.map(function(pais) {
+                    return {
+                        id: pais.name,
+                        text: pais.name,
+                        latlng: pais.latlng // Agregar latitud y longitud a los datos del país
+                    };
+                });
+
+                // Inicializar el select2 con la lista de países
+                $('#pais_cliente').select2({
+                    data: paises,
+                    placeholder: 'Seleccione el país',
+                    allowClear: true,
+                    width: '100%',
+                });
+
+                // Manejar el cambio de país seleccionado
+                $('#pais_cliente').on('change', function() {
+                    const selectedCountry = $(this).select2('data')[0];
+
+                    // Verificar si se tiene información de latitud y longitud del país
+                    if (selectedCountry && selectedCountry.latlng && geonamesUsername) {
+                        const lat = selectedCountry.latlng[0];
+                        const lng = selectedCountry.latlng[1];
+
+                        // Realizar una solicitud AJAX para obtener los estados del país seleccionado desde Geonames
+                        const url =
+                            `http://api.geonames.org/countrySubdivision?lat=${lat}&lng=${lng}&maxRows=10000&radius=200&username=${geonamesUsername}`;
+
+                        $.ajax({
+                            url: url,
+                            dataType: "xml",
+                            success: function(response) {
+                                const estados = [];
+                                $(response).find('countrySubdivision').each(function() {
+                                    const estado = {
+                                        id: $(this).find('adminName1')
+                                            .text(),
+                                        text: $(this).find('adminName1')
+                                            .text()
+                                    };
+                                    estados.push(estado);
+                                });
+
+                                // Llenar el select de estados con los datos obtenidos
+                                $('#estado_cliente').empty().trigger('change');
+                                $('#estado_cliente').select2({
+                                    data: estados,
+                                    placeholder: 'Seleccione el estado',
+                                    allowClear: true,
+                                    width: '100%',
+                                });
+
+                                // Actualizar el valor seleccionado en el campo de estado del cliente
+                                const selectedState = $('#estado_cliente').val();
+                                if (selectedState) {
+                                    $('#estado_cliente').val(selectedState).trigger(
+                                        'change');
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.log(errorThrown);
+                            }
+                        });
+                    } else {
+                        // Si no se tiene la clave de acceso o no se ha seleccionado un país con latitud y longitud, limpiar el select de estados
+                        $('#estado_cliente').empty().trigger('change');
+                    }
+                });
             });
         });
     </script>

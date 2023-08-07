@@ -2,9 +2,6 @@
 
 @section('title', 'POS')
 
-@push('style')
-@endpush
-
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg">
         {{-- Columnas de 3 --}}

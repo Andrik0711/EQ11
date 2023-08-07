@@ -61,9 +61,9 @@ class CRUDUsuariosController extends Controller
         $request->validate([
             'name' => 'required',
             'apellido' => 'required',
-            'username' => 'required|unique:users,username',
-            'telefono' => 'required|unique:users,telefono',
-            'email' => 'required|unique:users,email',
+            'username' => 'required',
+            'telefono' => 'required',
+            'email' => 'required',
             'password' => 'required',
             'rol' => 'required',
             'imagen' => 'required',

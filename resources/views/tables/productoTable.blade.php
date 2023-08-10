@@ -107,10 +107,10 @@
                                                 </td>
                                                 <td>
                                                     <div class="d-flex px-2 py-1">
-                                                        <div>
-                                                            <img src="../assets/img/team-2.jpg"
+                                                        {{-- <div>
+                                                            <img src="{{ asset('usuarios') . '/' . Auth()->user()->imagen_usuario }}"
                                                                 class="avatar avatar-sm me-3" alt="user1">
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="d-flex flex-column justify-content-center">
                                                             <h6 class="mb-0 text-sm">{{ $producto->producto_creado_por }}
                                                             </h6>

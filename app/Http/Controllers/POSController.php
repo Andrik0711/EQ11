@@ -39,61 +39,56 @@ class POSController extends Controller
         // Obtener los productos de la categoría seleccionada
         $productosfiltrados = Producto::where('id_categoria_producto', $categoriaId)->get();
 
+        // Pasamos todos los clientes a la vista
+        $clientes = Cliente::all();
+
         // Pasar los productosfiltrados filtrados a la vista
-        return view('pos.pos', compact('productosfiltrados', 'categorias'));
+        return view('pos.pos', compact('productosfiltrados', 'categorias', 'clientes'));
     }
 
     public function agregarCarrito(Request $request)
     {
-        // dd($request->all()); // Recibe solo el id del producto
-
         $carrito = session()->get('carrito', []);
         $producto_id = $request->get('producto_id');
         $accion = $request->get('agregar');
 
-        // dd($accion);
-        // Validamos si se recibe un add
-        // Si se recibe un add, se agrega un producto al carrito
-        if ($accion === 'add') {
+        if (!isset($carrito[$producto_id])) {
+            // Obtener el producto a partir del id
+            $producto = Producto::findOrFail($producto_id);
 
-            // dd($carrito[$producto_id]);
-
-            if (isset($carrito[$producto_id])) {
-                $carrito[$producto_id]['cantidad']++;
-            } else {
-                $producto = Producto::findOrFail($producto_id);
-
-                // dd($carrito[$producto_id] = [
-                //     'nombre' => $producto->nombre_producto,
-                //     'precio' => $producto->precio_de_venta,
-                //     'cantidad' => 1,
-                //     'imagen' => $producto->imagen_producto,
-                // ]);
-
-                $carrito[$producto_id] = [
-                    'nombre' => $producto->nombre_producto,
-                    'precio' => $producto->precio_de_venta,
-                    'cantidad' => 1,
-                    'imagen' => $producto->imagen_producto,
-                ];
+            if ($producto->unidades_disponibles === 0) {
+                return back()->with('warning', 'No se puede agregar un producto con 0 unidades disponibles');
             }
-            session()->put('carrito', $carrito);
-            return back()->with('mensaje', 'Producto agregado al carrito');
-        } // Si se recibe un less, se elimina un producto del carrito 
-        elseif ($accion === 'less') {
-            if (isset($carrito[$producto_id])) {
 
-                // dd($carrito[$producto_id]);
+            $carrito[$producto_id] = [
+                'nombre' => $producto->nombre_producto,
+                'precio' => $producto->precio_de_venta,
+                'cantidad' => 1,
+                'imagen' => $producto->imagen_producto,
+            ];
+        } else {
+            // Obtener el producto a partir del id
+            $producto = Producto::findOrFail($producto_id);
 
-                // Validamos que la cantidad no sea menor a 1
+            if ($accion === 'add') {
+                if ($carrito[$producto_id]['cantidad'] < $producto->unidades_disponibles) {
+                    $carrito[$producto_id]['cantidad']++;
+                } else {
+                    return back()->with('warning', 'No se puede agregar más unidades de este producto');
+                }
+            } elseif ($accion === 'less') {
                 if ($carrito[$producto_id]['cantidad'] > 1) {
                     $carrito[$producto_id]['cantidad']--;
-                    session()->put('carrito', $carrito);
-                    return back()->with('mensaje', 'Producto disminuido del carrito');
+                } else {
+                    unset($carrito[$producto_id]);
                 }
             }
         }
+
+        session()->put('carrito', $carrito);
+        return back()->with('mensaje', 'Operación realizada exitosamente');
     }
+
 
     // Eliminar el producto del carrito
     public function eliminarCarrito(Request $request)
@@ -112,12 +107,24 @@ class POSController extends Controller
     // Almacenar la venta en la base de datos
     public function almacenarVenta(Request $request)
     {
+
+        // dd($request->all());
+
+        // Condicionamos que una venta no se pueda realizar
+        // si el pago no es igual o mayor al total de la venta
+        if ($request->input('pago') < $request->input('total')) {
+            return back()->with('warning', 'El pago no puede ser menor al total de la venta');
+        } else if ($request->input('pago') == 0) {
+            return back()->with('warning', 'El pago no puede ser igual a 0');
+        }
+
+
         // Obtener los datos de la solicitud
         $total = $request->input('total');
         $subtotal = $request->input('subtotal');
         $impuestos = $request->input('impuestos');
-        $unidades_vendidas = $request->input('unidades_vendidas');
-        $abono = $request->input('abono');
+        $unidades_vendidas = $request->input('unidades_vendidas'); // Numero de productos diferenres vendidos
+        $pago = $request->input('pago');
         $id_cliente_venta = $request->input('cliente_venta');
 
         // Validar que el carrito no esté vacío
@@ -139,10 +146,10 @@ class POSController extends Controller
             $venta->cliente_id = $cliente->id;
 
             // Condicionar el estatus de la venta
-            $venta->venta_status = ($abono < $total) ? "pendiente" : "terminada";
+            $venta->venta_status = ($pago < $total) ? "pendiente" : "terminada";
 
             // Almacenar los demás datos
-            $venta->venta_abono = $abono;
+            $venta->venta_abono = $pago;
             $venta->venta_subtotal = $subtotal;
             $venta->venta_impuestos = $impuestos;
             $venta->venta_total = $total;
@@ -164,15 +171,37 @@ class POSController extends Controller
             // Asociar los productos vendidos a la venta
             $venta->productos()->attach($productosVendidos);
 
-            // Limpiar el carrito de la sesión después de guardar la venta
-            session()->forget('carrito');
+
+            // Actualizar el stock de los productos vendidos
+            // foreach ($carrito as $producto_id => $producto) {
+            //     $producto = Producto::findOrFail($producto_id);
+            //     $producto->unidades_disponibles -= $producto['cantidad'];
+            //     $producto->save();
+            // }
+
+
+            // Actualizar la cantidad disponible de los productos vendidos
+            foreach ($productosVendidos as $producto_id => $productoVendido) {
+                $producto = Producto::findOrFail($producto_id); // Obtener el producto
+                // Restar la cantidad vendida a la cantidad disponible
+                $nuevaCantidadDisponible = $producto->unidades_disponibles - $productoVendido['cantidad_vendida'];
+                $producto->update(['unidades_disponibles' => $nuevaCantidadDisponible]); // Actualizar la cantidad disponible
+            }
+
 
             DB::commit();
-
-            return back()->with('Listo', 'Venta realizada con éxito');
+            if ($request->input('pago') > $request->input('total')) {
+                $diferencia = $request->input('pago') - $request->input('total');
+                // Limpiar el carrito de la sesión después de guardar la venta
+                session()->forget('carrito');
+                return back()->with('Listo', 'Venta realizada, pero el pago es mayor al total de la venta. Se debe regresar: $' . number_format($diferencia, 2));
+            } else {
+                session()->forget('carrito');
+                return back()->with('Listo', 'Venta realizada con éxito');
+            }
         } catch (\Exception $e) {
             DB::rollback();
-            return back()->with('mensaje', 'Ha ocurrido un error al procesar la venta: ' . $e->getMessage());
+            return back()->with('warning', 'Ha ocurrido un error al procesar la venta, verifique los datos');
         }
     }
 }

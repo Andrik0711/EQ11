@@ -2,6 +2,32 @@
 
 @section('title', 'POS')
 
+@push('styles')
+    <style>
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: auto;
+            /* Ajusta el ancho automáticamente según el contenido */
+            padding: 0;
+            /* Elimina el espacio de relleno alrededor del botón */
+            background: none;
+            /* Elimina el fondo del botón */
+            border: none;
+            /* Elimina el borde del botón */
+        }
+
+        .carousel-control-prev img,
+        .carousel-control-next img {
+            width: 20px;
+            /* Ajusta el ancho de la imagen */
+            height: auto;
+            /* Mantiene la proporción de la imagen */
+        }
+    </style>
+
+    <!-- Resto de tu HTML -->
+@endpush
+
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg">
         {{-- Columnas de 3 --}}
@@ -18,7 +44,6 @@
                                         type="submit">
                                         Mostrar todos los productos
                                     </a>
-
                                     {{-- <a href="#" class="btn bg-gradient-primary mt-4 mx-2" type="submit">
                                         <img src="{{ asset('images/icons/icon-carrito.svg') }}" alt="icono carrito" width="30px">
                                         100
@@ -79,87 +104,152 @@
                     {{-- Mostrar productos ya con filtros --}}
                     <div class="container-fluid mt-5">
                         @if (isset($productosfiltrados))
-                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-                                @foreach ($productosfiltrados as $producto)
-                                    <div class="col mb-4">
-                                        <div class="card">
-                                            <div class="card">
-                                                <a>
-                                                    <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
-                                                        class="card-img-top" alt="{{ $producto->nombre_producto }}">
-                                                </a>
+                            <div id="productoCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    @foreach ($productosfiltrados->chunk(3) as $chunk)
+                                        <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                                                @foreach ($chunk as $producto)
+                                                    <div class="col mb-4">
+                                                        <div class="card">
+                                                            <form action="{{ route('agregar-al-carrito') }}" method="POST"
+                                                                novalidate>
+                                                                @csrf
 
-                                                <div class="card-body">
-                                                    <span
-                                                        class="text-gradient text-primary text-uppercase font-weight-bold my-2">
-                                                        {{ $producto->categoria->nombre_categoria }}
-                                                    </span>
-                                                    <br>
-                                                    <span
-                                                        class="text-gradient text-info text-uppercase font-weight-bold my-2">
-                                                        {{ $producto->marca->nombre_marca }}
-                                                    </span>
-                                                    <h5 class="card-title">{{ $producto->nombre_producto }}</h5>
-                                                    <p class="card-text">{{ $producto->descripcion_producto }}</p>
-                                                    <p class="card-text">Precio de venta: ${{ $producto->precio_de_venta }}
-                                                    </p>
-                                                    <p class="card-text">Unidades disponibles:
-                                                        {{ $producto->unidades_disponibles }}
-                                                    </p>
-                                                </div>
+                                                                <input type="hidden" name="producto_id"
+                                                                    value="{{ $producto->id }}">
+
+                                                                <a name="imagen_producto">
+                                                                    <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
+                                                                        class="card-img-top"
+                                                                        alt="{{ $producto->nombre_producto }}">
+                                                                </a>
+                                                                <div class="card-body">
+                                                                    <span
+                                                                        class="text-gradient text-primary text-uppercase font-weight-bold my-2">
+                                                                        {{ $producto->categoria->nombre_categoria }}
+                                                                    </span>
+                                                                    <br>
+                                                                    <span
+                                                                        class="text-gradient text-info text-uppercase font-weight-bold my-2">
+                                                                        {{ $producto->marca->nombre_marca }}
+                                                                    </span>
+                                                                    <h5 class="card-title">
+                                                                        {{ $producto->nombre_producto }}</h5>
+                                                                    <p class="card-text">
+                                                                        {{ $producto->descripcion_producto }}</p>
+                                                                    <p class="card-text">Precio de
+                                                                        venta:
+                                                                        ${{ $producto->precio_de_venta }}
+                                                                    </p>
+                                                                    <p class="card-text">Unidades
+                                                                        disponibles:
+                                                                        {{ $producto->unidades_disponibles }}
+                                                                    </p>
+
+                                                                    {{-- Boton para enviar --}}
+                                                                    <button class="btn bg-gradient-primary" name="agregar"
+                                                                        value="add">Añadir</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                </div>
+                                {{-- Botones de flechas izquierda y derecha --}}
+                                <button class="carousel-control-prev" type="button" data-bs-target="#productoCarousel"
+                                    data-bs-slide="prev">
+                                    <span class="d-flex justify-content-start" aria-hidden="true">
+                                        <img src="{{ asset('images/icons/icon-arrowright.svg') }}" alt="arrow right"
+                                            width="30%">
+                                    </span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#productoCarousel"
+                                    data-bs-slide="next">
+                                    <span class="d-flex justify-content-end" aria-hidden="true">
+                                        <img src="{{ asset('images/icons/icon-arrowleft.svg') }}" alt="arrow right"
+                                            width="30%">
+                                    </span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
                         @else
-                            <!-- Aquí mostrar todos los productos sin filtrar -->
-                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-                                @foreach ($todosLosProductos as $producto)
-                                    <div class="col mb-4">
-                                        <div class="card">
-                                            <div class="card">
-                                                <form action="{{ route('agregar-al-carrito') }}" method="POST" novalidate>
-                                                    @csrf
+                            <div id="productoCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    @foreach ($todosLosProductos->chunk(3) as $chunk)
+                                        <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                                                @foreach ($chunk as $producto)
+                                                    <div class="col mb-4">
+                                                        <div class="card">
+                                                            <form action="{{ route('agregar-al-carrito') }}"
+                                                                method="POST" novalidate>
+                                                                @csrf
 
-                                                    <input type="hidden" name="producto_id" value="{{ $producto->id }}">
+                                                                <input type="hidden" name="producto_id"
+                                                                    value="{{ $producto->id }}">
 
-                                                    <a name="imagen_producto">
-                                                        <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
-                                                            class="card-img-top" alt="{{ $producto->nombre_producto }}">
-                                                    </a>
-                                                    <div class="card-body">
-                                                        <span
-                                                            class="text-gradient text-primary text-uppercase font-weight-bold my-2">
-                                                            {{ $producto->categoria->nombre_categoria }}
-                                                        </span>
-                                                        <br>
-                                                        <span
-                                                            class="text-gradient text-info text-uppercase font-weight-bold my-2">
-                                                            {{ $producto->marca->nombre_marca }}
-                                                        </span>
-                                                        <h5 class="card-title">
-                                                            {{ $producto->nombre_producto }}</h5>
-                                                        <p class="card-text">
-                                                            {{ $producto->descripcion_producto }}</p>
-                                                        <p class="card-text">Precio de
-                                                            venta:
-                                                            ${{ $producto->precio_de_venta }}
-                                                        </p>
-                                                        <p class="card-text">Unidades
-                                                            disponibles:
-                                                            {{ $producto->unidades_disponibles }}
-                                                        </p>
+                                                                <a name="imagen_producto">
+                                                                    <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
+                                                                        class="card-img-top"
+                                                                        alt="{{ $producto->nombre_producto }}">
+                                                                </a>
+                                                                <div class="card-body">
+                                                                    <span
+                                                                        class="text-gradient text-primary text-uppercase font-weight-bold my-2">
+                                                                        {{ $producto->categoria->nombre_categoria }}
+                                                                    </span>
+                                                                    <br>
+                                                                    <span
+                                                                        class="text-gradient text-info text-uppercase font-weight-bold my-2">
+                                                                        {{ $producto->marca->nombre_marca }}
+                                                                    </span>
+                                                                    <h5 class="card-title">
+                                                                        {{ $producto->nombre_producto }}</h5>
+                                                                    <p class="card-text">
+                                                                        {{ $producto->descripcion_producto }}</p>
+                                                                    <p class="card-text">Precio de
+                                                                        venta:
+                                                                        ${{ $producto->precio_de_venta }}
+                                                                    </p>
+                                                                    <p class="card-text">Unidades
+                                                                        disponibles:
+                                                                        {{ $producto->unidades_disponibles }}
+                                                                    </p>
 
-                                                        {{-- Boton para enviar --}}
-                                                        <button class="btn bg-gradient-primary" name="agregar"
-                                                            value="add">Añadir</button>
+                                                                    {{-- Boton para enviar --}}
+                                                                    <button class="btn bg-gradient-primary" name="agregar"
+                                                                        value="add">Añadir</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
-                                                </form>
+                                                @endforeach
                                             </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                </div>
+                                {{-- Botones de flechas izquierda y derecha --}}
+                                <button class="carousel-control-prev" type="button" data-bs-target="#productoCarousel"
+                                    data-bs-slide="prev">
+                                    <span class="d-flex justify-content-start" aria-hidden="true">
+                                        <img src="{{ asset('images/icons/icon-arrowright.svg') }}" alt="arrow right"
+                                            width="20%">
+                                    </span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#productoCarousel"
+                                    data-bs-slide="next">
+                                    <span class="d-flex justify-content-end" aria-hidden="true">
+                                        <img src="{{ asset('images/icons/icon-arrowleft.svg') }}" alt="arrow right"
+                                            width="20%">
+                                    </span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
                         @endif
                     </div>
@@ -185,9 +275,21 @@
                                             $subtotal = 0;
                                             $impuestos = 0;
                                             $total = 0;
+                                            $iva = 0.16;
+                                            $costo_total = 0;
+                                            $subtotal_total = 0;
+                                            $cantidad_productos_diferentes = 0;
+                                            $productosContados = [];
                                         @endphp
 
                                         @foreach ($carrito as $producto_id => $producto)
+                                            {{-- Contamos los productos diferentes --}}
+                                            @php
+                                                if (!isset($productosContados[$producto_id])) {
+                                                    $productosContados[$producto_id] = 1;
+                                                    $cantidad_productos_diferentes++;
+                                                }
+                                            @endphp
                                             <div class="container-fluid mb-4">
                                                 <div class="d-flex justify-content-start align-items-center">
                                                     <img src="{{ asset('productos/' . '/' . $producto['imagen']) }}"
@@ -195,15 +297,20 @@
                                                         alt="Producto imagen">
 
                                                     <div class="mx-2">
+
+
+
                                                         <h5 class="text-start text-sm"> {{ $producto['nombre'] }}</h5>
                                                         @php
-                                                            $subtotal += $producto['precio'] * $producto['cantidad'];
+                                                            $subtotal = $producto['precio'] * $producto['cantidad'];
                                                         @endphp
-                                                        <p class="text-sm text-start">Precio: ${{ $subtotal }}
+                                                        <p class="text-sm text-start">Costo: ${{ $subtotal }}
+                                                        <p class="text-sm text-start">Cantidad:
+                                                            {{ $producto['cantidad'] }}
                                                     </div>
                                                 </div>
 
-
+                                                {{-- Form delete --}}
                                                 <div class="d-flex justify-content-start align-items-center mt-4">
                                                     {{-- Boton para eliminar el producto del carrito --}}
                                                     <form action="{{ route('eliminar-del-carrito') }}" method="POST"
@@ -222,6 +329,7 @@
                                                             value="Eliminar producto del carrito">Eliminar</button>
                                                     </form>
 
+                                                    {{-- Botones de add o less --}}
                                                     <div class="mx-1 d-flex justify-content-evenly">
                                                         {{-- Flecha izquierda --}}
                                                         <div class="mx-1">
@@ -266,26 +374,34 @@
                                                         </div>
                                                     </div>
 
-                                                    {{-- Agregamos el impuesto --}}
-                                                    @php
-                                                        $impuestos = $subtotal * 0.16;
-                                                        $total = $subtotal + $impuestos;
-                                                    @endphp
+
                                                 </div>
 
+                                                {{-- Agregamos el impuesto --}}
+                                                @php
+                                                    $subtotal = $producto['precio'] * $producto['cantidad'];
+                                                    $subtotal_total += $subtotal;
+                                                    $impuestos = $subtotal * $iva;
+                                                    $total = $subtotal + $impuestos;
+                                                @endphp
 
 
-                                                {{-- Mosrtamos el costo total --}}
+                                                {{-- Mosrtamos el costo total Producto --}}
                                                 <div class="d-flex justify-content-start align-items-center mt-2">
                                                     {{-- Iva --}}
                                                     <div class="mx-1">
                                                         <h5 class="text-sm text-start">
-                                                            IVA: ${{ $impuestos }}</h5>
+                                                            IVA: $ {{ number_format($impuestos, 2) }}</h5>
                                                     </div>
-                                                    {{-- Total --}}
+                                                    {{-- Sub total producto por cada producto y cantidad  --}}
                                                     <div class="mx-1">
                                                         <h5 class="text-sm text-start">
-                                                            Total: ${{ $total }}</h5>
+                                                            Subtotal: ${{ number_format($subtotal, 2) }}</h5>
+                                                    </div>
+
+                                                    <div class="mx-1">
+                                                        <h5 class="text-sm text-start">
+                                                            Total: ${{ number_format($total, 2) }}</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -299,6 +415,10 @@
                                         @elseif (session('Listo'))
                                             <div class="alert alert-success" role="alert">
                                                 <strong>Listo!</strong> {{ session('Listo') }}
+                                            </div>
+                                        @elseif (session('warning'))
+                                            <div class="alert alert-warning" role="alert">
+                                                <strong>Cuidado!</strong> {{ session('warning') }}
                                             </div>
                                         @endif
 
@@ -315,18 +435,31 @@
                                             <div class="my-4">
                                                 <form action="{{ route('venta-store') }}" method="POST" novalidate>
                                                     @csrf
+                                                    <div class="container-fluid mb-4">
+                                                        <h5>Resumen del carrito:</h5>
+                                                        <p>Subtotal final: ${{ number_format($subtotal_total, 2) }}</p>
+                                                        <p>Impuestos final:
+                                                            ${{ number_format($subtotal_total * $iva, 2) }}
+                                                        </p>
+                                                        <p>Costo total:
+                                                            ${{ number_format($subtotal_total + $subtotal_total * $iva, 2) }}
+                                                        </p>
+                                                    </div>
+
                                                     {{-- Le pasamos el costo total de la venta --}}
-                                                    <input type="hidden" name="total" value="{{ $total }}">
+                                                    <input type="hidden" name="total"
+                                                        value="{{ $subtotal_total + $subtotal_total * $iva }}">
 
                                                     {{-- Le pasamos el subtotal de la venta --}}
-                                                    <input type="hidden" name="subtotal" value="{{ $subtotal }}">
+                                                    <input type="hidden" name="subtotal" value="{{ $subtotal_total }}">
 
                                                     {{-- Le pasamos el impuesto de la venta --}}
-                                                    <input type="hidden" name="impuestos" value="{{ $impuestos }}">
+                                                    <input type="hidden" name="impuestos"
+                                                        value="{{ $subtotal_total * $iva }}">
 
-                                                    {{-- Le pasamos el numero de unidades vendidas --}}
+                                                    {{-- Le pasamos el numero de productos vendidos --}}
                                                     <input type="hidden" name="unidades_vendidas"
-                                                        value="{{ $producto['cantidad'] }}">
+                                                        value="{{ $cantidad_productos_diferentes }}">
 
                                                     {{-- Abono --}}
                                                     <div class="d-flex justify-content-start align-items-center mt-2">
@@ -334,12 +467,11 @@
                                                         <div class="mx-1">
                                                             <div class="form-group">
                                                                 <div class="input-group">
-                                                                    <span
-                                                                        class="input-group-text text-sm text-start">Abono:
+                                                                    <span class="input-group-text text-sm text-start">Pago:
                                                                         $</span>
-                                                                    <input type="number" name="abono" id="abono"
+                                                                    <input type="number" name="pago" id="pago"
                                                                         class="form-control text-sm text-start"
-                                                                        placeholder="MX" value="{{ old('abono') }}">
+                                                                        placeholder="MX" value="{{ old('pago') }}">
                                                                 </div>
                                                             </div>
                                                         </div>

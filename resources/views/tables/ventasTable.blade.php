@@ -13,175 +13,160 @@
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
         <div class="container-fluid py-4">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card mb-4">
-                        <div class="card-header pb-2">
-                            <div class="d-flex justify-content-between align-items-center mx-4">
-                                <h6 class="mb-0">Tabla ventas</h6>
+            <div class="card mb-4">
+                <div class="card-header pb-2">
+                    <div class="d-flex justify-content-between align-items-center mx-4">
+                        <h6 class="mb-0">Tabla de ventas</h6>
+                        <div class="d-flex justify-end">
+                            {{-- Imagen para imprimir --}}
+                            <a href="{{ route('importar-productos') }}" class="btn bg-gradient-primary mt-4 mx-2">
+                                <img src="{{ asset('images/icons/icon-import.svg') }}" alt="print" width="30px">
+                            </a>
 
-                                <div class="d-flex justify-end">
-                                    {{-- Imagen para imprimir --}}
-                                    <a href="{{ route('importar-productos') }}" class="btn bg-gradient-primary mt-4 mx-2">
-                                        <img src="{{ asset('images/icons/icon-import.svg') }}" alt="print"
-                                            width="30px">
-                                    </a>
+                            {{-- Imagen para exportar pdf --}}
+                            <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                <img src="{{ asset('images/icons/icon-pdf.svg') }}" alt="pdf" width="30px">
+                            </a>
 
-                                    {{-- Imagen para exportar pdf --}}
-                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                        <img src="{{ asset('images/icons/icon-pdf.svg') }}" alt="pdf" width="30px">
-                                    </a>
+                            {{-- Imagen para exportar XML --}}
+                            <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
+                            </a>
 
-                                    {{-- Imagen para exportar XML --}}
-                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                        <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
-                                    </a>
-
-                                    {{-- Boton de agregar productos --}}
-                                    <a href="#" class="btn bg-gradient-primary mt-4"><img
-                                            src="{{ asset('images/icons/icon-add.svg') }}" alt="add"
-                                            width="30px">Punto de Venta
-                                    </a>
-                                </div>
-                            </div>
+                            {{-- Boton de agregar productos --}}
+                            <a href="{{ route('punto-de-venta') }}" class="btn bg-gradient-primary mt-4">Punto de
+                                Venta
+                            </a>
                         </div>
-                        <div class="card-body px-0 pt-0 pb-2">
-                            <div class="table-responsive p-0">
-                                <table id="productos-table" class="table align-items-center mb-0 text-center">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                {{--
+                    </div>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table id="productos-table" class="table align-items-center mb-0 text-center">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        {{--
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" id="check-all">
                                                 </div> --}}
-                                            </th>
-                                            <th
+                                    </th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Cliente comprador</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Estado</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Pago realizado</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Sub total</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Impuestos</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Costo total</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Productos vendidos</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Fecha de venta</th>
+                                    {{-- <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Cliente comprador</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Estado</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Abono realizado</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Sub total</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Impuestos</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Costo total</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Productos vendidos</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Fecha de venta</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Abonar</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Eliminar</th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Detalle</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                                Abonar</th> --}}
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Eliminar</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Detalle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                                        @forelse ($ventas as $venta)
-                                            <tr>
-                                                <td>
-                                                    <!-- Checkbox for each row -->
-                                                    <div class="form-check d-flex justify-content-center">
-                                                        <input class="form-check-input checkbox-item" type="checkbox"
-                                                            id="check-{{ $venta->id }}">
-                                                    </div>
-                                                </td>
-                                                <td class="text-center text-sm">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $venta->cliente->nombre_cliente }}</span>
-                                                </td>
-                                                <td>
-                                                    {{-- Si la venta es pendiente muestra success --}}
-                                                    @if ($venta->venta_status == 'Pendiente')
-                                                        <span
-                                                            class="badge badge-sm bg-gradient-success">{{ $venta->venta_status }}</span>
-                                                    @else
-                                                        <span
-                                                            class="badge badge-sm bg-gradient-danger">{{ $venta->venta_status }}</span>
-                                                    @endif
+                                @forelse ($ventas as $venta)
+                                    <tr>
+                                        <td>
+                                            <!-- Checkbox for each row -->
+                                            <div class="form-check d-flex justify-content-center">
+                                                <input class="form-check-input checkbox-item" type="checkbox"
+                                                    id="check-{{ $venta->id }}">
+                                            </div>
+                                        </td>
+                                        <td class="text-center text-sm">
+                                            <span
+                                                class="text-secondary text-xs font-weight-bold">{{ $venta->cliente->nombre_cliente }}</span>
+                                        </td>
+                                        <td>
+                                            {{-- Si la venta es pendiente muestra success --}}
+                                            @if ($venta->venta_status == 'pendiente')
+                                                <span
+                                                    class="badge badge-sm bg-gradient-success">{{ $venta->venta_status }}</span>
+                                            @else
+                                                <span
+                                                    class="badge badge-sm bg-gradient-danger">{{ $venta->venta_status }}</span>
+                                            @endif
 
-                                                </td>
-                                                <td class="text-center text-sm">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $venta->venta_abono }}</span>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $venta->venta_subtotal }}</span>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span class="text-secondary text-xs font-weight-bold">$
-                                                        {{ $venta->venta_impuestos }}</span>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span class="text-secondary text-xs font-weight-bold">$
-                                                        {{ $venta->venta_total }}</span>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $venta->venta_unidades_vendidas }}</span>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $venta->fecha_venta }}</span>
-                                                </td>
-                                                <td>
+                                        </td>
+                                        <td class="text-center text-sm">
+                                            <span class="text-secondary text-xs font-weight-bold">$
+                                                {{ number_format($venta->venta_abono, 2) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="text-secondary text-xs font-weight-bold">$
+                                                {{ number_format($venta->venta_subtotal, 2) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="text-secondary text-xs font-weight-bold">$
+                                                {{ number_format($venta->venta_impuestos, 2) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="text-secondary text-xs font-weight-bold">$
+                                                {{ number_format($venta->venta_total, 2) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span
+                                                class="text-secondary text-xs font-weight-bold">{{ $venta->venta_unidades_vendidas }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span
+                                                class="text-secondary text-xs font-weight-bold">{{ $venta->fecha_venta }}</span>
+                                        </td>
+                                        {{-- <td>
                                                     <button type="button" class="btn bg-gradient-info mt-3"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#modal-edit-{{ $venta->id }}">
                                                         <img src="{{ asset('images/icons/icon-abonar.svg') }}"
                                                             alt="edit" width="30px">
                                                     </button>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn bg-gradient-danger mt-3"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modal-default-{{ $venta->id }}">
-                                                        <img src="{{ asset('images/icons/icon-delete.svg') }}"
-                                                            alt="delete" width="30px">
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn bg-gradient-warning mt-3"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modal-detalle-{{ $venta->id }}">
-                                                        <img src="{{ asset('images/icons/icon-detalle.svg') }}"
-                                                            alt="delete" width="30px">
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="11">No se encontraron ventas</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                                </td> --}}
+                                        <td>
+                                            <button type="button" class="eliminar-venta-btn btn bg-gradient-danger mt-3"
+                                                data-bs-toggle="modal" data-bs-target="#modal-default-{{ $venta->id }}">
+                                                <img src="{{ asset('images/icons/icon-delete.svg') }}" alt="delete"
+                                                    width="30px">
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn bg-gradient-warning mt-3"
+                                                data-bs-toggle="modal" data-bs-target="#modal-detalle-{{ $venta->id }}">
+                                                <img src="{{ asset('images/icons/icon-detalle.svg') }}" alt="delete"
+                                                    width="30px">
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="10">No se encontraron ventas</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
-                    {{-- Alerta de éxito --}}
-                    @if (session('mensaje'))
-                        <div class="alert alert-success" role="alert">
-                            <strong>Success!</strong> {{ session('mensaje') }}
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -203,7 +188,7 @@
                     </div>
                     <div class="modal-footer">
                         <!-- Form to handle the category deletion -->
-                        <form action="#" method="POST">
+                        <form action="{{ route('eliminar-venta', $venta->id) }}" method="POST">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
@@ -215,27 +200,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modal-edit-{{ $venta->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="modal-edit-{{ $venta->id }}" aria-hidden="true">
-            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="modal-title-edit-{{ $venta->id }}">¿Seguro qué quieres editar
-                            la venta <span class="modal-edit-name">{{ $venta->id }}</span>?
-                        </h6>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#">
-                            <button type="button" class="btn bg-gradient-info">SI</button>
-                        </a>
-                        <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         <div class="modal fade" id="modal-detalle-{{ $venta->id }}" tabindex="-1" role="dialog"
             aria-labelledby="modal-detalle-{{ $venta->id }}" aria-hidden="true">
@@ -259,6 +224,26 @@
             </div>
         </div>
     @endforeach
+
+    {{-- Modal de éxito --}}
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Éxito</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ session('mensaje') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 @endpush
 
 
@@ -307,6 +292,20 @@
                     "infoFiltered": "" // Remove the "(filtered from x total entries)" text
                 }
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Verificar si hay un mensaje en sesión y mostrar el modal
+            @if (session('mensaje'))
+                $('#successModal').modal('show');
+
+                // Ocultar el modal después de 5 segundos
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 5000); // 5000 milisegundos = 5 segundos
+            @endif
         });
     </script>
 @endpush

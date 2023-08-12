@@ -28,6 +28,12 @@
                                     <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
                                     </a>
+
+                                    {{-- Boton de agregar productos --}}
+                                    <a href="{{ route('mostrar-ventas') }}"
+                                        class="d-flex btn bg-gradient-primary mt-4 align-content-center">
+                                        Regresar
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -79,11 +85,11 @@
                                                 {{ $venta_realizada->venta_unidades_vendidas }}</span>
                                         </p>
 
-                                        <p class="text-sm my-0">
+                                        {{-- <p class="text-sm my-0">
                                             <span class="font-weight-bolder">Resta:</span>
                                             <span class="text-secondary text-xs font-weight-bold">
                                                 $ {{ $venta_realizada->venta_subtotal }}</span>
-                                        </p>
+                                        </p> --}}
 
                                     </div>
                                 </div>
@@ -93,12 +99,12 @@
                                 <table id="productos-table" class="table align-items-center mb-0 text-center">
                                     <thead>
                                         <tr>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                {{--
+                                            {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" id="check-all">
-                                                </div> --}}
-                                            </th>
+                                                </div>
+                                            </th> --}}
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Producto </th>
@@ -112,30 +118,30 @@
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Subtotal</th>
 
-                                            {{-- <th
+                                            <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 IVA</th>
 
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Total</th> --}}
+                                                Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @forelse ($venta_realizada->productos as $producto)
                                             <tr>
-                                                <td>
+                                                {{-- <td>
                                                     <!-- Checkbox for each row -->
                                                     <div class="form-check d-flex justify-content-center">
                                                         <input class="form-check-input checkbox-item" type="checkbox"
                                                             id="check-{{ $venta_realizada->id }}">
                                                     </div>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <div class="d-flex px-2 py-1">
                                                         <div>
                                                             <img src="{{ asset('productos') . '/' . $producto->imagen_producto }}"
-                                                                class="me-3 rounded-3" width="100px"
+                                                                class="me-3 rounded-3 ms-4" width="100px"
                                                                 alt="{{ $producto->nombre_producto }}">
                                                         </div>
                                                         <div class="d-flex flex-column justify-content-center">
@@ -152,28 +158,39 @@
                                                 </td>
                                                 <td>
                                                     <p class="text-sm font-weight-bold mb-0">
-                                                        $ {{ $producto->pivot->precio_unitario }}
+                                                        $ {{ number_format($producto->pivot->precio_unitario, 2) }}
                                                     </p>
                                                 </td>
                                                 <td>
                                                     <p class="text-sm font-weight-bold mb-0">
-                                                        $ {{ $producto->pivot->subtotal }}
+                                                        $ {{ number_format($producto->pivot->subtotal, 2) }}
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <p class="text-sm font-weight-bold mb-0">
+                                                        $ {{ number_format($producto->pivot->subtotal * 0.16, 2) }}
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <p class="text-sm font-weight-bold mb-0">
+                                                        $
+                                                        {{ number_format($producto->pivot->subtotal + $producto->pivot->subtotal * 0.16, 2) }}
                                                     </p>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7">No se encontraron ventas</td>
+                                                <td colspan="8">No se encontraron ventas</td>
                                             </tr>
                                         @endforelse
 
                                         <tr>
-                                            <td colspan="4" class="text-end">
-                                                <p class="text-sm font-weight-bold mb-0">Total:</p>
+                                            <td colspan="5" class="text-end">
+                                                <p class="text-sm font-weight-bold mb-0">Costo final:</p>
                                             </td>
                                             <td>
                                                 <p class="text-sm font-weight-bold mb-0">
-                                                    $ {{ $venta_realizada->venta_total }}
+                                                    $ {{ number_format($venta_realizada->venta_total, 2) }}
                                                 </p>
                                             </td>
                                         </tr>

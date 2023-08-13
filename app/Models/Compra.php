@@ -12,27 +12,25 @@ class Compra extends Model
     protected $table = "compras";
 
     protected $fillable = [
-        'compra_id_producto',
-        'compra_id_usuario',
-        'compra_cantidad_producto',
-        'compra_precio_total'
+        'fecha_compra',
+        'proveedor_id',
+        'compra_status',
+        'compra_abono',
+        'compra_subtotal',
+        'compra_impuestos',
+        'compra_total',
+        'compra_unidades_compradas',
     ];
 
-    // Relacion donde una compra pertenece a un producto
-    // public function producto()
-    // {
-    //     return $this->belongsTo(Producto::class, 'compra_id_producto');
-    // }
-
-    // Relacion donde una compra pertenece a un usuario
-    public function usuario()
+    // Relacion donde una compra pertenece a un proveedor
+    public function proveedor()
     {
-        return $this->belongsTo(User::class, 'compra_id_usuario');
+        return $this->belongsTo(Proveedor::class, 'proveedor_id');
     }
 
-    // Si los productos se agregan antes al carrito, se puede hacer una relación de muchos a muchos
-    // public function carrito()
-    // {
-    //     return $this->belongsToMany(Carrito::class);
-    // }
+    // Relacion donde una compra puede tener muchos productos
+    public function productos()
+    {
+        return $this->belongsToMany(Producto::class, 'compras_de_productos', 'compra_id', 'producto_id')->withPivot('cantidad_comprada', 'precio_unitario', 'subtotal');
+    }
 }

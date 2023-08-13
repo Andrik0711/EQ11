@@ -2,6 +2,30 @@
 
 @section('title', 'Compra')
 
+@push('styles')
+    <style>
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: auto;
+            /* Ajusta el ancho automáticamente según el contenido */
+            padding: 0;
+            /* Elimina el espacio de relleno alrededor del botón */
+            background: none;
+            /* Elimina el fondo del botón */
+            border: none;
+            /* Elimina el borde del botón */
+        }
+
+        .carousel-control-prev img,
+        .carousel-control-next img {
+            width: 20px;
+            /* Ajusta el ancho de la imagen */
+            height: auto;
+            /* Mantiene la proporción de la imagen */
+        }
+    </style>
+@endpush
+
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg">
         <div class="container-fluid py-4">
@@ -17,24 +41,6 @@
                         </div>
                     </div>
                 </div>
-                {{-- Mensaje --}}
-                @if (session('mensaje'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>{{ session('mensaje') }}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @elseif(session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>{{ session('error') }}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @elseif(session('warning'))
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>{{ session('warning') }}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-
                 <div class="card-body px-4 pt-2 pb-2">
                     {{-- Contiene todo los productos y sus filtros --}}
                     <div class="container-fluid">
@@ -42,11 +48,15 @@
                         <div class="d-flex">
                             <div class="container ">
                                 <div class="col d-flex justify-content-start">
-                                    <a href="{{ route('registrar-cotizacion-form') }}"
+                                    <a href="{{ route('punto-de-venta') }}"
                                         class="btn bg-gradient-primary mt-4 mx-2 align-content-center flex-wrap"
                                         type="submit">
                                         Mostrar todos los productos
                                     </a>
+                                    {{-- <a href="#" class="btn bg-gradient-primary mt-4 mx-2" type="submit">
+                                        <img src="{{ asset('images/icons/icon-carrito.svg') }}" alt="icono carrito" width="30px">
+                                        100
+                                    </a> --}}
                                 </div>
                             </div>
                         </div>
@@ -99,139 +109,156 @@
                             </button>
                         </div>
 
+                        {{-- Mostrar productos ya con filtros --}}
                         <div class="container-fluid mt-5">
                             @if (isset($productosfiltrados))
-                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-                                    @foreach ($productosfiltrados as $producto)
-                                        <div class="col mb-4">
-                                            <div class="card">
-                                                <div class="card">
-                                                    <form action="{{ route('agregar-cotizacion') }}" method="POST"
-                                                        novalidate>
-                                                        @csrf
+                                <div id="productoCarousel" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        @foreach ($productosfiltrados->chunk(3) as $chunk)
+                                            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                                                    @foreach ($chunk as $producto)
+                                                        <div class="col mb-4">
+                                                            <div class="card">
+                                                                <form action="{{ route('agregar-al-carrito') }}"
+                                                                    method="POST" novalidate>
+                                                                    @csrf
 
-                                                        <input type="hidden" name="producto_id"
-                                                            value="{{ $producto->id }}">
+                                                                    <input type="hidden" name="producto_id"
+                                                                        value="{{ $producto->id }}">
 
-                                                        <a class="d-flex justify-content-center">
-                                                            <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
-                                                                class="rounded d-flex justify-content-center mt-2"
-                                                                width="20%" alt="{{ $producto->nombre_producto }}">
-                                                        </a>
+                                                                    <a name="imagen_producto">
+                                                                        <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
+                                                                            class="card-img-top"
+                                                                            alt="{{ $producto->nombre_producto }}">
+                                                                    </a>
+                                                                    <div class="card-body">
+                                                                        <span
+                                                                            class="text-gradient text-primary text-uppercase font-weight-bold my-2">
+                                                                            {{ $producto->categoria->nombre_categoria }}
+                                                                        </span>
+                                                                        <br>
+                                                                        <span
+                                                                            class="text-gradient text-info text-uppercase font-weight-bold my-2">
+                                                                            {{ $producto->marca->nombre_marca }}
+                                                                        </span>
+                                                                        <h5 class="card-title">
+                                                                            {{ $producto->nombre_producto }}</h5>
+                                                                        <p class="card-text">
+                                                                            {{ $producto->descripcion_producto }}</p>
+                                                                        <p class="card-text">Precio de
+                                                                            venta:
+                                                                            ${{ $producto->precio_de_venta }}
+                                                                        </p>
+                                                                        <p class="card-text">Unidades
+                                                                            disponibles:
+                                                                            {{ $producto->unidades_disponibles }}
+                                                                        </p>
 
-                                                        <div class="card-body">
-                                                            <span
-                                                                class="text-gradient text-primary text-uppercase font-weight-bold my-2">
-                                                                {{ $producto->categoria->nombre_categoria }}
-                                                            </span>
-                                                            <br>
-                                                            <span
-                                                                class="text-gradient text-info text-uppercase font-weight-bold my-2">
-                                                                {{ $producto->marca->nombre_marca }}
-                                                            </span>
-                                                            <h5 class="card-title">
-                                                                {{ $producto->nombre_producto }}</h5>
-                                                            <p class="card-text">
-                                                                {{ $producto->descripcion_producto }}</p>
-                                                            <p class="card-text">Precio de
-                                                                venta:
-                                                                ${{ $producto->precio_de_venta }}
-                                                            </p>
-                                                            <p class="card-text">Unidades
-                                                                disponibles:
-                                                                {{ $producto->unidades_disponibles }}
-                                                            </p>
-
-                                                            <div class="d-flex justify-content-start pb-2">
-                                                                <div class="d-flex align-items-center">
-                                                                    <p class="card-text">
-                                                                        Cantidad:
-                                                                    </p>
-                                                                </div>
-                                                                <div class="input-group input-group-sm ms-2 me-6">
-                                                                    <input class="form-control" type="number"
-                                                                        name="cantidad_venta" id="cantidad_venta"
-                                                                        min="1"
-                                                                        max="{{ $producto->unidades_disponibles }}"
-                                                                        value="cantidad_venta" placeholder="1">
-                                                                </div>
+                                                                        {{-- Boton para enviar --}}
+                                                                        <button class="btn bg-gradient-primary"
+                                                                            name="agregar" value="add">Añadir</button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
-                                                            {{-- Boton para enviar --}}
-                                                            <button class="btn bg-gradient-primary" name="agregar"
-                                                                value="add">Añadir</button>
                                                         </div>
-                                                    </form>
+                                                    @endforeach
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                    </div>
+                                    {{-- Botones de flechas izquierda y derecha --}}
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#productoCarousel"
+                                        data-bs-slide="prev">
+                                        <span class="d-flex justify-content-start" aria-hidden="true">
+                                            <img src="{{ asset('images/icons/icon-arrowright.svg') }}" alt="arrow right"
+                                                width="30%">
+                                        </span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#productoCarousel"
+                                        data-bs-slide="next">
+                                        <span class="d-flex justify-content-end" aria-hidden="true">
+                                            <img src="{{ asset('images/icons/icon-arrowleft.svg') }}" alt="arrow right"
+                                                width="30%">
+                                        </span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
                                 </div>
                             @else
-                                <!-- Aquí mostrar todos los productos sin filtrar -->
-                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-                                    @foreach ($todosLosProductos as $producto)
-                                        <div class="col mb-4">
-                                            <div class="card">
-                                                <div class="card">
-                                                    <form action="{{ route('agregar-cotizacion') }}" method="POST"
-                                                        novalidate>
-                                                        @csrf
+                                {{-- Mostrar todos los productos --}}
+                                <div id="productoCarousel" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        @foreach ($todosLosProductos->chunk(3) as $chunk)
+                                            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                                                    @foreach ($chunk as $producto)
+                                                        <div class="col mb-4">
+                                                            <div class="card">
+                                                                <form action="{{ route('agregar-al-carrito') }}"
+                                                                    method="POST" novalidate>
+                                                                    @csrf
 
-                                                        <input type="hidden" name="producto_id"
-                                                            value="{{ $producto->id }}">
+                                                                    <input type="hidden" name="producto_id"
+                                                                        value="{{ $producto->id }}">
 
-                                                        <a class="d-flex justify-content-center">
-                                                            <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
-                                                                class="rounded d-flex justify-content-center mt-2"
-                                                                width="20%" alt="{{ $producto->nombre_producto }}">
-                                                        </a>
+                                                                    <a name="imagen_producto">
+                                                                        <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
+                                                                            class="card-img-top"
+                                                                            alt="{{ $producto->nombre_producto }}">
+                                                                    </a>
+                                                                    <div class="card-body">
+                                                                        <span
+                                                                            class="text-gradient text-primary text-uppercase font-weight-bold my-2">
+                                                                            {{ $producto->categoria->nombre_categoria }}
+                                                                        </span>
+                                                                        <br>
+                                                                        <span
+                                                                            class="text-gradient text-info text-uppercase font-weight-bold my-2">
+                                                                            {{ $producto->marca->nombre_marca }}
+                                                                        </span>
+                                                                        <h5 class="card-title">
+                                                                            {{ $producto->nombre_producto }}</h5>
+                                                                        <p class="card-text">
+                                                                            {{ $producto->descripcion_producto }}</p>
+                                                                        <p class="card-text">Precio de
+                                                                            venta:
+                                                                            ${{ $producto->precio_de_venta }}
+                                                                        </p>
+                                                                        <p class="card-text">Unidades
+                                                                            disponibles:
+                                                                            {{ $producto->unidades_disponibles }}
+                                                                        </p>
 
-                                                        <div class="card-body">
-                                                            <span
-                                                                class="text-gradient text-primary text-uppercase font-weight-bold my-2">
-                                                                {{ $producto->categoria->nombre_categoria }}
-                                                            </span>
-                                                            <br>
-                                                            <span
-                                                                class="text-gradient text-info text-uppercase font-weight-bold my-2">
-                                                                {{ $producto->marca->nombre_marca }}
-                                                            </span>
-                                                            <h5 class="card-title">
-                                                                {{ $producto->nombre_producto }}</h5>
-                                                            <p class="card-text">
-                                                                {{ $producto->descripcion_producto }}</p>
-                                                            <p class="card-text">Precio de
-                                                                venta:
-                                                                ${{ $producto->precio_de_venta }}
-                                                            </p>
-                                                            <p class="card-text">Unidades
-                                                                disponibles:
-                                                                {{ $producto->unidades_disponibles }}
-                                                            </p>
-
-                                                            <div class="d-flex justify-content-start pb-2">
-                                                                <div class="d-flex align-items-center">
-                                                                    <p class="card-text">
-                                                                        Cantidad:
-                                                                    </p>
-                                                                </div>
-                                                                <div class="input-group input-group-sm ms-2 me-6">
-                                                                    <input class="form-control" type="number"
-                                                                        name="cantidad_venta" id="cantidad_venta"
-                                                                        min="1"
-                                                                        max="{{ $producto->unidades_disponibles }}"
-                                                                        value="cantidad_venta" placeholder="1">
-                                                                </div>
+                                                                        {{-- Boton para enviar --}}
+                                                                        <button class="btn bg-gradient-primary"
+                                                                            name="agregar" value="add">Añadir</button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
-                                                            {{-- Boton para enviar --}}
-                                                            <button class="btn bg-gradient-primary" name="agregar"
-                                                                value="add">Añadir</button>
                                                         </div>
-                                                    </form>
+                                                    @endforeach
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                    </div>
+                                    {{-- Botones de flechas izquierda y derecha --}}
+                                    <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#productoCarousel" data-bs-slide="prev">
+                                        <span class="d-flex justify-content-start" aria-hidden="true">
+                                            <img src="{{ asset('images/icons/icon-arrowright.svg') }}" alt="arrow right"
+                                                width="20%">
+                                        </span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button"
+                                        data-bs-target="#productoCarousel" data-bs-slide="next">
+                                        <span class="d-flex justify-content-end" aria-hidden="true">
+                                            <img src="{{ asset('images/icons/icon-arrowleft.svg') }}" alt="arrow right"
+                                                width="20%">
+                                        </span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
                                 </div>
                             @endif
                         </div>
@@ -423,7 +450,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
 @endsection

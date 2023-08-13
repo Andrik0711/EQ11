@@ -79,7 +79,7 @@
 
             {{-- Tablas de registros content --}}
             <li class="nav-item mt-2">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Tablas</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Categoria</h6>
             </li>
 
             {{-- Tabla de categorias --}}
@@ -94,6 +94,11 @@
                 </a>
             </li>
 
+            {{-- Tablas de registros content --}}
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Subcategoria</h6>
+            </li>
+
             {{-- Tabla de subcategorias --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('mostrar-subcategorias') ? 'active' : '' }}"
@@ -106,6 +111,10 @@
                 </a>
             </li>
 
+            {{-- Tablas de registros content --}}
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Productos</h6>
+            </li>
             {{-- Tabla de productos --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('mostrar-productos') ? 'active' : '' }}"
@@ -118,6 +127,10 @@
                 </a>
             </li>
 
+            {{-- Tablas de registros content --}}
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Marcas</h6>
+            </li>
             {{-- Tabla de marcas --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('mostrar-marcas') ? 'active' : '' }} "
@@ -130,6 +143,10 @@
                 </a>
             </li>
 
+            {{-- Tablas de registros content --}}
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Clientes</h6>
+            </li>
             {{-- Tabla de clientes --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('mostrar-clientes') ? 'active' : '' }} "
@@ -142,6 +159,10 @@
                 </a>
             </li>
 
+            {{-- Tablas de registros content --}}
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Proveedores</h6>
+            </li>
             {{-- Tabla de proveedores --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('mostrar-proveedores') ? 'active' : '' }} "
@@ -154,7 +175,10 @@
                 </a>
             </li>
 
-
+            {{-- Tablas de registros content --}}
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Usuarios</h6>
+            </li>
             {{-- Tabla de usuarios --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('mostrar-usuarios') ? 'active' : '' }} "
@@ -167,6 +191,7 @@
                     <span class="nav-link-text ms-1">Usuarios</span>
                 </a>
             </li>
+
 
             {{-- Compras --}}
             <li class="nav-item mt-2">
@@ -187,7 +212,7 @@
 
             {{-- Ventas --}}
             <li class="nav-item mt-2">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Ventas</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Punto de venta</h6>
             </li>
 
             {{-- Punto de venta --}}
@@ -202,6 +227,10 @@
                 </a>
             </li>
 
+            {{-- Tablas de registros content --}}
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Ventas</h6>
+            </li>
             {{-- Ventas --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('mostrar-ventas') ? 'active' : '' }} "
@@ -214,6 +243,10 @@
                 </a>
             </li>
 
+            {{-- Tablas de registros content --}}
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Tickets</h6>
+            </li>
             {{-- Recibos --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('') ? 'active' : '' }} " href="">
@@ -225,6 +258,10 @@
                 </a>
             </li>
 
+            {{-- Tablas de registros content --}}
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Devoluciones</h6>
+            </li>
             {{-- Devoluciones --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('') ? 'active' : '' }} " href="">
@@ -234,10 +271,14 @@
                         <img src="{{ asset('images/icons/icon-devoluciones.svg') }}" alt="devolucion"
                             width="15px">
                     </div>
-                    <span class="nav-link-text ms-1">Devoluciones</span>
+                    <span class="nav-link-text ms-1">Devolución</span>
                 </a>
             </li>
 
+            {{-- Tablas de registros content --}}
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Cotizaciones</h6>
+            </li>
             {{-- Cotizaciones --}}
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('mostrar-cotizaciones') ? 'active' : '' }} "
@@ -248,7 +289,7 @@
                         <img src="{{ asset('images/icons/icon-cotizaciones.svg') }}" alt="cotizacion"
                             width="15px">
                     </div>
-                    <span class="nav-link-text ms-1">Cotizaciones</span>
+                    <span class="nav-link-text ms-1">Cotización</span>
                 </a>
             </li>
 

@@ -167,8 +167,7 @@
 
                                                                         {{-- Boton para enviar --}}
                                                                         <button class="btn bg-gradient-primary"
-                                                                            id="agregarBtn" name="agregar"
-                                                                            data-bs-toggle="modal"
+                                                                            name="agregar" data-bs-toggle="modal"
                                                                             value="add">Añadir</button>
 
                                                                     </div>
@@ -261,8 +260,7 @@
 
                                                                         {{-- Boton para enviar --}}
                                                                         <button class="btn bg-gradient-primary"
-                                                                            id="agregarBtn" name="agregar"
-                                                                            data-bs-toggle="modal"
+                                                                            name="agregar" data-bs-toggle="modal"
                                                                             value="add">Añadir</button>
 
                                                                     </div>

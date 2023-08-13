@@ -9,13 +9,6 @@
 
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg">
-        {{-- Alerta de éxito --}}
-        @if (session('mensaje'))
-            <div class="alert alert-success" role="alert">
-                <strong>Success!</strong> {{ session('mensaje') }}
-            </div>
-        @endif
-
         <div class="container-fluid my-4">
             <div class="card mb-4">
                 <div class="card-header pb-2">
@@ -175,15 +168,73 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </main>
 @endsection
 
 
+@push('modals')
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">¡Bien!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    <img src="{{ asset('images/icons/icon-success.svg') }}" alt="icono de exito" class="mb-2"
+                        width="70%">
+                    {{ session('success') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="warningModalLabel">¡Cuidado!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    <img src="{{ asset('images/icons/icon-warning.svg') }}" alt="icono de warning" class="mb-2"
+                        width="70%">
+                    {{ session('warning') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">¡Algo salió mal!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    <img src="{{ asset('images/icons/icon-error.svg') }}" alt="icono de error" class="mb-2"
+                        width="70%">
+                    {{ session('error') }}
+                </div>
+            </div>
+        </div>
+    </div>
+@endpush
+
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
     <script>
         // Codigo para cargar Dropzone en la carpeta /categorias
         Dropzone.autoDiscover = false;
@@ -228,6 +279,27 @@
         // Remover un archivo
         subir_imagen_categorias.on('removedfile', function() {
             document.querySelector('[name= "imagen"]').value = "";
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            @if (session('success'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @elseif (session('warning'))
+                $('#warningModal').modal('show');
+                setTimeout(function() {
+                    $('#warningModal').modal('hide');
+                }, 6000);
+            @elseif (session('error'))
+                $('#errorModal').modal('show');
+                setTimeout(function() {
+                    $('#errorModal').modal('hide');
+                }, 6000);
+            @endif
         });
     </script>
 @endpush

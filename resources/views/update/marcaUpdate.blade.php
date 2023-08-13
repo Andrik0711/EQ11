@@ -120,6 +120,13 @@
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+
+    {{-- Modales --}}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
     <script>
         // Codigo para cargar Dropzone en la carpeta /categorias
         Dropzone.autoDiscover = false;
@@ -164,6 +171,28 @@
         // Remover un archivo
         subir_imagen_categorias.on('removedfile', function() {
             document.querySelector('[name= "imagen"]').value = "";
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            @if (session('success'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @elseif (session('warning'))
+                $('#warningModal').modal('show');
+                setTimeout(function() {
+                    $('#warningModal').modal('hide');
+                }, 6000);
+            @elseif (session('error'))
+                $('#errorModal').modal('show');
+                setTimeout(function() {
+                    $('#errorModal').modal('hide');
+                }, 6000);
+            @endif
         });
     </script>
 @endpush

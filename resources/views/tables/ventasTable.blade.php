@@ -136,14 +136,6 @@
                                             <span
                                                 class="text-secondary text-xs font-weight-bold">{{ $venta->fecha_venta }}</span>
                                         </td>
-                                        {{-- <td>
-                                                    <button type="button" class="btn bg-gradient-info mt-3"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modal-edit-{{ $venta->id }}">
-                                                        <img src="{{ asset('images/icons/icon-abonar.svg') }}"
-                                                            alt="edit" width="30px">
-                                                    </button>
-                                                </td> --}}
                                         <td>
                                             <button type="button" class="eliminar-venta-btn btn bg-gradient-danger mt-3"
                                                 data-bs-toggle="modal" data-bs-target="#modal-default-{{ $venta->id }}">
@@ -230,20 +222,21 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="successModalLabel">Éxito</h5>
+                    <h5 class="modal-title" id="successModalLabel">¡Bien!</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    {{ session('mensaje') }}
+                    @if (session('success'))
+                        <img src="{{ asset('images/icons/icon-success.svg') }}" alt="icono de exito" class="mb-2"
+                            width="70%">
+                        {{ session('success') }}
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-
-
-
 @endpush
 
 
@@ -298,13 +291,11 @@
     <script>
         $(document).ready(function() {
             // Verificar si hay un mensaje en sesión y mostrar el modal
-            @if (session('mensaje'))
+            @if (session('success'))
                 $('#successModal').modal('show');
-
-                // Ocultar el modal después de 5 segundos
                 setTimeout(function() {
                     $('#successModal').modal('hide');
-                }, 5000); // 5000 milisegundos = 5 segundos
+                }, 6000);
             @endif
         });
     </script>

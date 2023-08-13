@@ -32,6 +32,6 @@ class VentasController extends Controller
         Venta::destroy($venta_id);
 
         // return response()->json(['message' => 'La venta ha sido eliminada correctamente.']);
-        return redirect()->back()->with('mensaje', 'La venta ha sido eliminada correctamente.');
+        return redirect()->back()->with('success', 'La venta ha sido eliminada correctamente.');
     }
 }

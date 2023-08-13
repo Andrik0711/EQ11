@@ -410,15 +410,15 @@
                                         {{-- Alerta de éxito --}}
                                         @if (session('mensaje'))
                                             <div class="alert alert-success" role="alert">
-                                                <strong>Success!</strong> {{ session('mensaje') }}
+                                                <strong>¡Bien!</strong> {{ session('mensaje') }}
                                             </div>
                                         @elseif (session('Listo'))
                                             <div class="alert alert-success" role="alert">
-                                                <strong>Listo!</strong> {{ session('Listo') }}
+                                                <strong>¡Listo!</strong> {{ session('Listo') }}
                                             </div>
                                         @elseif (session('warning'))
                                             <div class="alert alert-warning" role="alert">
-                                                <strong>Cuidado!</strong> {{ session('warning') }}
+                                                <strong>¡Cuidado!</strong> {{ session('warning') }}
                                             </div>
                                         @endif
 

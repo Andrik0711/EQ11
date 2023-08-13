@@ -81,7 +81,7 @@ class CRUDUsuariosController extends Controller
             'imagen_usuario' => $request->imagen,
         ]);
 
-        return back()->with('mensaje', 'Usuario registrado con exito');
+        return back()->with('success', 'Usuario registrado con exito');
     }
 
     // Metodo para direccionar a la vista de editar usuarios
@@ -140,7 +140,7 @@ class CRUDUsuariosController extends Controller
         // Guardamos los cambios en la base de datos
         $user->save();
 
-        return back()->with('mensaje', 'Usuario actualizado con exito');
+        return back()->with('success', 'Usuario actualizado con exito');
     }
 
     // Metodo para eliminar usuario
@@ -152,6 +152,6 @@ class CRUDUsuariosController extends Controller
         File::delete(public_path('usuarios') . '/' . $users->imagen_usuario);
         $users->delete();
 
-        return back()->with('mensaje', 'Usuario eliminado con exito');
+        return back()->with('success', 'Usuario eliminado con exito');
     }
 }

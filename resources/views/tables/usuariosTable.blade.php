@@ -15,13 +15,6 @@
 
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
-        {{-- Alerta de éxito --}}
-        @if (session('mensaje'))
-            <div class="alert alert-success" role="alert">
-                <strong>Success!</strong> {{ session('mensaje') }}
-            </div>
-        @endif
-
         <div class="container-fluid py-4">
             <div class="row">
                 <div class="col-12">
@@ -225,101 +218,49 @@
                 </div>
             </div>
         </div>
+    @endforeach
 
-        {{-- Modal para editar usuarios --}}
-        {{-- <div class="modal fade" id="modal-edit-user-{{ $user->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="modal-edit-user-{{ $user->id }}" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-body p-0">
-                        <div class="card card-plain">
-                            <div class="card-header pb-0 text-left">
-                                <h3 class="font-weight-bolder text-info text-gradient">Editar usuario</h3>
-                            </div>
-                            <div class="card-body">
-                                <form action="{{ route('editar-usuario-update', $user->id) }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    @method('put')
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="mb-2">Nombre:</label>
-                                            <input type="text" class="form-control" name="name"
-                                                value="{{ $user->name }}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="mb-2">Apellido:</label>
-                                            <input type="text" class="form-control" name="apellido"
-                                                value="{{ $user->apellido }}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="mb-2">Nombre de usuario:</label>
-                                            <input type="text" class="form-control" name="username"
-                                                value="{{ $user->username }}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="mb-2">Correo electrónico:</label>
-                                            <input type="email" class="form-control" name="email"
-                                                value="{{ $user->email }}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="mb-2">Teléfono:</label>
-                                            <input type="tel" class="form-control" name="telefono"
-                                                value="{{ $user->telefono }}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="mb-2">Rol:</label>
-                                            <select class="form-select" name="rol" required>
-                                                <option value="admin" {{ $user->rol === 'admin' ? 'selected' : '' }}>
-                                                    Admin</option>
-                                                <option value="usuario" {{ $user->rol === 'usuario' ? 'selected' : '' }}>
-                                                    Usuario</option>
-                                            </select>
-                                        </div>
-                                        <input type="hidden" name="imagen_actual"
-                                            value="{{ $user->imagen_usuario }}" />
-
-                                        <div class="col-md-6">
-                                            <input name="imagen" id="imagen" type="hidden"
-                                                value="{{ old('value') }}" />
-                                            @error('imagen')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit"
-                                            class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Guardar</button>
-                                    </div>
-                                </form>
-
-                                <div class="d-flex justify-content-evenly">
-
-                                    <div class="form-group mt-2">
-                                        <h6>Actualizar imagen</h6>
-                                        <form action="{{ route('usuario-image-store') }}" method="POST"
-                                            enctype="multipart/form-data" id="cargar_imagen"
-                                            class="dropzone d-flex justify-content-center items-content-center align-middle border border-success">
-                                            @csrf
-                                        </form>
-                                    </div>
-
-                                    <div class="form-group mt-2">
-                                        <h6>Imagen actual</h6>
-                                        <div class=" d-flex justify-content-center items-content-center align-middle">
-                                            <img class="border-radius-lg"
-                                                src="{{ asset('usuarios/' . $user->imagen_usuario) }}"
-                                                alt="imagen actual de la marca" width="150">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    {{-- Modal para mostrar mensaje --}}
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {{-- Condicionamos el tipo de mensaje --}}
+                    @if (session('success'))
+                        <h5 class="modal-title" id="successModalLabel">¡Bien!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    @elseif (session('warning'))
+                        <h5 class="modal-title" id="successModalLabel">¡Cuidado!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    @elseif (session('error'))
+                        <h5 class="modal-title" id="successModalLabel">¡Algo salio mal!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    @endif
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    @if (session('success'))
+                        <img src="{{ asset('images/icons/icon-success.svg') }}" alt="icono de exito" class="mb-2"
+                            width="70%">
+                        {{ session('success') }}
+                    @elseif (session('warning'))
+                        <img src="{{ asset('images/icons/icon-warning.svg') }}" alt="icono de warning" class="mb-2"
+                            width="70%">
+                        {{ session('warning') }}
+                    @elseif (session('error'))
+                        <img src="{{ asset('images/icons/icon-error.svg') }}" alt="icono de error" class="mb-2"
+                            width="70%">
+                        {{ session('error') }}
+                    @endif
                 </div>
             </div>
-        </div> --}}
-    @endforeach
+        </div>
+    </div>
 @endpush
 
 
@@ -371,52 +312,24 @@
         });
     </script>
 
-    {{-- Script para dropzone --}}
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
     <script>
-        // Codigo para cargar Dropzone en la carpeta /categorias
-        Dropzone.autoDiscover = false;
-        // iniciarDropzoneCategorias();
-        const subir_imagen_categorias = new Dropzone('#cargar_imagen', {
-            dictDefaultMessage: 'Suba tú imagen aquí',
-            acceptedFiles: ".png,.jpg,.jpeg",
-            addRemoveLinks: true,
-            dictRemoveFile: "Borrar archivo",
-            maxFiles: 1,
-            uploadMultiple: false,
-            // Trabajando con imagen en el contenedor de dropzone
-            init: function() {
-                if (document.querySelector('[name= "imagen"]').value.trim()) {
-                    const imagenPublicada = {};
-                    imagenPublicada.size = 2000;
-                    imagenPublicada.name = document.querySelector('[name= "imagen"]').value;
-                    this.options.addedfile.call(this, imagenPublicada);
-                    this.options.thumbnail.call(
-                        this,
-                        imagenPublicada.name,
-                        '/usuarios/${imagenPublicada.name}'
-                    );
-                    imagenPublicada.previewElement.classList.add(
-                        "dz-sucess",
-                        "dz-complete"
-                    )
-                }
-            }
+        $(document).ready(function() {
+            @if (session('success'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @elseif (session('warning'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @elseif (session('error'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @endif
         });
-
-        // Evento de envío de correo correcto
-        subir_imagen_categorias.on('success', function(file, response) {
-            document.querySelector('[name= "imagen"]').value = response.imagen;
-        });
-
-        // Envío cuando hay error
-        subir_imagen_categorias.on('error', function(file, message) {
-            console.log(message);
-        });
-
-        // Remover un archivo
-        subir_imagen_categorias.on('removedfile', function() {
-            document.querySelector('[name= "imagen"]').value = "";
-        });
-    </script> --}}
+    </script>
 @endpush

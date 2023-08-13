@@ -135,7 +135,6 @@
                                                         {{ $cliente->pais_cliente }}
                                                     </option>
                                                     <!-- <option value="">Seleccione el país</option> -->
-                                                    {{-- Opciones de países se agregarán dinámicamente con JavaScript --}}
                                                 </select>
                                                 {{-- Mensaje de error --}}
                                                 @error('pais_cliente')
@@ -153,7 +152,6 @@
                                                         {{ $cliente->estado_cliente }}
                                                     </option>
                                                     <!-- <option value="">Seleccione el estado</option> -->
-                                                    {{-- Opciones de estados se agregarán dinámicamente con JavaScript --}}
                                                 </select>
                                                 {{-- Mensaje de error --}}
                                                 @error('estado_cliente')
@@ -161,58 +159,6 @@
                                                 @enderror
                                             </div>
                                         </div>
-
-
-
-
-
-
-                                        <!-- {{-- Select para el pais del cliente --}}
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                {{-- Label --}}
-                                                                                <h6 for="pais_cliente">Seleccione una pais</h6>
-                                                                                {{-- Select --}}
-                                                                                <select class="form-control" id="pais_cliente" name="pais_cliente">
-                                                                                    <option value="{{ $cliente->id }}">{{ $cliente->pais_cliente }}
-                                                                                    </option>
-                                                                                    {{-- @foreach ($categorias as $categoria)
-                                                        <option value="{{ $categoria->id }}"
-                                                            @if ($subcategoria->pais_cliente == $categoria->id) selected @endif>
-                                                            {{ $categoria->nombre_categoria }}</option>
-                                                    @endforeach --}}
-                                                                                </select>
-
-                                                                                {{-- Mensaje de error --}}
-                                                                                @error('pais_cliente')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
-                                                                            </div>
-                                                                        </div>
-
-                                                                        {{-- Select para el estado del cliente --}}
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                {{-- Label --}}
-                                                                                <h6 for="estado_cliente">Seleccione un estado</h6>
-                                                                                {{-- Select --}}
-                                                                                <select class="form-control" id="estado_cliente" name="estado_cliente">
-                                                                                    <option value="{{ $cliente->id }}">{{ $cliente->estado_cliente }}
-                                                                                    </option>
-                                                                                    {{-- @foreach ($categorias as $categoria)
-                                                        <option value="{{ $categoria->id }}"
-                                                            @if ($subcategoria->estado_cliente == $categoria->id) selected @endif>
-                                                            {{ $categoria->nombre_categoria }}</option>
-                                                    @endforeach --}}
-                                                                                </select>
-
-                                                                                {{-- Mensaje de error --}}
-                                                                                @error('estado_cliente')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
-                                                                            </div>
-                                                                        </div> -->
-
                                         {{-- Direccion del cliente --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -286,21 +232,74 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Alerta de éxito --}}
-            @if (session('mensaje'))
-                <div class="alert alert-success" role="alert">
-                    <strong>Success!</strong> {{ session('mensaje') }}
-                </div>
-            @endif
         </div>
     </main>
 @endsection
+
+
+@push('modals')
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">¡Bien!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    <img src="{{ asset('images/icons/icon-success.svg') }}" alt="icono de exito" class="mb-2"
+                        width="70%">
+                    {{ session('success') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="warningModalLabel">¡Cuidado!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    <img src="{{ asset('images/icons/icon-warning.svg') }}" alt="icono de warning" class="mb-2"
+                        width="70%">
+                    {{ session('warning') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">¡Algo salió mal!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    <img src="{{ asset('images/icons/icon-error.svg') }}" alt="icono de error" class="mb-2"
+                        width="70%">
+                    {{ session('error') }}
+                </div>
+            </div>
+        </div>
+    </div>
+@endpush
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 
     <script>
         // Codigo para cargar Dropzone en la carpeta /categorias
@@ -423,6 +422,27 @@
                     }
                 });
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            @if (session('success'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @elseif (session('warning'))
+                $('#warningModal').modal('show');
+                setTimeout(function() {
+                    $('#warningModal').modal('hide');
+                }, 6000);
+            @elseif (session('error'))
+                $('#errorModal').modal('show');
+                setTimeout(function() {
+                    $('#errorModal').modal('hide');
+                }, 6000);
+            @endif
         });
     </script>
 @endpush

@@ -98,7 +98,7 @@ class CRUDProductosController extends Controller
         ]);
 
         // Redireccionamos a la misma vista con mensaje de exito
-        return back()->with('mensaje', 'Producto registrado con exito');
+        return back()->with('success', 'Producto registrado con exito');
     }
 
     // Metodo que manda a la vista de editar productos
@@ -166,7 +166,7 @@ class CRUDProductosController extends Controller
         $producto->save();
 
         // Redireccionamos a la misma vista con mensaje de exito
-        return back()->with('mensaje', 'Producto actualizado con exito');
+        return back()->with('success', 'Producto actualizado con exito');
     }
 
     // Metodo que elimina un producto
@@ -181,7 +181,7 @@ class CRUDProductosController extends Controller
         $producto->delete();
 
         // Redireccionamos a la misma vista con mensaje de exito
-        return back()->with('mensaje', 'Producto eliminado con exito');
+        return back()->with('success', 'Producto eliminado con exito');
     }
 
     // Metodo que importa productos

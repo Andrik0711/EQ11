@@ -84,7 +84,7 @@ class CRUDProveedoresController extends Controller
             'imagen_proveedor' => $request->imagen
         ]);
 
-        return back()->with('mensaje', 'Proveedor registrador con exito');
+        return back()->with('success', 'Proveedor registrador con éxito');
     }
 
     // Metodo para direccionar a la vista de editar proveedor
@@ -140,19 +140,27 @@ class CRUDProveedoresController extends Controller
         // Guardamos los cambios en la base de datos
         $proveedor->save();
 
-        return back()->with('mensaje', 'Proveedor actualizado con exito');
+        return back()->with('success', 'Proveedor actualizado con éxito');
     }
 
     // Metodo para eliminar proveedor
     public function ProveedorDestroy($id)
     {
-        $proveedor = Proveedor::findOrFail($id);
+        try {
+            $proveedor = Proveedor::findOrFail($id);
 
-        // Eliminar al proveedor de la base de datos y la imagen de la carpeta proveedores
-        File::delete(public_path('proveedores') . '/' . $proveedor->imagen_proveedor);
-
-        $proveedor->delete();
-
-        return back()->with('mensaje', 'Proveedor eliminado con exito');
+            // Verificamos si el proveedor no tiene compras asociadas
+            if ($proveedor->compras->isEmpty()) {
+                // Si no hay compras asociadas, eliminamos al proveedor de la base de datos y la imagen de la carpeta proveedores
+                if ($proveedor->delete()) {
+                    File::delete(public_path('proveedores') . '/' . $proveedor->imagen_proveedor);
+                }
+                return back()->with('success', 'Proveedor eliminado con éxito');
+            } else {
+                return back()->with('warning', 'No se puede eliminar el proveedor porque tiene compras asociadas');
+            }
+        } catch (\Exception $e) {
+            return back()->with('error', 'Ocurrió un error al eliminar el proveedor');
+        }
     }
 }

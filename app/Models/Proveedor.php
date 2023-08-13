@@ -23,4 +23,10 @@ class Proveedor extends Model
         'descripcion_proveedor',
         'imagen_proveedor'
     ];
+
+    // Relacion donde un proveedor puede tener muchas compras
+    public function compras()
+    {
+        return $this->hasMany(Compra::class, 'proveedor_id');
+    }
 }

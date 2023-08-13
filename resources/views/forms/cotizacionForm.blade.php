@@ -2,6 +2,30 @@
 
 @section('title', 'Registrar cotización')
 
+@push('styles')
+    <style>
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: auto;
+            /* Ajusta el ancho automáticamente según el contenido */
+            padding: 0;
+            /* Elimina el espacio de relleno alrededor del botón */
+            background: none;
+            /* Elimina el fondo del botón */
+            border: none;
+            /* Elimina el borde del botón */
+        }
+
+        .carousel-control-prev img,
+        .carousel-control-next img {
+            width: 20px;
+            /* Ajusta el ancho de la imagen */
+            height: auto;
+            /* Mantiene la proporción de la imagen */
+        }
+    </style>
+@endpush
+
 @section('content')
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg">
         <div class="container-fluid py-4">
@@ -17,24 +41,6 @@
                         </div>
                     </div>
                 </div>
-                {{-- Mensaje --}}
-                @if (session('mensaje'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>{{ session('mensaje') }}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @elseif(session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>{{ session('error') }}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @elseif(session('warning'))
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>{{ session('warning') }}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-
                 <div class="card-body px-4 pt-2 pb-2">
                     {{-- Contiene todo los productos y sus filtros --}}
                     <div class="container-fluid">
@@ -101,137 +107,192 @@
 
                         <div class="container-fluid mt-5">
                             @if (isset($productosfiltrados))
-                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-                                    @foreach ($productosfiltrados as $producto)
-                                        <div class="col mb-4">
-                                            <div class="card">
-                                                <div class="card">
-                                                    <form action="{{ route('agregar-cotizacion') }}" method="POST"
-                                                        novalidate>
-                                                        @csrf
+                                <div id="productoCarousel" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        @foreach ($productosfiltrados->chunk(4) as $chunk)
+                                            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
+                                                    @foreach ($chunk as $producto)
+                                                        <div class="col mb-4">
+                                                            <div class="card">
+                                                                <form action="{{ route('agregar-cotizacion') }}"
+                                                                    method="POST" novalidate>
+                                                                    @csrf
 
-                                                        <input type="hidden" name="producto_id"
-                                                            value="{{ $producto->id }}">
+                                                                    <input type="hidden" name="producto_id"
+                                                                        value="{{ $producto->id }}">
 
-                                                        <a class="d-flex justify-content-center">
-                                                            <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
-                                                                class="rounded d-flex justify-content-center mt-2"
-                                                                width="20%" alt="{{ $producto->nombre_producto }}">
-                                                        </a>
+                                                                    <a class="d-flex justify-content-center">
+                                                                        <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
+                                                                            class="rounded d-flex justify-content-center mt-2"
+                                                                            width="20%"
+                                                                            alt="{{ $producto->nombre_producto }}">
+                                                                    </a>
 
-                                                        <div class="card-body">
-                                                            <span
-                                                                class="text-gradient text-primary text-uppercase font-weight-bold my-2">
-                                                                {{ $producto->categoria->nombre_categoria }}
-                                                            </span>
-                                                            <br>
-                                                            <span
-                                                                class="text-gradient text-info text-uppercase font-weight-bold my-2">
-                                                                {{ $producto->marca->nombre_marca }}
-                                                            </span>
-                                                            <h5 class="card-title">
-                                                                {{ $producto->nombre_producto }}</h5>
-                                                            <p class="card-text">
-                                                                {{ $producto->descripcion_producto }}</p>
-                                                            <p class="card-text">Precio de
-                                                                venta:
-                                                                ${{ $producto->precio_de_venta }}
-                                                            </p>
-                                                            <p class="card-text">Unidades
-                                                                disponibles:
-                                                                {{ $producto->unidades_disponibles }}
-                                                            </p>
+                                                                    <div class="card-body">
+                                                                        <span
+                                                                            class="text-gradient text-primary text-uppercase font-weight-bold my-2">
+                                                                            {{ $producto->categoria->nombre_categoria }}
+                                                                        </span>
+                                                                        <br>
+                                                                        <span
+                                                                            class="text-gradient text-info text-uppercase font-weight-bold my-2">
+                                                                            {{ $producto->marca->nombre_marca }}
+                                                                        </span>
+                                                                        <h5 class="card-title">
+                                                                            {{ $producto->nombre_producto }}</h5>
+                                                                        <p class="card-text">
+                                                                            {{ $producto->descripcion_producto }}</p>
+                                                                        <p class="card-text">Precio de
+                                                                            venta:
+                                                                            ${{ $producto->precio_de_venta }}
+                                                                        </p>
+                                                                        <p class="card-text">Unidades
+                                                                            disponibles:
+                                                                            {{ $producto->unidades_disponibles }}
+                                                                        </p>
 
-                                                            <div class="d-flex justify-content-start pb-2">
-                                                                <div class="d-flex align-items-center">
-                                                                    <p class="card-text">
-                                                                        Cantidad:
-                                                                    </p>
-                                                                </div>
-                                                                <div class="input-group input-group-sm ms-2 me-6">
-                                                                    <input class="form-control" type="number"
-                                                                        name="cantidad_venta" id="cantidad_venta"
-                                                                        min="1"
-                                                                        max="{{ $producto->unidades_disponibles }}"
-                                                                        value="cantidad_venta" placeholder="1">
-                                                                </div>
+                                                                        <div class="d-flex justify-content-start pb-2">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <p class="card-text">
+                                                                                    Cantidad:
+                                                                                </p>
+                                                                            </div>
+                                                                            <div
+                                                                                class="input-group input-group-sm ms-2 me-2">
+                                                                                <input class="form-control" type="number"
+                                                                                    name="cantidad_venta"
+                                                                                    id="cantidad_venta" min="1"
+                                                                                    max="{{ $producto->unidades_disponibles }}"
+                                                                                    value="cantidad_venta" placeholder="1">
+                                                                            </div>
+                                                                        </div>
+                                                                        {{-- Boton para enviar --}}
+                                                                        <button class="btn bg-gradient-primary"
+                                                                            data-bs-toggle="modal" name="agregar"
+                                                                            value="add">Añadir</button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
-                                                            {{-- Boton para enviar --}}
-                                                            <button class="btn bg-gradient-primary" name="agregar"
-                                                                value="add">Añadir</button>
                                                         </div>
-                                                    </form>
+                                                    @endforeach
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                    </div>
+                                    {{-- Botones de flechas izquierda y derecha --}}
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#productoCarousel"
+                                        data-bs-slide="prev">
+                                        <span class="d-flex justify-content-start" aria-hidden="true">
+                                            <img src="{{ asset('images/icons/icon-arrowright.svg') }}" alt="arrow right"
+                                                width="30%">
+                                        </span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button"
+                                        data-bs-target="#productoCarousel" data-bs-slide="next">
+                                        <span class="d-flex justify-content-end" aria-hidden="true">
+                                            <img src="{{ asset('images/icons/icon-arrowleft.svg') }}" alt="arrow right"
+                                                width="30%">
+                                        </span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
                                 </div>
                             @else
-                                <!-- Aquí mostrar todos los productos sin filtrar -->
-                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-                                    @foreach ($todosLosProductos as $producto)
-                                        <div class="col mb-4">
-                                            <div class="card">
-                                                <div class="card">
-                                                    <form action="{{ route('agregar-cotizacion') }}" method="POST"
-                                                        novalidate>
-                                                        @csrf
+                                {{-- Mostrar todos los productos --}}
+                                <div id="productoCarousel" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        @foreach ($todosLosProductos->chunk(4) as $chunk)
+                                            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
+                                                    @foreach ($chunk as $producto)
+                                                        <div class="col mb-4">
+                                                            <div class="card">
 
-                                                        <input type="hidden" name="producto_id"
-                                                            value="{{ $producto->id }}">
+                                                                <form action="{{ route('agregar-cotizacion') }}"
+                                                                    method="POST" novalidate>
+                                                                    @csrf
 
-                                                        <a class="d-flex justify-content-center">
-                                                            <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
-                                                                class="rounded d-flex justify-content-center mt-2"
-                                                                width="20%" alt="{{ $producto->nombre_producto }}">
-                                                        </a>
+                                                                    <input type="hidden" name="producto_id"
+                                                                        value="{{ $producto->id }}">
 
-                                                        <div class="card-body">
-                                                            <span
-                                                                class="text-gradient text-primary text-uppercase font-weight-bold my-2">
-                                                                {{ $producto->categoria->nombre_categoria }}
-                                                            </span>
-                                                            <br>
-                                                            <span
-                                                                class="text-gradient text-info text-uppercase font-weight-bold my-2">
-                                                                {{ $producto->marca->nombre_marca }}
-                                                            </span>
-                                                            <h5 class="card-title">
-                                                                {{ $producto->nombre_producto }}</h5>
-                                                            <p class="card-text">
-                                                                {{ $producto->descripcion_producto }}</p>
-                                                            <p class="card-text">Precio de
-                                                                venta:
-                                                                ${{ $producto->precio_de_venta }}
-                                                            </p>
-                                                            <p class="card-text">Unidades
-                                                                disponibles:
-                                                                {{ $producto->unidades_disponibles }}
-                                                            </p>
+                                                                    <a class="d-flex justify-content-center">
+                                                                        <img src="{{ asset('productos/' . '/' . $producto->imagen_producto) }}"
+                                                                            class="rounded d-flex justify-content-center mt-2"
+                                                                            width="20%"
+                                                                            alt="{{ $producto->nombre_producto }}">
+                                                                    </a>
 
-                                                            <div class="d-flex justify-content-start pb-2">
-                                                                <div class="d-flex align-items-center">
-                                                                    <p class="card-text">
-                                                                        Cantidad:
-                                                                    </p>
-                                                                </div>
-                                                                <div class="input-group input-group-sm ms-2 me-6">
-                                                                    <input class="form-control" type="number"
-                                                                        name="cantidad_venta" id="cantidad_venta"
-                                                                        min="1"
-                                                                        max="{{ $producto->unidades_disponibles }}"
-                                                                        value="cantidad_venta" placeholder="1">
-                                                                </div>
+                                                                    <div class="card-body">
+                                                                        <span
+                                                                            class="text-gradient text-primary text-uppercase font-weight-bold my-2">
+                                                                            {{ $producto->categoria->nombre_categoria }}
+                                                                        </span>
+                                                                        <br>
+                                                                        <span
+                                                                            class="text-gradient text-info text-uppercase font-weight-bold my-2">
+                                                                            {{ $producto->marca->nombre_marca }}
+                                                                        </span>
+                                                                        <h5 class="card-title">
+                                                                            {{ $producto->nombre_producto }}</h5>
+                                                                        <p class="card-text">
+                                                                            {{ $producto->descripcion_producto }}</p>
+                                                                        <p class="card-text">Precio de
+                                                                            venta:
+                                                                            ${{ $producto->precio_de_venta }}
+                                                                        </p>
+                                                                        <p class="card-text">Unidades
+                                                                            disponibles:
+                                                                            {{ $producto->unidades_disponibles }}
+                                                                        </p>
+
+                                                                        <div class="d-flex justify-content-start pb-2">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <p class="card-text">
+                                                                                    Cantidad:
+                                                                                </p>
+                                                                            </div>
+                                                                            <div
+                                                                                class="input-group input-group-sm ms-2 me-2">
+                                                                                <input class="form-control" type="number"
+                                                                                    name="cantidad_venta"
+                                                                                    id="cantidad_venta" min="1"
+                                                                                    max="{{ $producto->unidades_disponibles }}"
+                                                                                    value="cantidad_venta"
+                                                                                    placeholder="1">
+                                                                            </div>
+                                                                        </div>
+                                                                        {{-- Boton para enviar --}}
+                                                                        <button class="btn bg-gradient-primary"
+                                                                            data-bs-toggle="modal" name="agregar"
+                                                                            value="add">Añadir</button>
+                                                                    </div>
+                                                                </form>
+
                                                             </div>
-                                                            {{-- Boton para enviar --}}
-                                                            <button class="btn bg-gradient-primary" name="agregar"
-                                                                value="add">Añadir</button>
                                                         </div>
-                                                    </form>
+                                                    @endforeach
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                    </div>
+                                    {{-- Botones de flechas izquierda y derecha --}}
+                                    <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#productoCarousel" data-bs-slide="prev">
+                                        <span class="d-flex justify-content-start" aria-hidden="true">
+                                            <img src="{{ asset('images/icons/icon-arrowright.svg') }}" alt="arrow right"
+                                                width="20%">
+                                        </span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button"
+                                        data-bs-target="#productoCarousel" data-bs-slide="next">
+                                        <span class="d-flex justify-content-end" aria-hidden="true">
+                                            <img src="{{ asset('images/icons/icon-arrowleft.svg') }}" alt="arrow right"
+                                                width="20%">
+                                        </span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
                                 </div>
                             @endif
                         </div>
@@ -310,7 +371,8 @@
                                                                     </div>
                                                                 </div>
                                                             </td>
-                                                            <td>${{ number_format($producto['precio'], 2) }}</td>
+                                                            <td>${{ number_format($producto['precio'], 2) }}
+                                                            </td>
                                                             <td>{{ $producto['cantidad'] }}</td>
                                                             <td>${{ number_format($producto['precio'] * $producto['cantidad'], 2) }}
                                                             </td>
@@ -335,7 +397,8 @@
                                                     @endforeach
                                                     <tr>
                                                         <td colspan="4"></td>
-                                                        <td class="text-right font-weight-bold">Impuestos total:</td>
+                                                        <td class="text-right font-weight-bold">Impuestos
+                                                            total:</td>
                                                         <td>${{ number_format($totalImpuestos, 2) }}</td>
                                                     </tr>
                                                     <tr>
@@ -345,8 +408,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="4"></td>
-                                                        <td class="text-right font-weight-bold">Cotización total:</td>
-                                                        <td>${{ number_format($subtotal + $totalImpuestos, 2) }}</td>
+                                                        <td class="text-right font-weight-bold">Cotización
+                                                            total:</td>
+                                                        <td>${{ number_format($subtotal + $totalImpuestos, 2) }}
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -363,13 +428,18 @@
                                                                 id="fecha" value="{{ old('fecha') }}"
                                                                 placeholder="Fecha">
                                                         </div>
+                                                        {{-- Mensaje de error --}}
+                                                        @error('fecha')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
                                                     <div class="col">
                                                         {{-- Select para elegir al cliente que se va a cotizar --}}
                                                         <div class="input-group input-group-sm ms-2 me-10">
                                                             <select class="form-control" name="cliente_id"
                                                                 id="cliente_id">
-                                                                <option value="" selected disabled>Selecciona un
+                                                                <option value="" selected disabled>
+                                                                    Selecciona un
                                                                     cliente
                                                                 </option>
                                                                 @foreach ($clientes as $cliente)
@@ -378,6 +448,10 @@
                                                                     </option>
                                                                 @endforeach
                                                             </select>
+                                                            {{-- Mensaje de error --}}
+                                                            @error('cliente_id')
+                                                                <small class="text-danger">{{ $message }}</small>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col">
@@ -388,6 +462,11 @@
                                                                 value="{{ old('codigo_referencia') }}"
                                                                 placeholder="Codigo de referencia">
                                                         </div>
+                                                        {{-- Mensaje de error --}}
+                                                        @error('codigo_referencia')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
+
                                                     </div>
                                                     <div class="col">
                                                         {{-- Descripcion de la cotizacion --}}
@@ -396,6 +475,10 @@
                                                                 id="descripcion_cotizacion"
                                                                 placeholder="Descripcion de la cotizacion"></input>
                                                         </div>
+                                                        {{-- Mensaje de error --}}
+                                                        @error('descripcion_cotizacion')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
                                                 </div>
 
@@ -412,7 +495,8 @@
 
                                                 <div class="d-flex justify-content-end">
                                                     <button class="btn bg-gradient-primary mt-4 mx-2" name="guardar"
-                                                        value="save">Guardar cotización</button>
+                                                        data-bs-toggle="modal" value="save">Guardar
+                                                        cotización</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -423,7 +507,76 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
 @endsection
+
+@push('modals')
+    {{-- Modal para mostrar mensaje --}}
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {{-- Condicionamos el tipo de mensaje --}}
+                    @if (session('success'))
+                        <h5 class="modal-title" id="successModalLabel">¡Bien!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    @elseif (session('warning'))
+                        <h5 class="modal-title" id="successModalLabel">¡Cuidado!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    @elseif (session('error'))
+                        <h5 class="modal-title" id="successModalLabel">¡Algo salio mal!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    @endif
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    @if (session('success'))
+                        <img src="{{ asset('images/icons/icon-success.svg') }}" alt="icono de exito" class="mb-2"
+                            width="70%">
+                        {{ session('success') }}
+                    @elseif (session('warning'))
+                        <img src="{{ asset('images/icons/icon-warning.svg') }}" alt="icono de warning" class="mb-2"
+                            width="70%">
+                        {{ session('warning') }}
+                    @elseif (session('error'))
+                        <img src="{{ asset('images/icons/icon-error.svg') }}" alt="icono de error" class="mb-2"
+                            width="70%">
+                        {{ session('error') }}
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+@endpush
+
+@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- Modales --}}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            @if (session('success'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @elseif (session('warning'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @elseif (session('error'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @endif
+        });
+    </script>
+@endpush

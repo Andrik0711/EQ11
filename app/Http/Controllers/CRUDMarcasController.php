@@ -67,7 +67,7 @@ class CRUDMarcasController extends Controller
         ]);
 
         // Redireccionar la misms vista
-        return back()->with('mensaje', 'Marca creada con exito');
+        return back()->with('success', 'Marca creada con éxito');
     }
 
     // Metodo para mostrar las marcas
@@ -118,16 +118,22 @@ class CRUDMarcasController extends Controller
         // Guardamos los cambios en la base de datos
         $marca->save();
 
-        return back()->with('mensaje', 'Marca actualizada con éxito');
+        return back()->with('success', 'Marca actualizada con éxito');
     }
 
     // Metodo para eliminar una marca
     public function MarcaDestroy($id)
     {
-        $marca = Marca::findOrFail($id);
-        // Eliminar la marca de la base de datos y la imagen de la carpeta marcas
-        File::delete(public_path('marcas') . '/' . $marca->imagen_marca);
-        $marca->delete();
-        return back()->with('mensaje', 'Marca eliminada con exito');
+        try {
+            $marca = Marca::findOrFail($id);
+            // Eliminar la marca de la base de datos y la imagen de la carpeta marcas
+
+            if ($marca->delete()) {
+                File::delete(public_path('marcas') . '/' . $marca->imagen_marca);
+            }
+            return back()->with('success', 'Marca eliminada con éxito');
+        } catch (\Exception $e) {
+            return back()->with('error', 'No se puede eliminar la marca porque tiene productos asociados');
+        }
     }
 }

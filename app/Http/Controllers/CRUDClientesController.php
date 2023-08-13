@@ -87,7 +87,7 @@ class CRUDClientesController extends Controller
             'imagen_cliente' => $request->imagen
         ]);
 
-        return back()->with('mensaje', 'Cliente registrador con exito');
+        return back()->with('success', 'Cliente registrador con éxito');
     }
 
     // Metodo para direccionar a la vista de editar cliente
@@ -145,18 +145,28 @@ class CRUDClientesController extends Controller
         // Guardamos los cambios en la base de datos
         $cliente->save();
 
-        return back()->with('mensaje', 'Cliente actualizado con exito');
+        return back()->with('success', 'Cliente actualizado con éxito');
     }
 
     // Metodo para eliminar cliente
     public function ClienteDestroy($id)
     {
-        $cliente = Cliente::findOrFail($id);
+        try {
+            $cliente = Cliente::findOrFail($id);
 
-        // Eliminar al cliente de la base de datos y la imagen de la carpeta clientes
-        File::delete(public_path('clientes') . '/' . $cliente->imagen_cliente);
-        $cliente->delete();
-
-        return back()->with('mensaje', 'Cliente eliminado con exito');
+            // Verificar si el cliente tiene ventas realizadas
+            if ($cliente->ventas->isEmpty()) {
+                // Si no hay ventas asociadas, procede a eliminar al cliente
+                if ($cliente->delete()) {
+                    File::delete(public_path('clientes') . '/' . $cliente->imagen_cliente);
+                }
+                return back()->with('success', 'Cliente eliminado con éxito');
+            } else {
+                // Si hay ventas asociadas, muestra un mensaje de error
+                return back()->with('error', 'No se puede eliminar el cliente porque tiene ventas realizadas.');
+            }
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Ocurrió un error al intentar eliminar el cliente.');
+        }
     }
 }

@@ -4,6 +4,12 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css" />
+
+    <style>
+        .select2-selection__rendered {
+            display: none;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -39,7 +45,7 @@
                                                 {{-- Label --}}
                                                 <h6 for="id_categoria_producto">Seleccione una categoría</h6>
                                                 {{-- Select --}}
-                                                <select class="form-control" id="id_categoria_producto"
+                                                <select class="form-control select2" id="id_categoria_producto"
                                                     name="id_categoria_producto">
                                                     <option value="">Seleccione una categoría</option>
                                                     @foreach ($categorias as $categoria)
@@ -62,7 +68,7 @@
                                                 {{-- Label --}}
                                                 <h6 for="id_subcategoria_producto">Seleccione una Sub categoría</h6>
                                                 {{-- Select --}}
-                                                <select class="form-control" id="id_subcategoria_producto"
+                                                <select class="form-control select2" id="id_subcategoria_producto"
                                                     name="id_subcategoria_producto">
                                                     <option value="">Seleccione una categoría</option>
                                                     @foreach ($subcategorias as $subcategoria)
@@ -243,18 +249,67 @@
                     </div>
                 </div>
             </div>
-
-
-            {{-- Alerta de éxito --}}
-            @if (session('mensaje'))
-                <div class="alert alert-success" role="alert">
-                    <strong>Success!</strong> {{ session('mensaje') }}
-                </div>
-            @endif
         </div>
     </main>
 @endsection
 
+@push('modals')
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">¡Bien!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    <img src="{{ asset('images/icons/icon-success.svg') }}" alt="icono de exito" class="mb-2"
+                        width="70%">
+                    {{ session('success') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="warningModalLabel">¡Cuidado!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    <img src="{{ asset('images/icons/icon-warning.svg') }}" alt="icono de warning" class="mb-2"
+                        width="70%">
+                    {{ session('warning') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">¡Algo salió mal!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    <img src="{{ asset('images/icons/icon-error.svg') }}" alt="icono de error" class="mb-2"
+                        width="70%">
+                    {{ session('error') }}
+                </div>
+            </div>
+        </div>
+    </div>
+@endpush
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
@@ -302,6 +357,74 @@
         // Remover un archivo
         subir_imagen_categorias.on('removedfile', function() {
             document.querySelector('[name= "imagen"]').value = "";
+        });
+    </script>
+
+
+    {{-- Script para mostrar la subcategoria dependiendo de la categoria --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Inicializar el plugin Select2 en el campo de categorías
+            $('#id_categoria_producto').select2();
+
+            // Cargar las subcategorías dependiendo de la categoría seleccionada
+            $('#id_categoria_producto').on('change', function() {
+                var categoriaId = $(this).val();
+
+                // Realizar una petición AJAX para obtener las subcategorías de la categoría seleccionada
+                $.ajax({
+                    url: '/api/subcategorias/' + categoriaId, // Ruta para obtener las subcategorías
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        // Limpiar el select de subcategorías
+                        $('#id_subcategoria_producto').empty();
+
+                        // Agregar las opciones correspondientes a las subcategorías
+                        $.each(data, function(index, subcategoria) {
+                            $('#id_subcategoria_producto').append(
+                                $('<option></option>').attr('value', subcategoria
+                                    .id).text(subcategoria.nombre_subcategoria)
+                            );
+                        });
+
+                        // Inicializar el plugin Select2 en el campo de subcategorías
+                        $('#id_subcategoria_producto').select2();
+
+                        // Actualizar el plugin Select2 para reflejar los cambios
+                        $('#id_subcategoria_producto').trigger('change');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    {{-- Modales --}}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            @if (session('success'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @elseif (session('warning'))
+                $('#warningModal').modal('show');
+                setTimeout(function() {
+                    $('#warningModal').modal('hide');
+                }, 6000);
+            @elseif (session('error'))
+                $('#errorModal').modal('show');
+                setTimeout(function() {
+                    $('#errorModal').modal('hide');
+                }, 6000);
+            @endif
         });
     </script>
 @endpush

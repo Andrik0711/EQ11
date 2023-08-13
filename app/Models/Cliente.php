@@ -24,4 +24,10 @@ class Cliente extends Model
         'descripcion_cliente',
         'imagen_cliente'
     ];
+
+    // Relacion donde un cliente puede tener muchas ventas
+    public function ventas()
+    {
+        return $this->hasMany(Venta::class, 'cliente_id');
+    }
 }

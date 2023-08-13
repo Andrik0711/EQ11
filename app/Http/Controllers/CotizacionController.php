@@ -68,17 +68,17 @@ class CotizacionController extends Controller
 
                 // Validamos que si la cantidad ingresada es = a 0, regrese un mensaje de error
                 if ($cantidadVenta === 0) {
-                    return back()->with('mensaje', 'La cantidad ingresada no puede ser 0');
+                    return back()->with('warning', 'La cantidad ingresada no puede ser 0');
                 }
 
                 // Validamos que la cantidad ingresada no sea mayor a la cantidad en stock
                 if ($cantidadVenta > $tabla[$producto_id]['cantidad']) {
-                    return back()->with('mensaje', 'La cantidad ingresada no puede ser mayor a la cantidad en stock');
+                    return back()->with('warning', 'La cantidad ingresada no puede ser mayor a la cantidad en stock');
                 }
 
                 // Validamos que la suma de la cantidad ingresada y la cantidad en la tabla no sea mayor a la cantidad en stock
                 if ($cantidadVenta + $tabla[$producto_id]['cantidad'] > $producto->unidades_disponibles) {
-                    return back()->with('mensaje', 'La cantidad ingresada no puede ser mayor a la cantidad en stock');
+                    return back()->with('warning', 'La cantidad ingresada no puede ser mayor a la cantidad en stock');
                 }
 
                 $tabla[$producto_id]['cantidad'] += $cantidadVenta; // Aumentar la cantidad en la cantidad ingresada
@@ -87,17 +87,17 @@ class CotizacionController extends Controller
 
                 // Validamos que si la cantidad ingresada es = a 0, regrese un mensaje de error
                 if ($cantidadVenta === 0) {
-                    return back()->with('mensaje', 'La cantidad ingresada no puede ser 0');
+                    return back()->with('warning', 'La cantidad ingresada no puede ser 0');
                 }
 
                 // Validamos que la cantidad ingresada no sea mayor a la cantidad en stock
                 if ($cantidadVenta > $producto->unidades_disponibles) {
-                    return back()->with('mensaje', 'La cantidad ingresada no puede ser mayor a la cantidad en stock');
+                    return back()->with('warning', 'La cantidad ingresada no puede ser mayor a la cantidad en stock');
                 }
 
                 // Validamos que la cantidad ingresada no sea menor a 0
                 if ($cantidadVenta < 0) {
-                    return back()->with('mensaje', 'La cantidad ingresada no puede ser menor a 0');
+                    return back()->with('warning', 'La cantidad ingresada no puede ser menor a 0');
                 }
 
                 // Agregar el producto a la tabla con la cantidad ingresada
@@ -110,7 +110,7 @@ class CotizacionController extends Controller
             }
 
             session()->put('tabla', $tabla);
-            return back();
+            return back()->with('success', 'Producto agregado correctamente');
         }
         // Si se recibe un less, se elimina un producto de la tabla de cotizacion
         elseif ($accion === 'less') {
@@ -120,7 +120,7 @@ class CotizacionController extends Controller
                 if (isset($tabla[$producto_id])) {
                     $tabla[$producto_id]['cantidad'] = $cantidadVenta; // Establecer la cantidad ingresada
                     session()->put('tabla', $tabla);
-                    return back();
+                    return back()->with('success', 'Cantidad actualizada correctamente');
                 }
             }
         }
@@ -139,7 +139,7 @@ class CotizacionController extends Controller
         if (isset($tabla[$producto_id])) {
             unset($tabla[$producto_id]);
             session()->put('tabla', $tabla);
-            return back();
+            return back()->with('success', 'Producto eliminado correctamente');
         }
     }
 
@@ -149,55 +149,60 @@ class CotizacionController extends Controller
 
         // dd($request->all());
 
-        // Validar los datos del formulario
-        $request->validate([
-            'fecha' => 'required|date',
-            'cliente_id' => 'required',
-            'codigo_referencia' => 'nullable|string|max:255',
-            'descripcion_cotizacion' => 'nullable|string',
-            'subtotal' => 'required|numeric',
-            'totalImpuestos' => 'required|numeric',
-            'total' => 'required|numeric',
-            'status_cotizacion' => 'required',
-        ]);
-
-        // Crear una nueva instancia de Cotizacion y asignar los valores del formulario
-        $cotizacion = new Cotizacion();
-        $cotizacion->fecha_cotizacion = $request->fecha;
-        $cotizacion->cliente_id = $request->cliente_id;
-        $cotizacion->referencia = $request->codigo_referencia;
-        $cotizacion->descripcion_cotizacion = $request->descripcion_cotizacion;
-        $cotizacion->subtotal = $request->subtotal;
-        $cotizacion->impuestos = $request->totalImpuestos;
-        $cotizacion->total = $request->total;
-        $cotizacion->status = $request->status_cotizacion;
-
-        // Guardar la cotización en la base de datos
-        $cotizacion->save();
-
-
-        // Obtener los productos seleccionados de la sesión
-        $productosSeleccionados = session()->get('tabla', []);
-
-        // Recorremos los productos seleccionados y los asociamos a la cotización en la tabla intermedia
-        foreach ($productosSeleccionados as $producto_id => $producto) {
-            // Buscamos el producto en la base de datos
-            $productoModel = Producto::find($producto_id);
-
-            // Asociamos el producto a la cotización en la tabla intermedia
-            $cotizacion->productos()->attach($productoModel, [
-                'cantidad' => $producto['cantidad'],
-                'precio_unitario' => $producto['precio'],
-                'subtotal' => $producto['cantidad'] * $producto['precio'],
+        try {
+            // Validar los datos del formulario
+            $request->validate([
+                'fecha' => 'required|date',
+                'cliente_id' => 'required',
+                'codigo_referencia' => 'nullable|string|max:255',
+                'descripcion_cotizacion' => 'nullable|string',
+                'subtotal' => 'required|numeric',
+                'totalImpuestos' => 'required|numeric',
+                'total' => 'required|numeric',
+                'status_cotizacion' => 'required',
             ]);
+
+            // Crear una nueva instancia de Cotizacion y asignar los valores del formulario
+            $cotizacion = new Cotizacion();
+            $cotizacion->fecha_cotizacion = $request->fecha;
+            $cotizacion->cliente_id = $request->cliente_id;
+            $cotizacion->referencia = $request->codigo_referencia;
+            $cotizacion->descripcion_cotizacion = $request->descripcion_cotizacion;
+            $cotizacion->subtotal = $request->subtotal;
+            $cotizacion->impuestos = $request->totalImpuestos;
+            $cotizacion->total = $request->total;
+            $cotizacion->status = $request->status_cotizacion;
+
+            // Guardar la cotización en la base de datos
+            $cotizacion->save();
+
+
+            // Obtener los productos seleccionados de la sesión
+            $productosSeleccionados = session()->get('tabla', []);
+
+            // Recorremos los productos seleccionados y los asociamos a la cotización en la tabla intermedia
+            foreach ($productosSeleccionados as $producto_id => $producto) {
+                // Buscamos el producto en la base de datos
+                $productoModel = Producto::find($producto_id);
+
+                // Asociamos el producto a la cotización en la tabla intermedia
+                $cotizacion->productos()->attach($productoModel, [
+                    'cantidad' => $producto['cantidad'],
+                    'precio_unitario' => $producto['precio'],
+                    'subtotal' => $producto['cantidad'] * $producto['precio'],
+                ]);
+            }
+
+            // Eliminamos los productos seleccionados de la sesión después de guardarlos en la tabla intermedia
+            session()->forget('tabla');
+
+            // Redireccionamos a la vista de cotizaciones
+            return back()->with('success', 'Cotización creada correctamente');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error al crear la cotización');
         }
-
-        // Eliminamos los productos seleccionados de la sesión después de guardarlos en la tabla intermedia
-        session()->forget('tabla');
-
-        // Redireccionamos a la vista de cotizaciones
-        return redirect()->route('mostrar-cotizaciones')->with('mensaje', 'Cotización creada correctamente');
     }
+
 
     // Metodo para actualizar el status de la cotizacion
     public function actualizarEstadoCotizacion(Request $request, $id)
@@ -219,6 +224,6 @@ class CotizacionController extends Controller
         $cotizacion->save();
 
         // Redireccionar a la vista de cotizaciones
-        return redirect()->route('mostrar-cotizaciones')->with('mensaje', 'Status de la cotización actualizado correctamente');
+        return back()->with('success', 'Estatus de la cotización actualizado correctamente');
     }
 }

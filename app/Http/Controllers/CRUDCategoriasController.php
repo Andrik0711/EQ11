@@ -74,7 +74,7 @@ class CRUDCategoriasController extends Controller
         ]);
 
         // Redireccionar a la misma vista con mensaje de exito
-        return back()->with('mensaje', 'Categoria registrada con exito');
+        return back()->with('success', 'Categoria registrada con exito');
     }
 
     // Metodo para direcionar al form de editar una categoria
@@ -123,7 +123,7 @@ class CRUDCategoriasController extends Controller
         $categoria->save();
 
         // Redireccionar a la misma vista con mensaje de exito
-        return back()->with('mensaje', 'Categoria actualizada con exito');
+        return back()->with('success', 'Categoria actualizada con éxito');
     }
 
     // Metodo para eliminar una categoria
@@ -131,13 +131,21 @@ class CRUDCategoriasController extends Controller
     {
 
         // dd($id);
+        try {
+            $categoria = Categoria::findOrFail($id);
+            if ($categoria->delete()) {
+                return back()->with('success', 'Categoria eliminada con éxito');
+            }
+        } catch (\Exception $e) {
+            return back()->with('error', 'No se puede eliminar la categoria porque esta asociada a un producto');
+        }
 
-        $categoria = Categoria::findOrFail($id);
-        // Eliminar la categoría de la base de datos y la imagen de la carpeta uploads
-        File::delete(public_path('categorias') . '/' . $categoria->imagen_categoria);
-        $categoria->delete();
+        // $categoria = Categoria::findOrFail($id);
+        // // Eliminar la categoría de la base de datos y la imagen de la carpeta uploads
+        // File::delete(public_path('categorias') . '/' . $categoria->imagen_categoria);
+        // $categoria->delete();
 
-        // Redireccionar a la misma vista con mensaje de exito
-        return back()->with('mensaje', 'Categoria eliminada con exito');
+        // // Redireccionar a la misma vista con mensaje de exito
+        // return back()->with('success', 'Categoria eliminada con exito');
     }
 }

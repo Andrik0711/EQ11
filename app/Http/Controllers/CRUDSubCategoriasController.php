@@ -80,7 +80,7 @@ class CRUDSubCategoriasController extends Controller
         ]);
 
         // Redireccionar a la misma vista con mensaje de exito
-        return back()->with('mensaje', 'SubCategoria registrada con exito');
+        return back()->with('success', 'Subcategoria registrada con éxito');
     }
 
     // Metodo para direcionar al form de editar una SubCategoria
@@ -130,19 +130,32 @@ class CRUDSubCategoriasController extends Controller
         $subcategoria->save();
 
         // Redireccionar a la misma vista con mensaje de exito
-        return back()->with('mensaje', 'Subcategoria actualizada con exito');
+        return back()->with('success', 'Subcategoria actualizada con éxito');
     }
 
     // Metodo para eliminar una SubCategoria
     public function SubCategoriaDestroy($id)
     {
-        // Eliminar SubCategoria
-        $subcategoria = Subcategoria::findOrFail($id);
-        // Eliminar la Subcategoria de la base de datos y la imagen de la carpeta subcategorias
-        File::delete(public_path('subcategorias') . '/' . $subcategoria->imagen_subcategoria);
-        $subcategoria->delete();
 
-        // Redireccionar a la misma vista con mensaje de exito
-        return back()->with('mensaje', 'Subcategoria eliminada con exito');
+        try {
+            // Eliminar SubCategoria
+            $subcategoria = Subcategoria::findOrFail($id);
+            // Eliminar la Subcategoria de la base de datos y la imagen de la carpeta subcategorias
+            if ($subcategoria->delete()) {
+                File::delete(public_path('subcategorias') . '/' . $subcategoria->imagen_subcategoria);
+                return back()->with('success', 'Subcategoria eliminada con éxito');
+            }
+        } catch (\Throwable $th) {
+            return back()->with('error', 'No se puede eliminar la Subcategoria porque tiene productos asociados');
+        }
+
+        // // Eliminar SubCategoria
+        // $subcategoria = Subcategoria::findOrFail($id);
+        // // Eliminar la Subcategoria de la base de datos y la imagen de la carpeta subcategorias
+        // File::delete(public_path('subcategorias') . '/' . $subcategoria->imagen_subcategoria);
+        // $subcategoria->delete();
+
+        // // Redireccionar a la misma vista con mensaje de exito
+        // return back()->with('success', 'Subcategoria eliminada con éxito');
     }
 }

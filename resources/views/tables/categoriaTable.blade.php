@@ -38,8 +38,7 @@
                                     <label for="xml-file-input" class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="import" width="30px">
                                     </label>
-                                    <form id="import-form" action="{{ route('import-xml-categorias') }}" method="POST"
-                                        enctype="multipart/form-data">
+                                    <form id="import-form" action="#" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <input type="file" name="xml_file" accept=".xml" id="xml-file-input"
                                             style="display: none;">

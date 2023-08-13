@@ -45,7 +45,7 @@ class CRUDCategoriasController extends Controller
     // Metodo que muestra todas las categorias registradas
     public function mostrarCategorias()
     {
-        $categorias = Categoria::all();
+        $categorias = Categoria::all(); // Cambia esto según tu lógica para obtener las categorías
         return view('tables.categoriaTable', compact('categorias'));
     }
 

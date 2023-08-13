@@ -22,3 +22,6 @@ new DataTable('#proveedores-table');
 
 // inicializar datatable de cotizaciones
 new DataTable('#cotizaciones-table');
+
+// inicializar datatable de compras
+new DataTable('#compras-table');

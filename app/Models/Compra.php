@@ -14,12 +14,14 @@ class Compra extends Model
     protected $fillable = [
         'fecha_compra',
         'proveedor_id',
+        'referencia',
+        'descripcion',
         'compra_status',
-        'compra_abono',
+        // 'compra_abono',
         'compra_subtotal',
         'compra_impuestos',
         'compra_total',
-        'compra_unidades_compradas',
+        'compra_productos_comprados',
     ];
 
     // Relacion donde una compra pertenece a un proveedor

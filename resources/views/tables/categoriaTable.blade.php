@@ -33,10 +33,18 @@
                                         <img src="{{ asset('images/icons/icon-pdf.svg') }}" alt="pdf" width="30px">
                                     </a>
 
-                                    {{-- Imagen para exportar XML --}}
-                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                        <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
-                                    </a>
+
+                                    {{-- Boton de importar XML --}}
+                                    <label for="xml-file-input" class="btn bg-gradient-primary mt-4 mx-2">
+                                        <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="import" width="30px">
+                                    </label>
+                                    <form id="import-form" action="{{ route('import-xml-categorias') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="file" name="xml_file" accept=".xml" id="xml-file-input"
+                                            style="display: none;">
+                                    </form>
+
 
                                     {{-- Boton de agregar categorias --}}
                                     <a href="{{ route('registrar-categoria-form') }}"
@@ -259,6 +267,20 @@
                 "language": {
                     "infoFiltered": "" // Remove the "(filtered from x total entries)" text
                 }
+            });
+            // Abre el navegador de archivos al hacer clic en el botón
+            $('#xml-file-input').on('click', function() {
+                $(this).val('');
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            // Abre el navegador de archivos al hacer clic en el botón
+            $('#xml-file-input').on('change', function() {
+                $('#import-form').submit(); // Submit the form on file selection
             });
         });
     </script>

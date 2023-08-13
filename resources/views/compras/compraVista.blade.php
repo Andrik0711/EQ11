@@ -33,6 +33,11 @@
                 <div class="card-header pb-2">
                     <div class="d-flex justify-content-between align-items-center mx-4">
                         <h6 class="mb-0">Generar una compra</h6>
+
+                        <a href="{{ route('mostrar-compras') }}"
+                            class="btn bg-gradient-primary mt-4 mx-2 d-flex justify-content-end" type="submit">
+                            Regresar
+                        </a>
                     </div>
                 </div>
                 <div class="card-body px-4 pt-2 pb-2">
@@ -47,10 +52,6 @@
                                         type="submit">
                                         Mostrar todos los productos
                                     </a>
-                                    {{-- <a href="#" class="btn bg-gradient-primary mt-4 mx-2" type="submit">
-                                        <img src="{{ asset('images/icons/icon-carrito.svg') }}" alt="icono carrito" width="30px">
-                                        100
-                                    </a> --}}
                                 </div>
                             </div>
                         </div>
@@ -166,7 +167,10 @@
 
                                                                         {{-- Boton para enviar --}}
                                                                         <button class="btn bg-gradient-primary"
-                                                                            name="agregar" value="add">Añadir</button>
+                                                                            id="agregarBtn" name="agregar"
+                                                                            data-bs-toggle="modal"
+                                                                            value="add">Añadir</button>
+
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -231,8 +235,8 @@
                                                                         <p class="card-text">
                                                                             {{ $producto->descripcion_producto }}</p>
                                                                         <p class="card-text">Precio de
-                                                                            venta:
-                                                                            ${{ $producto->precio_de_venta }}
+                                                                            compra:
+                                                                            ${{ $producto->precio_de_compra }}
                                                                         </p>
                                                                         <p class="card-text">Unidades
                                                                             disponibles:
@@ -257,7 +261,10 @@
 
                                                                         {{-- Boton para enviar --}}
                                                                         <button class="btn bg-gradient-primary"
-                                                                            name="agregar" value="add">Añadir</button>
+                                                                            id="agregarBtn" name="agregar"
+                                                                            data-bs-toggle="modal"
+                                                                            value="add">Añadir</button>
+
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -334,6 +341,9 @@
                                                             Impuestos</th>
                                                         <th
                                                             scope="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                            Total</th>
+                                                        <th
+                                                            scope="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                             Borrar</th>
                                                     </tr>
                                                 </thead>
@@ -380,10 +390,12 @@
                                                             </td>
                                                             <td>${{ number_format($producto['precio'] * $producto['cantidad'] * 0.16, 2) }}
                                                             </td>
+                                                            <td>${{ number_format($producto['precio'] * $producto['cantidad'] + $producto['precio'] * $producto['cantidad'] * 0.16, 2) }}
+                                                            </td>
                                                             <td>
                                                                 <div
                                                                     class="d-flex justify-content-center align-items-center">
-                                                                    <form action="{{ route('eliminar-compra') }}"
+                                                                    <form action="{{ route('eliminar-producto-compra') }}"
                                                                         method="POST">
                                                                         @csrf
                                                                         @method('DELETE')
@@ -398,18 +410,18 @@
                                                         </tr>
                                                     @endforeach
                                                     <tr>
-                                                        <td colspan="4"></td>
-                                                        <td class="text-right font-weight-bold">Impuestos total:</td>
+                                                        <td colspan="5"></td>
+                                                        <td class="text-right font-weight-bold">Total impuesto:</td>
                                                         <td>${{ number_format($totalImpuestos, 2) }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="4"></td>
-                                                        <td class="text-right font-weight-bold">Subtotal:</td>
+                                                        <td colspan="5"></td>
+                                                        <td class="text-right font-weight-bold">Subtotal final:</td>
                                                         <td>${{ number_format($subtotal, 2) }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="4"></td>
-                                                        <td class="text-right font-weight-bold">Cotización total:</td>
+                                                        <td colspan="5"></td>
+                                                        <td class="text-right font-weight-bold">Compra total:</td>
                                                         <td>${{ number_format($subtotal + $totalImpuestos, 2) }}</td>
                                                     </tr>
                                                 </tbody>
@@ -418,7 +430,6 @@
                                         <div class="d-flex justify-content-start">
                                             <form action="{{ route('compra-store') }}" method="POST" novalidate>
                                                 @csrf
-
                                                 <div class="row">
                                                     <div class="col">
                                                         {{-- Input para la fecha --}}
@@ -427,6 +438,10 @@
                                                                 id="fecha" value="{{ old('fecha') }}"
                                                                 placeholder="Fecha">
                                                         </div>
+                                                        {{-- Mensaje de error --}}
+                                                        @error('fecha')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
                                                     <div class="col">
                                                         {{-- Select para elegir al cliente que se va a cotizar --}}
@@ -443,6 +458,9 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
+                                                        @error('proveedor_id')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
                                                     <div class="col">
                                                         {{-- Input para el codigo de referencia --}}
@@ -452,6 +470,9 @@
                                                                 value="{{ old('codigo_referencia') }}"
                                                                 placeholder="Codigo de referencia">
                                                         </div>
+                                                        @error('codigo_referencia')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        @enderror
                                                     </div>
                                                     <div class="col">
                                                         {{-- Descripcion de la cotizacion --}}
@@ -460,22 +481,25 @@
                                                                 placeholder="Descripcion de la compra"></textarea>
                                                         </div>
                                                     </div>
+                                                    @error('descripcion_compra')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
                                                 </div>
-
                                                 <input type="hidden" name="subtotal" value="{{ $subtotal }}">
                                                 <input type="hidden" name="totalImpuestos"
                                                     value="{{ $totalImpuestos }}">
                                                 <input type="hidden" name="total"
                                                     value="{{ $subtotal + $totalImpuestos }}">
-
                                                 {{-- Campo oculta para el status iniciada, pendiente, inhabilitada --}}
                                                 <input type="hidden" name="status_compra" value="iniciada"
                                                     id="status_compra">
-
-
+                                                {{-- Campo oculto para el numero de productos diferentes que se agregaron --}}
+                                                <input type="hidden" name="cantidad_productos_diferentes"
+                                                    value="{{ $cantidad_productos_diferentes }}"
+                                                    id="cantidad_productos_diferentes">
                                                 <div class="d-flex justify-content-end">
                                                     <button class="btn bg-gradient-primary mt-4 mx-2" name="guardar"
-                                                        value="save">Realizar compra</button>
+                                                        data-bs-toggle="modal" value="save">Realizar compra</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -489,3 +513,74 @@
         </div>
     </main>
 @endsection
+
+@push('modals')
+    {{-- Modal para mostrar mensaje --}}
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {{-- Condicionamos el tipo de mensaje --}}
+                    @if (session('success'))
+                        <h5 class="modal-title" id="successModalLabel">¡Bien!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    @elseif (session('warning'))
+                        <h5 class="modal-title" id="successModalLabel">¡Cuidado!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    @elseif (session('error'))
+                        <h5 class="modal-title" id="successModalLabel">¡Algo salio mal!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    @endif
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    @if (session('success'))
+                        <img src="{{ asset('images/icons/icon-success.svg') }}" alt="icono de exito" class="mb-2"
+                            width="70%">
+                        {{ session('success') }}
+                    @elseif (session('warning'))
+                        <img src="{{ asset('images/icons/icon-warning.svg') }}" alt="icono de warning" class="mb-2"
+                            width="70%">
+                        {{ session('warning') }}
+                    @elseif (session('error'))
+                        <img src="{{ asset('images/icons/icon-error.svg') }}" alt="icono de error" class="mb-2"
+                            width="70%">
+                        {{ session('error') }}
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+@endpush
+
+
+@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- Modales --}}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            @if (session('success'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @elseif (session('warning'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @elseif (session('error'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @endif
+        });
+    </script>
+@endpush

@@ -175,7 +175,8 @@
 
             {{-- Punto de venta --}}
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('compras') ? 'active' : '' }} " href="{{ route('compras') }}">
+                <a class="nav-link {{ Request::is('mostrar-compras') ? 'active' : '' }} "
+                    href="{{ route('mostrar-compras') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <img src="{{ asset('images/icons/icon-shop.svg') }}" alt="punto-venta" width="15px">

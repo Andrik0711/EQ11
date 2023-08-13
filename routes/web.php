@@ -20,6 +20,9 @@ use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\CRUDCategoriasController;
 use App\Http\Controllers\CRUDProveedoresController;
 use App\Http\Controllers\CRUDSubCategoriasController;
+use App\Http\Controllers\XMLImportController;
+use Dompdf\Dompdf;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -241,16 +244,26 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-	// Ruta para ir a la vista de compras
-	Route::get('/mostrar-compras', [ComprasController::class, 'index'])->name('compras');
-	// Ruta para filtrar productos por categoria de la compra
+	// Ruta para ir a la vista de compras de productos
+	Route::get('/realizar-compra', [ComprasController::class, 'compraVista'])->name('compras');
+	// Ruta para filtrar productos por categoria de la compra en la vista
 	Route::get('/filtrar-productos-compra/{categoriaId}', [ComprasController::class, 'filtrarProductos'])->name('filtrar-productos-compra');
-	// Ruta para agregar productos a la compra
-	Route::post('/agregar-a-compra', [ComprasController::class, 'agregarProducto'])->name('agregar-compra');
-	// Ruta para eliminar productos de la compra
-	Route::delete('/eliminar-de-compra', [ComprasController::class, 'eliminarProducto'])->name('eliminar-compra');
-	// Ruta para almacenar la compra
-	Route::post('/almacenar-compra', [ComprasController::class, 'almacenarCompra'])->name('compra-store');
+	// Ruta para agregar productos a la compra en la tabla
+	Route::post('/agregar-compra', [ComprasController::class, 'agregarProducto'])->name('agregar-compra');
+	// Ruta para almacenar la compra en la base de datos
+	Route::post('/almacenar-compra', [ComprasController::class, 'guardarCompra'])->name('compra-store');
+	// Ruta para mostrar la tabla de compras
+	Route::get('/mostrar-compras', [ComprasController::class, 'mostrarCompras'])->name('mostrar-compras');
+	// Ruta para mostrar el ticket de la compra
+	Route::get('/mostrar-ticket-compra/{id}', [ComprasController::class, 'mostrarTicket'])->name('mostrar-ticket-compra');
+	// Ruta para eliminar productos de la compra en la tabla
+	Route::delete('/eliminar-de-compra', [ComprasController::class, 'eliminarProducto'])->name('eliminar-producto-compra');
+	// Ruta para eliminar una compra
+	Route::delete('/eliminar-compra/{id}', [ComprasController::class, 'eliminarCompra'])->name('eliminar-compra');
+
+
+
+	Route::get('/exportar-pdf-categorias', [PDFController::class, 'exportarPDF'])->name('exportar-pdf-categorias');
 });
 
 
@@ -269,3 +282,11 @@ Route::group(['middleware' => 'guest'], function () {
 Route::get('/login', function () {
 	return view('session/login-session');
 })->name('login');
+
+
+Route::get('/exportar-categorias-pdf', [PDFController::class, 'PDFController'])->name('exportar-categorias-pdf');
+
+Route::post('/import-xml', [XMLImportController::class, 'importXMLCategorias'])->name('import-xml-categorias');
+Route::post('/import-xml', [XMLImportController::class, 'importXMLSubcategorias'])->name('import-xml-subcategorias');
+Route::post('/import-xml', [XMLImportController::class, 'importXMLProductos'])->name('import-xml-productos');
+Route::post('/import-xml', [XMLImportController::class, 'importXMLMarcas'])->name('import-xml-marcas');

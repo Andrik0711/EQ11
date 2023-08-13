@@ -32,10 +32,16 @@
                                         <img src="{{ asset('images/icons/icon-pdf.svg') }}" alt="pdf" width="30px">
                                     </a>
 
-                                    {{-- Imagen para exportar XML --}}
-                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                        <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
-                                    </a>
+                                    {{-- Boton de importar XML --}}
+                                    <label for="xml-file-input" class="btn bg-gradient-primary mt-4 mx-2">
+                                        <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="import" width="30px">
+                                    </label>
+                                    <form id="import-form" action="{{ route('import-xml-productos') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="file" name="xml_file" accept=".xml" id="xml-file-input"
+                                            style="display: none;">
+                                    </form>
 
                                     {{-- Boton de agregar productos --}}
                                     <a href="{{ route('registrar-producto-form') }}"

@@ -46,20 +46,22 @@
         @yield('guest')
     @endguest
 
-    @if (session()->has('success'))
+    {{-- @if (session()->has('success'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
             class="position-fixed bg-success rounded right-3 text-sm py-2 px-4">
             <p class="m-0">{{ session('success') }}</p>
         </div>
-    @endif
+    @endif --}}
     <!--   Core JS Files   -->
     <script src="../assets/js/core/popper.min.js"></script>
     <script src="../assets/js/core/bootstrap.min.js"></script>
-    <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-    <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-    <script src="../assets/js/plugins/fullcalendar.min.js"></script>
-    <script src="../assets/js/plugins/chartjs.min.js"></script>
+    {{-- <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script> --}}
+    {{-- <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script> --}}
+    {{-- <script src="../assets/js/plugins/fullcalendar.min.js"></script> --}}
+    {{-- <script src="../assets/js/plugins/chartjs.min.js"></script> --}}
     @stack('rtl')
+
+
     @stack('dashboard')
 
 
@@ -67,7 +69,7 @@
     @stack('modals')
 
 
-    <script>
+    {{-- <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
             var options = {
@@ -75,12 +77,12 @@
             }
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
-    </script>
+    </script> --}}
 
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
+    {{-- <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script> --}}
 
     {{-- Scripts  --}}
     @stack('scripts')

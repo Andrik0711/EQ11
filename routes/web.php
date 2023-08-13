@@ -211,7 +211,7 @@ Route::group(['middleware' => 'auth'], function () {
 	// Ruta para filtrar productos por categoria
 	Route::get('/filtrar-productos/{categoriaId}', [POSController::class, 'filtrarProductos'])->name('filtrar-productos');
 	// Ruta para mostrar el carrito
-	Route::get('/carrito', [POSController::class, 'mostrarCarrito'])->name('carrito.vista');
+	// Route::get('/carrito', [POSController::class, 'mostrarCarrito'])->name('carrito.vista');
 	// Ruta para agregar productos al carrito
 	Route::post('/agregar-al-carrito', [POSController::class, 'agregarCarrito'])->name('agregar-al-carrito');
 	// Ruta para actualizar la cantidad de productos del carrito
@@ -243,6 +243,14 @@ Route::group(['middleware' => 'auth'], function () {
 
 	// Ruta para ir a la vista de compras
 	Route::get('/mostrar-compras', [ComprasController::class, 'index'])->name('compras');
+	// Ruta para filtrar productos por categoria de la compra
+	Route::get('/filtrar-productos-compra/{categoriaId}', [ComprasController::class, 'filtrarProductos'])->name('filtrar-productos-compra');
+	// Ruta para agregar productos a la compra
+	Route::post('/agregar-a-compra', [ComprasController::class, 'agregarProducto'])->name('agregar-compra');
+	// Ruta para eliminar productos de la compra
+	Route::delete('/eliminar-de-compra', [ComprasController::class, 'eliminarProducto'])->name('eliminar-compra');
+	// Ruta para almacenar la compra
+	Route::post('/almacenar-compra', [ComprasController::class, 'almacenarCompra'])->name('compra-store');
 });
 
 

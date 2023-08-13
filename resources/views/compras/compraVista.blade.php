@@ -33,12 +33,6 @@
                 <div class="card-header pb-2">
                     <div class="d-flex justify-content-between align-items-center mx-4">
                         <h6 class="mb-0">Generar una compra</h6>
-                        <div class="d-flex justify-end">
-                            {{-- Boton de regresar --}}
-                            <a href="{{ route('mostrar-cotizaciones') }}" class="btn bg-gradient-primary mt-4 mx-2">
-                                Regresar
-                            </a>
-                        </div>
                     </div>
                 </div>
                 <div class="card-body px-4 pt-2 pb-2">
@@ -48,7 +42,7 @@
                         <div class="d-flex">
                             <div class="container ">
                                 <div class="col d-flex justify-content-start">
-                                    <a href="{{ route('punto-de-venta') }}"
+                                    <a href="{{ route('compras') }}"
                                         class="btn bg-gradient-primary mt-4 mx-2 align-content-center flex-wrap"
                                         type="submit">
                                         Mostrar todos los productos
@@ -71,7 +65,7 @@
                                                 <div class="col">
                                                     <div class="card">
                                                         <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
-                                                            <a href="{{ route('filtrar-productos-cotizacion', $categoria->id) }}"
+                                                            <a href="{{ route('filtrar-productos-compra', $categoria->id) }}"
                                                                 class="d-block d-flex justify-content-center">
                                                                 <img src="{{ asset('categorias/' . $categoria->imagen_categoria) }}"
                                                                     class="img-fluid border-radius-lg" width="20%">
@@ -114,14 +108,14 @@
                             @if (isset($productosfiltrados))
                                 <div id="productoCarousel" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-inner">
-                                        @foreach ($productosfiltrados->chunk(3) as $chunk)
+                                        @foreach ($productosfiltrados->chunk(4) as $chunk)
                                             <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
                                                     @foreach ($chunk as $producto)
                                                         <div class="col mb-4">
                                                             <div class="card">
-                                                                <form action="{{ route('agregar-al-carrito') }}"
-                                                                    method="POST" novalidate>
+                                                                <form action="{{ route('agregar-compra') }}" method="POST"
+                                                                    novalidate>
                                                                     @csrf
 
                                                                     <input type="hidden" name="producto_id"
@@ -154,6 +148,21 @@
                                                                             disponibles:
                                                                             {{ $producto->unidades_disponibles }}
                                                                         </p>
+                                                                        <div class="d-flex justify-content-start pb-2">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <p class="card-text">
+                                                                                    Cantidad:
+                                                                                </p>
+                                                                            </div>
+                                                                            <div
+                                                                                class="input-group input-group-sm ms-2 me-6">
+                                                                                <input class="form-control" type="number"
+                                                                                    name="cantidad_compra"
+                                                                                    id="cantidad_compra" min="1"
+                                                                                    max="{{ $producto->unidades_disponibles }}"
+                                                                                    value="cantidad_compra" placeholder="1">
+                                                                            </div>
+                                                                        </div>
 
                                                                         {{-- Boton para enviar --}}
                                                                         <button class="btn bg-gradient-primary"
@@ -176,8 +185,8 @@
                                         </span>
                                         <span class="visually-hidden">Previous</span>
                                     </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#productoCarousel"
-                                        data-bs-slide="next">
+                                    <button class="carousel-control-next" type="button"
+                                        data-bs-target="#productoCarousel" data-bs-slide="next">
                                         <span class="d-flex justify-content-end" aria-hidden="true">
                                             <img src="{{ asset('images/icons/icon-arrowleft.svg') }}" alt="arrow right"
                                                 width="30%">
@@ -189,13 +198,13 @@
                                 {{-- Mostrar todos los productos --}}
                                 <div id="productoCarousel" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-inner">
-                                        @foreach ($todosLosProductos->chunk(3) as $chunk)
+                                        @foreach ($todosLosProductos->chunk(4) as $chunk)
                                             <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
                                                     @foreach ($chunk as $producto)
                                                         <div class="col mb-4">
                                                             <div class="card">
-                                                                <form action="{{ route('agregar-al-carrito') }}"
+                                                                <form action="{{ route('agregar-compra') }}"
                                                                     method="POST" novalidate>
                                                                     @csrf
 
@@ -229,6 +238,22 @@
                                                                             disponibles:
                                                                             {{ $producto->unidades_disponibles }}
                                                                         </p>
+                                                                        <div class="d-flex justify-content-start pb-2">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <p class="card-text">
+                                                                                    Cantidad:
+                                                                                </p>
+                                                                            </div>
+                                                                            <div
+                                                                                class="input-group input-group-sm ms-2 me-2">
+                                                                                <input class="form-control" type="number"
+                                                                                    name="cantidad_compra"
+                                                                                    id="cantidad_compra" min="1"
+                                                                                    max="{{ $producto->unidades_disponibles }}"
+                                                                                    value="cantidad_compra"
+                                                                                    placeholder="1">
+                                                                            </div>
+                                                                        </div>
 
                                                                         {{-- Boton para enviar --}}
                                                                         <button class="btn bg-gradient-primary"
@@ -280,6 +305,11 @@
                                         $subtotal = 0;
                                         $impuestos = 0;
                                         $total = 0;
+                                        $iva = 0.16;
+                                        $costo_total = 0;
+                                        $subtotal_total = 0;
+                                        $cantidad_productos_diferentes = 0;
+                                        $productosContados = [];
                                     @endphp
 
                                     <div class="card-body px-4 pt-2 pb-2">
@@ -304,7 +334,7 @@
                                                             Impuestos</th>
                                                         <th
                                                             scope="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                            Acciones</th>
+                                                            Borrar</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -320,6 +350,13 @@
                                                             $cantidadProductos += $producto['cantidad'];
                                                             $subtotal += $producto['precio'] * $producto['cantidad'];
                                                             $totalImpuestos += $producto['precio'] * $producto['cantidad'] * 0.16;
+                                                        @endphp
+
+                                                        @php
+                                                            if (!isset($productosContados[$producto_id])) {
+                                                                $productosContados[$producto_id] = 1;
+                                                                $cantidad_productos_diferentes++;
+                                                            }
                                                         @endphp
                                                         <tr>
                                                             <td>
@@ -346,7 +383,7 @@
                                                             <td>
                                                                 <div
                                                                     class="d-flex justify-content-center align-items-center">
-                                                                    <form action="{{ route('eliminar-cotizacion') }}"
+                                                                    <form action="{{ route('eliminar-compra') }}"
                                                                         method="POST">
                                                                         @csrf
                                                                         @method('DELETE')
@@ -379,7 +416,7 @@
                                             </table>
                                         </div>
                                         <div class="d-flex justify-content-start">
-                                            <form action="{{ route('cotizacion-store') }}" method="POST" novalidate>
+                                            <form action="{{ route('compra-store') }}" method="POST" novalidate>
                                                 @csrf
 
                                                 <div class="row">
@@ -394,14 +431,14 @@
                                                     <div class="col">
                                                         {{-- Select para elegir al cliente que se va a cotizar --}}
                                                         <div class="input-group input-group-sm ms-2 me-10">
-                                                            <select class="form-control" name="cliente_id"
-                                                                id="cliente_id">
+                                                            <select class="form-control" name="proveedor_id"
+                                                                id="proveedor_id">
                                                                 <option value="" selected disabled>Selecciona un
-                                                                    cliente
+                                                                    proveedor
                                                                 </option>
-                                                                @foreach ($clientes as $cliente)
-                                                                    <option value="{{ $cliente->id }}">
-                                                                        {{ $cliente->nombre_cliente }}
+                                                                @foreach ($proveedores as $proveedor)
+                                                                    <option value="{{ $proveedor->id }}">
+                                                                        {{ $proveedor->nombre_proveedor }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -419,9 +456,8 @@
                                                     <div class="col">
                                                         {{-- Descripcion de la cotizacion --}}
                                                         <div class="input-group input-group-sm ms-2 me-10">
-                                                            <input class="form-control" name="descripcion_cotizacion"
-                                                                id="descripcion_cotizacion"
-                                                                placeholder="Descripcion de la cotizacion"></input>
+                                                            <textarea class="form-control" name="descripcion_compra" id="descripcion_compra"
+                                                                placeholder="Descripcion de la compra"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -433,13 +469,13 @@
                                                     value="{{ $subtotal + $totalImpuestos }}">
 
                                                 {{-- Campo oculta para el status iniciada, pendiente, inhabilitada --}}
-                                                <input type="hidden" name="status_cotizacion" value="iniciada"
-                                                    id="status_cotizacion">
+                                                <input type="hidden" name="status_compra" value="iniciada"
+                                                    id="status_compra">
 
 
                                                 <div class="d-flex justify-content-end">
                                                     <button class="btn bg-gradient-primary mt-4 mx-2" name="guardar"
-                                                        value="save">Guardar cotización</button>
+                                                        value="save">Realizar compra</button>
                                                 </div>
                                             </form>
                                         </div>

@@ -17,7 +17,6 @@ class Compra extends Model
         'referencia',
         'descripcion',
         'compra_status',
-        // 'compra_abono',
         'compra_subtotal',
         'compra_impuestos',
         'compra_total',

@@ -43,8 +43,11 @@ class CotizacionController extends Controller
         // Obtener los productos de la categoría seleccionada
         $productosfiltrados = Producto::where('id_categoria_producto', $categoriaId)->get();
 
+        // Pasamos todos los clientes a la vista
+        $clientes = Cliente::all();
+
         // Pasar los productosfiltrados filtrados a la vista
-        return view('forms.cotizacionForm', compact('productosfiltrados', 'categorias'));
+        return view('forms.cotizacionForm', compact('productosfiltrados', 'categorias', 'clientes'));
     }
 
     // Metodo para agregar un producto a la tabla de cotizacion

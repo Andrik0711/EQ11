@@ -127,6 +127,7 @@ class ComprasController extends Controller
                 'cantidad_productos_diferentes' => 'required|numeric',
             ]);
 
+            dd($request->all());
             // Creamos la compra
             $compra = new Compra();
             $compra->fecha_compra = $request->get('fecha');

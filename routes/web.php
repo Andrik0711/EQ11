@@ -20,6 +20,7 @@ use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\CRUDCategoriasController;
 use App\Http\Controllers\CRUDProveedoresController;
 use App\Http\Controllers\CRUDSubCategoriasController;
+use App\Http\Controllers\DevolucionController;
 use App\Http\Controllers\XMLImportController;
 use Dompdf\Dompdf;
 
@@ -82,15 +83,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/eliminar-usuario/{id}', [CRUDUsuariosController::class, 'UsuarioDestroy'])->name('eliminar-usuario');
 	// Ruta para mostrar todas las usuarios registradas
 	Route::get('/mostrar-usuarios', [CRUDUsuariosController::class, 'mostrarUsuarios'])->name('mostrar-usuarios');
-
-
-
-
-
-
-
-
-
 
 
 
@@ -261,6 +253,16 @@ Route::group(['middleware' => 'auth'], function () {
 	// Ruta para eliminar una compra
 	Route::delete('/eliminar-compra/{id}', [ComprasController::class, 'eliminarCompra'])->name('eliminar-compra');
 
+
+
+	// Ruta para mostrar la tabla de devoluciones
+	Route::get('/mostrar-devoluciones', [DevolucionController::class, 'mostrarDevoluciones'])->name('mostrar-devoluciones');
+	// Ruta para guardar una devolucion
+	Route::post('/guardar-devolucion/{id}', [DevolucionController::class, 'guardarDevolucion'])->name('guardar-devolucion');
+	// Ruta para eliminar una devolucion
+	Route::delete('/eliminar-devolucion/{id}', [DevolucionController::class, 'eliminarDevolucion'])->name('eliminar-devolucion');
+	// Ruta para actualizar el estado de una devolucion
+	Route::put('/actualizar-estado-devolucion/{id}', [DevolucionController::class, 'actualizarEstadoDevolucion'])->name('actualizar-estado-devolucion');
 
 
 	Route::get('/exportar-pdf-categorias', [PDFController::class, 'exportarPDF'])->name('exportar-pdf-categorias');

@@ -264,7 +264,8 @@
             </li>
             {{-- Devoluciones --}}
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('') ? 'active' : '' }} " href="">
+                <a class="nav-link {{ Request::is('mostrar-devoluciones') ? 'active' : '' }} "
+                    href="{{ route('mostrar-devoluciones') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
 

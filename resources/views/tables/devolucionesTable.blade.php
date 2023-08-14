@@ -1,6 +1,6 @@
 @extends('layouts.user_type.auth')
 
-@section('title', 'Ventas')
+@section('title', 'Devoluciones')
 
 @push('styles')
     {{-- Agregamos del cdn de datatable --}}
@@ -16,7 +16,7 @@
             <div class="card mb-4">
                 <div class="card-header pb-2">
                     <div class="d-flex justify-content-between align-items-center mx-4">
-                        <h6 class="mb-0">Tabla de ventas</h6>
+                        <h6 class="mb-0">Tabla de devoluciones</h6>
                         <div class="d-flex justify-end">
                             {{-- Imagen para imprimir --}}
                             <a href="{{ route('importar-productos') }}" class="btn bg-gradient-primary mt-4 mx-2">
@@ -34,9 +34,9 @@
                             </a>
 
                             {{-- Boton de agregar productos --}}
-                            <a href="{{ route('punto-de-venta') }}" class="btn bg-gradient-primary mt-4">Punto de
+                            {{-- <a href="{{ route('mostrar-ventas') }}" class="btn bg-gradient-primary mt-4">Devolución de
                                 Venta
-                            </a>
+                            </a> --}}
                         </div>
                     </div>
                 </div>
@@ -53,115 +53,94 @@
                                     </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Cliente comprador</th>
+                                        ID de la venta</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Estado</th>
+                                        Motivo</th>
+
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Pago realizado</th>
+                                        Estatus</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Sub total</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Impuestos</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Costo total</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Productos vendidos</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Fecha de venta</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Devolución</th>
+                                        Editar</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Eliminar</th>
-                                    <th
+                                    {{-- <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Detalle</th>
+                                        Detalle</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
-
-                                @forelse ($ventas as $venta)
+                                @forelse ($devoluciones as $devolucion)
                                     <tr>
                                         <td>
                                             <!-- Checkbox for each row -->
                                             <div class="form-check d-flex justify-content-center">
                                                 <input class="form-check-input checkbox-item" type="checkbox"
-                                                    id="check-{{ $venta->id }}">
+                                                    id="check-{{ $devolucion->id }}">
                                             </div>
                                         </td>
-                                        <td class="text-center text-sm">
-                                            <span
-                                                class="text-secondary text-xs font-weight-bold">{{ $venta->cliente->nombre_cliente }}</span>
+                                        {{-- <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div>
+                                                    <img src="{{ asset('productos') . '/' . $producto->imagen_producto }}"
+                                                        class="me-3 rounded-3 ms-4" width="100px"
+                                                        alt="{{ $producto->nombre_producto }}">
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ $producto->nombre_producto }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td> --}}
+                                        <td>
+                                            <p class="text-sm font-weight-bold mb-0">
+                                                {{ $devolucion->venta_id }}
+                                            </p>
                                         </td>
                                         <td>
-                                            {{-- Si la venta es pendiente muestra success --}}
-                                            @if ($venta->venta_status == 'pendiente')
+                                            <p class="text-sm font-weight-bold mb-0">
+                                                {{ $devolucion->motivo }}
+                                            </p>
+                                        </td>
+                                        <td>
+                                            {{-- Condicion para mostrar el estato de la devolucion --}}
+                                            @if ($devolucion->status === 'Iniciada')
                                                 <span
-                                                    class="badge badge-sm bg-gradient-success">{{ $venta->venta_status }}</span>
-                                            @else
+                                                    class="badge badge-sm bg-gradient-info">{{ $devolucion->status }}</span>
+                                            @elseif($devolucion->status === 'Pendiente')
                                                 <span
-                                                    class="badge badge-sm bg-gradient-danger">{{ $venta->venta_status }}</span>
+                                                    class="badge badge-sm bg-gradient-warning">{{ $devolucion->status }}</span>
+                                            @elseif($devolucion->status === 'Inhabilitada')
+                                                <span
+                                                    class="badge badge-sm bg-gradient-danger">{{ $devolucion->status }}</span>
+                                            @elseif($devolucion->status === 'Aprobada')
+                                                <span
+                                                    class="badge badge-sm bg-gradient-success">{{ $devolucion->status }}</span>
                                             @endif
-
-                                        </td>
-                                        <td class="text-center text-sm">
-                                            <span class="text-secondary text-xs font-weight-bold">$
-                                                {{ number_format($venta->venta_abono, 2) }}</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">$
-                                                {{ number_format($venta->venta_subtotal, 2) }}</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">$
-                                                {{ number_format($venta->venta_impuestos, 2) }}</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">$
-                                                {{ number_format($venta->venta_total, 2) }}</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span
-                                                class="text-secondary text-xs font-weight-bold">{{ $venta->venta_unidades_vendidas }}</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span
-                                                class="text-secondary text-xs font-weight-bold">{{ $venta->fecha_venta }}</span>
                                         </td>
                                         <td>
-                                            <button type="button" class="generar-devolucion-btn btn bg-gradient-info mt-3"
+                                            <button type="button" class="btn bg-gradient-info mt-3" data-bs-toggle="modal"
+                                                data-bs-target="#modal-edit-status-{{ $devolucion->id }}">
+                                                <img src="{{ asset('images/icons/icon-edit.svg') }}" alt="edit"
+                                                    width="30px">
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn bg-gradient-danger mt-3"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#modal-devolucion-{{ $venta->id }}">
-                                                <img src="{{ asset('images/icons/icon-devoluciones.svg') }}" alt="delete"
-                                                    width="30px">
-                                            </button>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="eliminar-venta-btn btn bg-gradient-danger mt-3"
-                                                data-bs-toggle="modal" data-bs-target="#modal-default-{{ $venta->id }}">
+                                                data-bs-target="#modal-default-{{ $devolucion->id }}">
                                                 <img src="{{ asset('images/icons/icon-delete.svg') }}" alt="delete"
-                                                    width="30px">
-                                            </button>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn bg-gradient-warning mt-3"
-                                                data-bs-toggle="modal" data-bs-target="#modal-detalle-{{ $venta->id }}">
-                                                <img src="{{ asset('images/icons/icon-detalle.svg') }}" alt="delete"
                                                     width="30px">
                                             </button>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="10">No se encontraron ventas</td>
+                                        <td colspan="6">No se encontraron devoluciones</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -173,80 +152,49 @@
     </main>
 @endsection
 
+
 @push('modals')
-    @foreach ($ventas as $venta)
-        {{-- Modal para realizar una eliminacion --}}
-        <div class="modal fade" id="modal-default-{{ $venta->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="modal-default-{{ $venta->id }}" aria-hidden="true">
+    @foreach ($devoluciones as $devolucion)
+        <!-- The Modal delete -->
+        <div class="modal fade" id="modal-default-{{ $devolucion->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal-default-{{ $devolucion->id }}" aria-hidden="true">
             <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="modal-title-default-{{ $venta->id }}">¿Estás seguro de eliminar la
-                            venta <span class="modal-edit-name">{{ $venta->id }}</span>?</h6>
+                        <h6 class="modal-title" id="modal-title-default-{{ $devolucion->id }}">¿Estás seguro de eliminar
+                            la devolución <span class="modal-edit-name">{{ $devolucion->id }}</span>?</h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-footer">
                         <!-- Form to handle the category deletion -->
-                        <form action="{{ route('eliminar-venta', $venta->id) }}" method="POST">
+                        <form action="{{ route('eliminar-devolucion', $devolucion->id) }}" method="POST">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
                         </form>
-                        <button type="button" class="btn bg-gradient-info ml-auto"
-                            data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn bg-gradient-info ml-auto" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
         </div>
 
-
-        {{-- modal para mostrar detalle de la venta --}}
-        <div class="modal fade" id="modal-detalle-{{ $venta->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="modal-detalle-{{ $venta->id }}" aria-hidden="true">
-            <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="modal-title-detalle-{{ $venta->id }}">¿Seguro qué quieres mirar
-                            la venta <span class="modal-edit-name">{{ $venta->id }}</span>?
-                        </h6>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="{{ route('mostrar-ticket', $venta->id) }}">
-                            <button type="button" class="btn bg-gradient-info">SI</button>
-                        </a>
-                        <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Modal para generar una devolucion --}}
-        <div class="modal fade" id="modal-devolucion-{{ $venta->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="modal-devolucion-{{ $venta->id }}" aria-hidden="true">
+        <div class="modal fade" id="modal-edit-status-{{ $devolucion->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal-edit-status-{{ $devolucion->id }}" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-body p-0">
                         <div class="card card-plain">
                             <div class="card-header pb-0 text-left">
-                                <h3 class="font-weight-bolder text-info text-gradient">Devolución</h3>
-                                <p class="mb-0">Complete los detalles de la devolución</p>
+                                <h3 class="font-weight-bolder text-info text-gradient">Editar estado</h3>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('guardar-devolucion', $venta->id) }}" method="POST"
-                                    role="form">
+                                <form action="{{ route('actualizar-estado-devolucion', $devolucion->id) }}"
+                                    method="POST">
                                     @csrf
-                                    <input type="hidden" name="venta_id" value="{{ $venta->id }}">
-                                    <label>Motivo</label>
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" name="motivo" placeholder="Motivo"
-                                            required>
-                                    </div>
-                                    <label>Status</label>
+                                    @method('put')
+                                    <label class="mb-2">Nuevo estado:</label>
                                     <div class="input-group mb-3">
                                         <select class="form-select" name="status" required>
                                             <option value="Aprobada">Aprobada</option>
@@ -278,31 +226,11 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body d-flex justify-content-evenly align-content-center">
+                <div class="modal-body">
                     @if (session('success'))
                         <img src="{{ asset('images/icons/icon-success.svg') }}" alt="icono de exito" class="mb-2"
                             width="70%">
                         {{ session('success') }}
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="successModalLabel">¡Ups!</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body d-flex justify-content-evenly align-content-center">
-                    @if (session('error'))
-                        <img src="{{ asset('images/icons/icon-error.svg') }}" alt="icono de exito" class="mb-2"
-                            width="70%">
-                        {{ session('error') }}
                     @endif
                 </div>
             </div>
@@ -366,11 +294,6 @@
                 $('#successModal').modal('show');
                 setTimeout(function() {
                     $('#successModal').modal('hide');
-                }, 6000);
-            @elseif (session('error'))
-                $('#errorModal').modal('show');
-                setTimeout(function() {
-                    $('#errorModal').modal('hide');
                 }, 6000);
             @endif
         });

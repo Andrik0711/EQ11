@@ -137,7 +137,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/mostrar-productos', [CRUDProductosController::class, 'mostrarProductos'])->name('mostrar-productos');
 	// Ruta para importar productos
 	Route::get('/importar-productos', [CRUDProductosController::class, 'importarProductos'])->name('importar-productos');
-
+	// Ruta para mostrar detalles de un producto
+	Route::get('/mostrar-detalle-producto/{id}', [CRUDProductosController::class, 'mostrarDetalleProducto'])->name('mostrar-detalle-producto');
 
 
 	// Redirecciona a la vista donde se encuentra el formulario de registrar Marca

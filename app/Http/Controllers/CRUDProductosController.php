@@ -54,6 +54,24 @@ class CRUDProductosController extends Controller
         return response()->json(['imagen' => $nombreImagen]);
     }
 
+    // Metodo para mostrar detalles de un producto
+    public function mostrarDetalleProducto($id)
+    {
+        // Buscamos el producto
+        $producto = Producto::findOrFail($id);
+
+        // // Le pasamos las categorias
+        // $categorias = Categoria::all();
+
+        // // Le pasamos las subcategorias
+        // $subcategorias = Subcategoria::all();
+
+        // // Le pasamos las marcas
+        // $marcas = Marca::all();
+
+        return view('tickets.productoTicket', compact('producto'));
+    }
+
 
     // Metodo que muestra todos los productos registrados
     public function mostrarProductos()

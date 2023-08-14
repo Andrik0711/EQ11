@@ -267,7 +267,7 @@
                         </button>
                     </div>
                     <div class="modal-footer">
-                        <a href="#">
+                        <a href="{{ route('mostrar-detalle-producto', $producto->id) }}">
                             <button type="button" class="btn bg-gradient-info">SI</button>
                         </a>
                         <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Cerrar</button>

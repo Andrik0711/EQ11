@@ -56,53 +56,61 @@
                             </div>
                         </div>
 
-                        {{-- Mostrar categorias --}}
-                        <div id="categoriaCarousel" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                @foreach ($categorias->chunk(3) as $chunk)
-                                    <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                        <div class="row row-cols-3">
-                                            @foreach ($chunk as $categoria)
-                                                <div class="col">
-                                                    <div class="card">
-                                                        <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
-                                                            <a href="{{ route('filtrar-productos-compra', $categoria->id) }}"
-                                                                class="d-block d-flex justify-content-center">
-                                                                <img src="{{ asset('categorias/' . $categoria->imagen_categoria) }}"
-                                                                    class="img-fluid border-radius-lg" width="20%">
-                                                            </a>
-                                                        </div>
-                                                        <div class="card-body pt-4 d-flex justify-content-center">
-                                                            <span
-                                                                class="text-gradient text-primary text-uppercase font-weight-bold my-2">
-                                                                {{ $categoria->nombre_categoria }}
-                                                            </span>
+                        {{-- Condicion para validar si hay categorias --}}
+                        @if (isset($categorias) && count($categorias) > 0)
+                            {{-- Mostrar categorias --}}
+                            <div id="categoriaCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    @foreach ($categorias->chunk(3) as $chunk)
+                                        <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                            <div class="row row-cols-3">
+                                                @foreach ($chunk as $categoria)
+                                                    <div class="col">
+                                                        <div class="card">
+                                                            <div
+                                                                class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+                                                                <a href="{{ route('filtrar-productos-compra', $categoria->id) }}"
+                                                                    class="d-block d-flex justify-content-center">
+                                                                    <img src="{{ asset('categorias/' . $categoria->imagen_categoria) }}"
+                                                                        class="img-fluid border-radius-lg" width="20%">
+                                                                </a>
+                                                            </div>
+                                                            <div class="card-body pt-4 d-flex justify-content-center">
+                                                                <span
+                                                                    class="text-gradient text-primary text-uppercase font-weight-bold my-2">
+                                                                    {{ $categoria->nombre_categoria }}
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endforeach
+                                                @endforeach
+                                            </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                </div>
+                                {{-- ? Botones de flechas izquierda y derecha --}}
+                                <button class="carousel-control-prev" type="button" data-bs-target="#categoriaCarousel"
+                                    data-bs-slide="prev">
+                                    <span class="d-flex justify-content-start" aria-hidden="true">
+                                        <img src="{{ asset('images/icons/icon-arrowright.svg') }}" alt="arrow right"
+                                            width="30%">
+                                    </span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#categoriaCarousel"
+                                    data-bs-slide="next">
+                                    <span class="d-flex justify-content-end" aria-hidden="true">
+                                        <img src="{{ asset('images/icons/icon-arrowleft.svg') }}" alt="arrow right"
+                                            width="30%">
+                                    </span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
-                            {{-- ? Botones de flechas izquierda y derecha --}}
-                            <button class="carousel-control-prev" type="button" data-bs-target="#categoriaCarousel"
-                                data-bs-slide="prev">
-                                <span class="d-flex justify-content-start" aria-hidden="true">
-                                    <img src="{{ asset('images/icons/icon-arrowright.svg') }}" alt="arrow right"
-                                        width="30%">
-                                </span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#categoriaCarousel"
-                                data-bs-slide="next">
-                                <span class="d-flex justify-content-end" aria-hidden="true">
-                                    <img src="{{ asset('images/icons/icon-arrowleft.svg') }}" alt="arrow right"
-                                        width="30%">
-                                </span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
+                        @else
+                            <div class="d-flex justify-content-center">
+                                <h5 class="text-center">No hay categorias disponibles</h5>
+                            </div>
+                        @endif
 
                         {{-- Mostrar productos ya con filtros --}}
                         <div class="container-fluid mt-5">

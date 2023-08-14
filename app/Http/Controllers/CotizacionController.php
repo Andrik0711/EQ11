@@ -141,9 +141,9 @@ class CotizacionController extends Controller
 
         if (isset($tabla[$producto_id])) {
             unset($tabla[$producto_id]);
-            session()->put('tabla', $tabla);
-            return back()->with('success', 'Producto eliminado correctamente');
         }
+        session()->put('tabla', $tabla);
+        return back()->with('success', 'Producto eliminado correctamente');
     }
 
     // Metodo para almacenar la cotizacion en la base de datos

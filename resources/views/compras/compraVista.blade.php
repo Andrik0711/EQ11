@@ -106,7 +106,7 @@
 
                         {{-- Mostrar productos ya con filtros --}}
                         <div class="container-fluid mt-5">
-                            @if (isset($productosfiltrados))
+                            @if (isset($productosfiltrados) && count($productosfiltrados) > 0)
                                 <div id="productoCarousel" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-inner">
                                         @foreach ($productosfiltrados->chunk(4) as $chunk)
@@ -197,7 +197,7 @@
                                         <span class="visually-hidden">Next</span>
                                     </button>
                                 </div>
-                            @else
+                            @elseif (isset($todosLosProductos) && count($todosLosProductos) > 0)
                                 {{-- Mostrar todos los productos --}}
                                 <div id="productoCarousel" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-inner">
@@ -289,6 +289,10 @@
                                         </span>
                                         <span class="visually-hidden">Next</span>
                                     </button>
+                                </div>
+                            @else
+                                <div class="d-flex justify-content-center">
+                                    <h5 class="text-center">No hay productos disponibles</h5>
                                 </div>
                             @endif
                         </div>

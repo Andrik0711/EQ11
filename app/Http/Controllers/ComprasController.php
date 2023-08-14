@@ -184,8 +184,8 @@ class ComprasController extends Controller
 
         if (isset($tabla[$producto_id])) {
             unset($tabla[$producto_id]);
-            session()->put('tabla', $tabla);
-            return back()->with('success', 'Producto eliminado correctamente');
         }
+        session()->put('tabla', $tabla);
+        return back()->with('success', 'Producto eliminado correctamente');
     }
 }

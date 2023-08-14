@@ -176,7 +176,7 @@
                                     <div class="numbers">
                                         <p class="text-sm mb-0 text-capitalize font-weight-bold">Ventas</p>
                                         <span class="text-success text-lg font-weight-bolder">
-                                            {{-- {{ $totalMarcas->count() }} --}}
+                                            {{ $totalVentas->count() }}
                                         </span>
                                     </div>
                                 </div>
@@ -200,7 +200,7 @@
                                     <div class="numbers">
                                         <p class="text-sm mb-0 text-capitalize font-weight-bold">Compras</p>
                                         <span class="text-success text-lg font-weight-bolder">
-                                            {{-- {{ $totalMarcas->count() }} --}}
+                                            {{ $totalCompras->count() }}
                                         </span>
                                     </div>
                                 </div>
@@ -223,7 +223,7 @@
                                     <div class="numbers">
                                         <p class="text-sm mb-0 text-capitalize font-weight-bold">Cotizaciones</p>
                                         <span class="text-success text-lg font-weight-bolder">
-                                            {{-- {{ $totalMarcas->count() }} --}}
+                                            {{ $totalCotizaciones->count() }}
                                         </span>
                                     </div>
                                 </div>
@@ -247,7 +247,7 @@
                                     <div class="numbers">
                                         <p class="text-sm mb-0 text-capitalize font-weight-bold">Devoluciones</p>
                                         <span class="text-success text-lg font-weight-bolder">
-                                            {{-- {{ $totalMarcas->count() }} --}}
+                                            {{ $totalDevoluciones->count() }}
                                         </span>
                                     </div>
                                 </div>
@@ -260,101 +260,100 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+@endsection
 
-            {{-- Ingresos totales --}}
-            <div class="col">
-                <div class="card my-4">
-                    <div class="card-body p-3">
-                        <button type="button" class="btn bg-gradient-primary w-100 mb-2">
-                            <div class="row d-flex justify-content-center">
-                                <div class="col-6">
-                                    <div class="numbers">
-                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Ingresos</p>
-                                        <span class="text-success text-lg font-weight-bolder">
-                                            {{-- {{ $totalMarcas->count() }} --}}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <img src="{{ asset('images/icons/icon-ingresos.svg') }}" alt="usuarios"
-                                        width="60px">
-                                </div>
+
+@section('cosas')
+    {{-- Ingresos totales --}}
+    <div class="col">
+        <div class="card my-4">
+            <div class="card-body p-3">
+                <button type="button" class="btn bg-gradient-primary w-100 mb-2">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-6">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Ingresos</p>
+                                <span class="text-success text-lg font-weight-bolder">
+                                    {{-- {{ $totalMarcas->count() }} --}}
+                                </span>
                             </div>
-                        </button>
+                        </div>
+                        <div class="col-4">
+                            <img src="{{ asset('images/icons/icon-ingresos.svg') }}" alt="usuarios" width="60px">
+                        </div>
                     </div>
-                </div>
+                </button>
             </div>
+        </div>
+    </div>
 
-            {{-- Egresos totales --}}
-            <div class="col">
-                <div class="card my-4">
-                    <div class="card-body p-3">
-                        <button type="button" class="btn bg-gradient-primary w-100 mb-2">
-                            <div class="row d-flex justify-content-center">
-                                <div class="col-6">
-                                    <div class="numbers">
-                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Egresos</p>
-                                        <span class="text-success text-lg font-weight-bolder">
-                                            {{-- {{ $totalMarcas->count() }} --}}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <img src="{{ asset('images/icons/icon-egresos.svg') }}" alt="usuarios"
-                                        width="60px">
-                                </div>
+    {{-- Egresos totales --}}
+    <div class="col">
+        <div class="card my-4">
+            <div class="card-body p-3">
+                <button type="button" class="btn bg-gradient-primary w-100 mb-2">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-6">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Egresos</p>
+                                <span class="text-success text-lg font-weight-bolder">
+                                    {{-- {{ $totalMarcas->count() }} --}}
+                                </span>
                             </div>
-                        </button>
+                        </div>
+                        <div class="col-4">
+                            <img src="{{ asset('images/icons/icon-egresos.svg') }}" alt="usuarios" width="60px">
+                        </div>
                     </div>
-                </div>
+                </button>
             </div>
+        </div>
+    </div>
 
-            {{-- Gastos diarios totales --}}
-            <div class="col">
-                <div class="card my-4">
-                    <div class="card-body p-3">
-                        <button type="button" class="btn bg-gradient-primary w-100 mb-2">
-                            <div class="row d-flex justify-content-center">
-                                <div class="col-6">
-                                    <div class="numbers">
-                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Gastos diarios</p>
-                                        <span class="text-success text-lg font-weight-bolder">
-                                            {{-- {{ $totalMarcas->count() }} --}}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <img src="{{ asset('images/icons/icon-gastodiario.svg') }}" alt="usuarios"
-                                        width="60px">
-                                </div>
+    {{-- Gastos diarios totales --}}
+    <div class="col">
+        <div class="card my-4">
+            <div class="card-body p-3">
+                <button type="button" class="btn bg-gradient-primary w-100 mb-2">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-6">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Gastos diarios</p>
+                                <span class="text-success text-lg font-weight-bolder">
+                                    {{-- {{ $totalMarcas->count() }} --}}
+                                </span>
                             </div>
-                        </button>
+                        </div>
+                        <div class="col-4">
+                            <img src="{{ asset('images/icons/icon-gastodiario.svg') }}" alt="usuarios" width="60px">
+                        </div>
                     </div>
-                </div>
+                </button>
             </div>
+        </div>
+    </div>
 
-            {{-- Gastos mensuales totales --}}
-            <div class="col">
-                <div class="card my-4">
-                    <div class="card-body p-3">
-                        <button type="button" class="btn bg-gradient-primary w-100 mb-2">
-                            <div class="row d-flex justify-content-center">
-                                <div class="col-6">
-                                    <div class="numbers">
-                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Gastos mensuales</p>
-                                        <span class="text-success text-lg font-weight-bolder">
-                                            {{-- {{ $totalMarcas->count() }} --}}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <img src="{{ asset('images/icons/icon-gastomensual.svg') }}" alt="usuarios"
-                                        width="60px">
-                                </div>
+    {{-- Gastos mensuales totales --}}
+    <div class="col">
+        <div class="card my-4">
+            <div class="card-body p-3">
+                <button type="button" class="btn bg-gradient-primary w-100 mb-2">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-6">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Gastos mensuales</p>
+                                <span class="text-success text-lg font-weight-bolder">
+                                    {{-- {{ $totalMarcas->count() }} --}}
+                                </span>
                             </div>
-                        </button>
+                        </div>
+                        <div class="col-4">
+                            <img src="{{ asset('images/icons/icon-gastomensual.svg') }}" alt="usuarios" width="60px">
+                        </div>
                     </div>
-                </div>
+                </button>
             </div>
         </div>
     </div>

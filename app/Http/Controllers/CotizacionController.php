@@ -74,8 +74,8 @@ class CotizacionController extends Controller
                     return back()->with('warning', 'La cantidad ingresada no puede ser 0');
                 }
 
-                // Validamos que la cantidad ingresada no sea mayor a la cantidad en stock
-                if ($cantidadVenta > $tabla[$producto_id]['cantidad']) {
+                // Validamos que la cantidad ingresada + la cantidad en la tabla no sea mayor a la cantidad en stock
+                if ($cantidadVenta > $producto->unidades_disponibles) {
                     return back()->with('warning', 'La cantidad ingresada no puede ser mayor a la cantidad en stock');
                 }
 

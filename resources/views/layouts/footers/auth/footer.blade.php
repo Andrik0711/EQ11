@@ -1,4 +1,4 @@
-<footer class="footer mt-10">
+{{-- <footer class="footer mt-10">
     <div class="container-fluid">
         <div class="row align-items-center justify-content-lg-between">
             <div class="col-lg-6 mb-lg-0 mb-4">
@@ -11,25 +11,22 @@
                         target="">UPV</a>
                 </div>
             </div>
-            {{-- <div class="col-lg-6">
-                <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                    <li class="nav-item">
-                        <a href="" class="nav-link text-muted" target="">Creative Tim</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link text-muted" target="">UPDIVISION</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link text-muted" target="">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link text-muted" target="">Blog</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link pe-0 text-muted" target="">License</a>
-                    </li>
-                </ul>
-            </div> --}}
         </div>
     </div>
-</footer>
+</footer> --}}
+
+
+
+{{-- <footer>
+    <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i
+                class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a
+            href="#"><i class="icon ion-social-facebook"></i></a></div>
+    <ul class="list-inline">
+        <li class="list-inline-item"><a href="#">Home</a></li>
+        <li class="list-inline-item"><a href="#">Services</a></li>
+        <li class="list-inline-item"><a href="#">About</a></li>
+        <li class="list-inline-item"><a href="#">Terms</a></li>
+        <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+    </ul>
+    <p class="copyright">Company Name © 2018</p>
+</footer> --}}

@@ -18,7 +18,6 @@
                 @include('layouts.navbars.auth.nav-rtl')
                 <div class="container-fluid py-4">
                     @yield('content')
-                    @include('layouts.footers.auth.footer')
                 </div>
             </main>
         @elseif (\Request::is('profile'))
@@ -36,7 +35,6 @@
                     @yield('content')
                 </main>
             </div>
-            @include('layouts.footers.auth.footer')
         @else
             @include('layouts.navbars.auth.sidebar')
             <main {{-- {{ Request::is('rtl') ? 'overflow-hidden' : '' }} --}}
@@ -44,15 +42,13 @@
                 @include('layouts.navbars.auth.nav')
                 <div class="container-fluid">
                     @yield('content')
-
                 </div>
-                @include('layouts.footers.auth.footer')
             </main>
         @endif
 
-        @include('components.fixed-plugin')
+        {{-- @include('components.fixed-plugin') --}}
+        {{-- @include('layouts.footers.auth.footer') --}}
     @endif
-
 
 
 @endsection

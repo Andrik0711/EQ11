@@ -244,11 +244,11 @@
             </li>
 
             {{-- Tablas de registros content --}}
-            <li class="nav-item mt-2">
+            {{-- <li class="nav-item mt-2">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Tickets</h6>
-            </li>
+            </li> --}}
             {{-- Recibos --}}
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link {{ Request::is('') ? 'active' : '' }} " href="">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -256,7 +256,7 @@
                     </div>
                     <span class="nav-link-text ms-1">Recibos</span>
                 </a>
-            </li>
+            </li> --}}
 
             {{-- Tablas de registros content --}}
             <li class="nav-item mt-2">

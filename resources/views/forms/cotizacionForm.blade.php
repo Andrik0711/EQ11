@@ -325,6 +325,9 @@
                                         $subtotal = 0;
                                         $impuestos = 0;
                                         $total = 0;
+                                        $iva = 0.16;
+                                        $subtotal_total = 0;
+                                        $impuestos_total = 0;
                                     @endphp
 
                                     <div class="card-body px-4 pt-2 pb-2">
@@ -349,6 +352,9 @@
                                                             Impuestos</th>
                                                         <th
                                                             scope="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                            Total</th>
+                                                        <th
+                                                            scope="col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                             Acciones</th>
                                                     </tr>
                                                 </thead>
@@ -358,13 +364,15 @@
                                                         $totalImpuestos = 0;
                                                         $cantidadProductos = 0;
                                                         $subtotal = 0;
+                                                        
                                                     @endphp
                                                     @foreach ($tabla as $producto_id => $producto)
                                                         @php
                                                             // $cantidadDisponible = $producto['unidades_disponibles'];
                                                             $cantidadProductos += $producto['cantidad'];
-                                                            $subtotal += $producto['precio'] * $producto['cantidad'];
+                                                            $subtotal += $producto['precio'] * $producto['cantidad'] - $producto['precio'] * $producto['cantidad'] * 0.16;
                                                             $totalImpuestos += $producto['precio'] * $producto['cantidad'] * 0.16;
+                                                            $total += $producto['precio'] * $producto['cantidad'];
                                                         @endphp
                                                         <tr>
                                                             <td>
@@ -385,9 +393,11 @@
                                                             <td>${{ number_format($producto['precio'], 2) }}
                                                             </td>
                                                             <td>{{ $producto['cantidad'] }}</td>
-                                                            <td>${{ number_format($producto['precio'] * $producto['cantidad'], 2) }}
+                                                            <td>${{ number_format($producto['precio'] * $producto['cantidad'] - $producto['precio'] * $producto['cantidad'] * 0.16, 2) }}
                                                             </td>
                                                             <td>${{ number_format($producto['precio'] * $producto['cantidad'] * 0.16, 2) }}
+                                                            </td>
+                                                            <td>${{ number_format($producto['precio'] * $producto['cantidad'], 2) }}
                                                             </td>
                                                             <td>
                                                                 <div
@@ -414,14 +424,14 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="4"></td>
-                                                        <td class="text-right font-weight-bold">Subtotal:</td>
+                                                        <td class="text-right font-weight-bold">Subtotal final:</td>
                                                         <td>${{ number_format($subtotal, 2) }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="4"></td>
                                                         <td class="text-right font-weight-bold">Cotización
                                                             total:</td>
-                                                        <td>${{ number_format($subtotal + $totalImpuestos, 2) }}
+                                                        <td>${{ number_format($total, 2) }}
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -496,8 +506,7 @@
                                                 <input type="hidden" name="subtotal" value="{{ $subtotal }}">
                                                 <input type="hidden" name="totalImpuestos"
                                                     value="{{ $totalImpuestos }}">
-                                                <input type="hidden" name="total"
-                                                    value="{{ $subtotal + $totalImpuestos }}">
+                                                <input type="hidden" name="total" value="{{ $total }}">
 
                                                 {{-- Campo oculta para el status iniciada, pendiente, inhabilitada --}}
                                                 <input type="hidden" name="status_cotizacion" value="iniciada"

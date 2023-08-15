@@ -220,7 +220,7 @@
                                                                         {{ $producto->descripcion_producto }}</p>
                                                                     <p class="card-text">Precio de
                                                                         venta:
-                                                                        ${{ $producto->precio_de_venta }}
+                                                                        ${{ number_format($producto->precio_de_venta, 2) }}
                                                                     </p>
                                                                     <p class="card-text">Unidades
                                                                         disponibles:
@@ -288,6 +288,7 @@
                                             $iva = 0.16;
                                             $costo_total = 0;
                                             $subtotal_total = 0;
+                                            $impuestos_total = 0;
                                             $cantidad_productos_diferentes = 0;
                                             $productosContados = [];
                                         @endphp
@@ -300,6 +301,21 @@
                                                     $cantidad_productos_diferentes++;
                                                 }
                                             @endphp
+
+                                            {{-- Agregamos el impuesto --}}
+                                            @php
+                                                $total = $producto['precio'] * $producto['cantidad'];
+                                                $impuestos = $total * $iva;
+                                                $subtotal = $total - $impuestos;
+                                            @endphp
+
+                                            {{-- Realizamos el aumento del total, subtotal, y impuestos --}}
+                                            @php
+                                                $subtotal_total += $subtotal;
+                                                $costo_total += $total;
+                                                $impuestos_total += $impuestos;
+                                            @endphp
+
                                             <div class="container-fluid mb-4">
                                                 <div class="d-flex justify-content-start align-items-center">
                                                     <img src="{{ asset('productos/' . '/' . $producto['imagen']) }}"
@@ -311,10 +327,11 @@
 
 
                                                         <h5 class="text-start text-sm"> {{ $producto['nombre'] }}</h5>
-                                                        @php
-                                                            $subtotal = $producto['precio'] * $producto['cantidad'];
-                                                        @endphp
-                                                        <p class="text-sm text-start">Costo: ${{ $subtotal }}
+                                                        {{-- @php
+                                                            $subtotal = ;
+                                                        @endphp --}}
+                                                        <p class="text-sm text-start">Costo:
+                                                            ${{ number_format($total, 2) }}
                                                         <p class="text-sm text-start">Cantidad:
                                                             {{ $producto['cantidad'] }}
                                                     </div>
@@ -387,15 +404,6 @@
 
                                                 </div>
 
-                                                {{-- Agregamos el impuesto --}}
-                                                @php
-                                                    $subtotal = $producto['precio'] * $producto['cantidad'];
-                                                    $subtotal_total += $subtotal;
-                                                    $impuestos = $subtotal * $iva;
-                                                    $total = $subtotal + $impuestos;
-                                                @endphp
-
-
                                                 {{-- Mosrtamos el costo total Producto --}}
                                                 <div class="d-flex justify-content-start align-items-center mt-2">
                                                     {{-- Iva --}}
@@ -432,9 +440,6 @@
                                             </div>
                                         @endif
 
-
-
-
                                         {{-- Validamos si no hay carrito no muestre nada --}}
                                         @if (count($carrito) == 0)
                                             <div class="alert alert-warning" role="alert">
@@ -449,23 +454,22 @@
                                                         <h5>Resumen del carrito:</h5>
                                                         <p>Subtotal final: ${{ number_format($subtotal_total, 2) }}</p>
                                                         <p>Impuestos final:
-                                                            ${{ number_format($subtotal_total * $iva, 2) }}
+                                                            ${{ number_format($impuestos_total, 2) }}
                                                         </p>
                                                         <p>Costo total:
-                                                            ${{ number_format($subtotal_total + $subtotal_total * $iva, 2) }}
+                                                            ${{ number_format($costo_total, 2) }}
                                                         </p>
                                                     </div>
 
                                                     {{-- Le pasamos el costo total de la venta --}}
-                                                    <input type="hidden" name="total"
-                                                        value="{{ $subtotal_total + $subtotal_total * $iva }}">
+                                                    <input type="hidden" name="total" value="{{ $costo_total }}">
 
                                                     {{-- Le pasamos el subtotal de la venta --}}
                                                     <input type="hidden" name="subtotal" value="{{ $subtotal_total }}">
 
                                                     {{-- Le pasamos el impuesto de la venta --}}
                                                     <input type="hidden" name="impuestos"
-                                                        value="{{ $subtotal_total * $iva }}">
+                                                        value="{{ $impuestos_total }}">
 
                                                     {{-- Le pasamos el numero de productos vendidos --}}
                                                     <input type="hidden" name="unidades_vendidas"

@@ -368,8 +368,9 @@
                                                         @php
                                                             // $cantidadDisponible = $producto['unidades_disponibles'];
                                                             $cantidadProductos += $producto['cantidad'];
-                                                            $subtotal += $producto['precio'] * $producto['cantidad'];
+                                                            $subtotal += $producto['precio'] * $producto['cantidad'] - $producto['precio'] * $producto['cantidad'] * 0.16;
                                                             $totalImpuestos += $producto['precio'] * $producto['cantidad'] * 0.16;
+                                                            $total += $producto['precio'] * $producto['cantidad'];
                                                         @endphp
 
                                                         @php
@@ -396,11 +397,11 @@
                                                             </td>
                                                             <td>${{ number_format($producto['precio'], 2) }}</td>
                                                             <td>{{ $producto['cantidad'] }}</td>
-                                                            <td>${{ number_format($producto['precio'] * $producto['cantidad'], 2) }}
+                                                            <td>${{ number_format($producto['precio'] * $producto['cantidad'] - $producto['precio'] * $producto['cantidad'] * 0.16, 2) }}
                                                             </td>
                                                             <td>${{ number_format($producto['precio'] * $producto['cantidad'] * 0.16, 2) }}
                                                             </td>
-                                                            <td>${{ number_format($producto['precio'] * $producto['cantidad'] + $producto['precio'] * $producto['cantidad'] * 0.16, 2) }}
+                                                            <td>${{ number_format($producto['precio'] * $producto['cantidad'], 2) }}
                                                             </td>
                                                             <td>
                                                                 <div
@@ -432,7 +433,7 @@
                                                     <tr>
                                                         <td colspan="5"></td>
                                                         <td class="text-right font-weight-bold">Compra total:</td>
-                                                        <td>${{ number_format($subtotal + $totalImpuestos, 2) }}</td>
+                                                        <td>${{ number_format($total, 2) }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -498,8 +499,7 @@
                                                 <input type="hidden" name="subtotal" value="{{ $subtotal }}">
                                                 <input type="hidden" name="totalImpuestos"
                                                     value="{{ $totalImpuestos }}">
-                                                <input type="hidden" name="total"
-                                                    value="{{ $subtotal + $totalImpuestos }}">
+                                                <input type="hidden" name="total" value="{{ $total }}">
                                                 {{-- Campo oculta para el status iniciada, pendiente, inhabilitada --}}
                                                 <input type="hidden" name="status_compra" value="iniciada"
                                                     id="status_compra">

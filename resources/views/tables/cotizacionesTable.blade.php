@@ -60,6 +60,9 @@
                                                 Producto</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                                Fecha de cotización</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
                                                 Referencia</th>
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
@@ -102,6 +105,10 @@
                                                             </div>
                                                         </div>
                                                     @endforeach
+                                                </td>
+                                                <td class="text-center text-sm">
+                                                    <span
+                                                        class="text-xs font-weight-bold mb-0 text-center">{{ $cotizacion->fecha_cotizacion }}</span>
                                                 </td>
                                                 <td class="text-center text-sm">
                                                     <span

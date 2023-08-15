@@ -103,9 +103,12 @@
                                         </td>
                                         <td>
                                             {{-- Si la venta es pendiente muestra success --}}
-                                            @if ($venta->venta_status == 'pendiente')
+                                            @if ($venta->venta_status == 'terminada')
                                                 <span
                                                     class="badge badge-sm bg-gradient-success">{{ $venta->venta_status }}</span>
+                                            @elseif ($venta->venta_status == 'devuelta')
+                                                <span
+                                                    class="badge badge-sm bg-gradient-warning">{{ $venta->venta_status }}</span>
                                             @else
                                                 <span
                                                     class="badge badge-sm bg-gradient-danger">{{ $venta->venta_status }}</span>
@@ -234,32 +237,14 @@
                         <div class="card card-plain">
                             <div class="card-header pb-0 text-left">
                                 <h3 class="font-weight-bolder text-info text-gradient">Devolución</h3>
-                                <p class="mb-0">Complete los detalles de la devolución</p>
+                                <p class="mb-0">¿Quieres generar una devoluión?</p>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('guardar-devolucion', $venta->id) }}" method="POST"
-                                    role="form">
-                                    @csrf
-                                    <input type="hidden" name="venta_id" value="{{ $venta->id }}">
-                                    <label>Motivo</label>
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" name="motivo" placeholder="Motivo"
-                                            required>
-                                    </div>
-                                    <label>Status</label>
-                                    <div class="input-group mb-3">
-                                        <select class="form-select" name="status" required>
-                                            <option value="Aprobada">Aprobada</option>
-                                            <option value="Inhabilitada">Inhabilitada</option>
-                                            <option value="Pendiente">Pendiente</option>
-                                            <option value="Iniciada">Iniciada</option>
-                                        </select>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit"
-                                            class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Guardar</button>
-                                    </div>
-                                </form>
+                                <a href="{{ route('mostrar-devolucion', $venta->id) }}">
+                                    <button type="button" class="btn bg-gradient-info">SI</button>
+                                </a>
+                                <button type="button" class="btn bg-gradient-danger"
+                                    data-bs-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>

@@ -13,11 +13,11 @@ class VentaProducto extends Model
 
     protected $fillable = [
         'id_venta',
-        'producto_id', // Asegúrate de que este campo se llame 'producto_id'
+        'producto_id', // Debe ser 'producto_id' para que funcione la relación
         'cantidad_vendida',
+        'producto_status',
         'precio_unitario',
         'subtotal',
-        // Aquí puedes agregar otros campos específicos de la tabla pivot, si los tienes.
     ];
 
     // Relación con el modelo Venta
@@ -29,6 +29,18 @@ class VentaProducto extends Model
     // Relación con el modelo Producto
     public function producto()
     {
-        return $this->belongsTo(Producto::class, 'producto_id'); // Asegúrate de usar 'producto_id' aquí
+        return $this->belongsTo(Producto::class, 'producto_id'); // Debe ser 'producto_id' para que funcione la relación
+    }
+
+    // Funcion para realizar una devolucion de un producto
+    public function realizarDevolucionProducto()
+    {
+        // Actualiza el estado del producto a "devuelto"
+        $this->update(['producto_status' => true]);
+
+        // Incrementa las unidades disponibles del producto
+        $this->producto->increment('unidades_disponibles', $this->cantidad_vendida);
+
+        return true;
     }
 }

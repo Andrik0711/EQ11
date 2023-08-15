@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('devoluciones', function (Blueprint $table) {
             $table->id();
+            $table->timestamp('fecha_devolucion');
             $table->foreignId('venta_id')->constrained('ventas');
-            $table->string('motivo')->nullable();
-            $table->string('status')->default('Pendiente');
-            $table->timestamps();
+            $table->foreignId('producto_id')->constrained('productos');
+            $table->integer('cantidad_devuelta');
+            $table->string('motivo_devolucion');
+            $table->timestamps(); // Agregar timestamps si lo necesitas
         });
     }
 

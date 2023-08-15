@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Venta;
 use App\Models\Devolucion;
 use Illuminate\Http\Request;
 
@@ -15,72 +16,89 @@ class DevolucionController extends Controller
         return view('tables.devolucionesTable', compact('devoluciones'));
     }
 
-    // Funcion para guardar una devolucion
-    public function guardarDevolucion(Request $request)
+    // Funcion para mostrar venta 
+    public function mostrarDevolucion($id)
     {
-
-        try {
-            // dd($request->all());
-            // Validamos los datos
-            $request->validate([
-                'venta_id' => 'required|unique:devoluciones,venta_id',
-                'motivo' => 'required',
-                'status' => '',
-            ]);
-
-            // Guardamos la devolucion
-            Devolucion::create([
-                'venta_id' => $request->venta_id,
-                'motivo' => $request->motivo,
-                'status' => $request->status,
-            ]);
-
-            // Redireccionamos a la tabla de devoluciones
-            return back()->with('success', 'La devolución fue generada correctamente');
-        } catch (\Throwable $th) {
-            return back()->with('error', 'La devolución no pudo ser generada correctamente');
-        }
+        $venta_realizada = Venta::findOrFail($id);
+        return view('tickets.ventaDevolucion', compact('venta_realizada'));
     }
 
-    // Funcion para actualizar el estatus de una devolucion
-    public function actualizarEstadoDevolucion(Request $request, $id)
+    // Metodo para actualizar el motivo de la devolucion
+    public function actualizarMotivoDevolucion(Request $request, $id)
     {
-
         // dd($request->all(), $id);
+        $devolucion = Devolucion::findOrFail($id);
+        $devolucion->motivo_devolucion = $request->motivo_devolucion;
+        $devolucion->save();
 
-        // Validamos los datos
-        $request->validate([
-            'status' => 'required',
-        ]);
+        return back()->with('success', 'Se ha actualizado el motivo de la devolución');
+    }
+
+    // Método para devolver una venta completa
+    // public function devolverVentaCompleta(Request $request,  $id)
+    // {
+
+    //     dd($request->all(), $id); // Si recibe el id de la venta 
+    //     $venta = Venta::findOrFail($id);
+
+    //     // Realiza la devolución completa
+    //     $devolucion = $venta->realizarDevolucionCompleta();
+
+    //     return back()->with('success', 'Se ha realizado la devolución completa de la venta. ID de la devolución: ' . $devolucion->id);
+    // }
+
+    // Método para devolver un producto de una venta
+    public function devolverProductoVenta(Request $request,  $producto_id, $venta_id)
+    {
+        // dd($id);
+        // dd($request->all(), $id); // Si recibe el id del producto que se vendio
+        $venta = Venta::findOrFail($venta_id); // Buscamos la venta por el id
+        $producto = $producto_id; // El id del producto que se va a devolver
+        $cantidadDevuelta = $request->cantidad_vendida; // La cantidad que se va a devolver
 
         try {
-            // Buscamos la devolucion
-            $devolucion = Devolucion::find($id);
+            // dd($venta, $producto_id, $cantidadDevuelta); // Si recibe el id del producto que se vendio
+            // dd($producto_id, $cantidadDevuelta);
+            $devolucion = Devolucion::where('venta_id', $venta_id)->where('producto_id', $producto_id)->first();
+            $venta->load('productos');
 
-            // Actualizamos el estatus de la devolucion
-            $devolucion->status = $request->status;
+            // Condicionamos que si ya existe el id de la venta y id del producto en la tabla de devoluciones se actualice la cantidad devuelta
+            if ($devolucion) {
 
-            // Guardamos la devolucion
-            $devolucion->save();
+                $nuevaCantidadDevuelta = $devolucion->cantidad_devuelta + $cantidadDevuelta;
+                $devolucion->update(['cantidad_devuelta' => $nuevaCantidadDevuelta]);
+                // Buscar el producto dentro de la relación cargada
+                $productoEnVenta = $venta->productos->find($producto_id);
 
-            // Redireccionamos a la tabla de devoluciones
-            return back()->with('success', 'El estado de la devolución fue actualizada correctamente');
-        } catch (\Throwable $th) {
-            return back()->with('error', 'El estado de la devolución no pudo ser actualizada correctamente');
+                if ($productoEnVenta) {
+
+                    // Actualizar la cantidad vendida en la tabla pivot de ventas_de_productos
+                    $venta->productos()->updateExistingPivot($producto_id, [
+                        'cantidad_vendida' => $productoEnVenta->pivot->cantidad_vendida - $cantidadDevuelta
+                    ]);
+                }
+
+                return back()->with('success', 'Se ha actualizado la cantidad devuelta del producto de la venta. Devolución: ' . $devolucion->id);
+            } else {
+
+                // Sino existe el id de la venta y id del producto en la tabla de devoluciones se crea una nueva devolucion
+                // Realiza la devolución del producto
+                $devolucion = $venta->realizarDevolucionProducto($producto_id, $cantidadDevuelta);
+                return back()->with('success', 'Se ha realizado la devolución del producto de la venta. Devolución: ' . $devolucion->id);
+            }
+        } catch (\Exception $e) {
+
+            dd($e->getMessage());
+            return back()->with('error', 'Ha ocurrido un error al realizar la devolución del producto: ' . $e->getMessage());
         }
     }
 
-
-    // Funcion para eliminar una devolucion
+    // Metodo para eliminar una devolucion
     public function eliminarDevolucion($id)
     {
-        // Buscamos la devolucion
-        $devolucion = Devolucion::find($id);
-
-        // Eliminamos la devolucion
+        $devolucion = Devolucion::findOrFail($id);
         $devolucion->delete();
 
-        // Redireccionamos a la tabla de devoluciones
-        return back()->with('success', 'La devolución fue eliminada correctamente');
+        return back()->with('success', 'Se ha eliminado la devolución');
     }
 }

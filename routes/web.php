@@ -263,7 +263,17 @@ Route::group(['middleware' => 'auth'], function () {
 	// Ruta para eliminar una devolucion
 	Route::delete('/eliminar-devolucion/{id}', [DevolucionController::class, 'eliminarDevolucion'])->name('eliminar-devolucion');
 	// Ruta para actualizar el estado de una devolucion
-	Route::put('/actualizar-estado-devolucion/{id}', [DevolucionController::class, 'actualizarEstadoDevolucion'])->name('actualizar-estado-devolucion');
+	Route::put('/actualizar-motivo-devolucion/{id}', [DevolucionController::class, 'actualizarMotivoDevolucion'])->name('actualizar-motivo-devolucion');
+	// Ruta para mostrar una devolucion
+	Route::get('/mostrar-devolucion/{id}', [DevolucionController::class, 'mostrarDevolucion'])->name('mostrar-devolucion');
+	// Ruta para devolver una venta completa
+	Route::post('/devolver-venta-completa/{id}', [DevolucionController::class, 'devolverVentaCompleta'])->name('devolver-venta-completa');
+	// Ruta para devolver un producto de una venta
+	Route::post('/devolver-producto-venta/{producto_id}{venta_id}', [DevolucionController::class, 'devolverProductoVenta'])->name('devolver-producto-venta');
+
+
+
+
 
 
 	Route::get('/exportar-pdf-categorias', [PDFController::class, 'exportarPDF'])->name('exportar-pdf-categorias');

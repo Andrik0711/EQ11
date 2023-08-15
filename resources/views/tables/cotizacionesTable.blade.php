@@ -161,7 +161,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8">No se encontraron cotizaciones</td>
+                                                <td colspan="9">No se encontraron cotizaciones</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

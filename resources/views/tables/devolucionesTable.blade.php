@@ -53,14 +53,19 @@
                                     </th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Producto</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         ID de la venta</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Motivo</th>
-
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Estatus</th>
+                                        Fecha de devolución</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Cantidad devuelta</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Editar</th>
@@ -82,46 +87,45 @@
                                                     id="check-{{ $devolucion->id }}">
                                             </div>
                                         </td>
-                                        {{-- <td>
+                                        <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div>
-                                                    <img src="{{ asset('productos') . '/' . $producto->imagen_producto }}"
+                                                    <img src="{{ asset('productos') . '/' . $devolucion->producto->imagen_producto }}"
                                                         class="me-3 rounded-3 ms-4" width="100px"
-                                                        alt="{{ $producto->nombre_producto }}">
+                                                        alt="{{ $devolucion->producto->nombre_producto }}">
                                                 </div>
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $producto->nombre_producto }}
+                                                        {{ $devolucion->producto->nombre_producto }}
                                                     </h6>
                                                 </div>
                                             </div>
-                                        </td> --}}
+                                        </td>
                                         <td>
                                             <p class="text-sm font-weight-bold mb-0">
                                                 {{ $devolucion->venta_id }}
                                             </p>
                                         </td>
                                         <td>
+                                            @if ($devolucion->motivo_devolucion === 'Sin motivo')
+                                                <span
+                                                    class="badge badge-sm bg-gradient-info">{{ $devolucion->motivo_devolucion }}</span>
+                                            @else
+                                                <span
+                                                    class="badge badge-sm bg-gradient-success">{{ $devolucion->motivo_devolucion }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
                                             <p class="text-sm font-weight-bold mb-0">
-                                                {{ $devolucion->motivo }}
+                                                {{ $devolucion->fecha_devolucion }}
                                             </p>
                                         </td>
                                         <td>
-                                            {{-- Condicion para mostrar el estato de la devolucion --}}
-                                            @if ($devolucion->status === 'Iniciada')
-                                                <span
-                                                    class="badge badge-sm bg-gradient-info">{{ $devolucion->status }}</span>
-                                            @elseif($devolucion->status === 'Pendiente')
-                                                <span
-                                                    class="badge badge-sm bg-gradient-warning">{{ $devolucion->status }}</span>
-                                            @elseif($devolucion->status === 'Inhabilitada')
-                                                <span
-                                                    class="badge badge-sm bg-gradient-danger">{{ $devolucion->status }}</span>
-                                            @elseif($devolucion->status === 'Aprobada')
-                                                <span
-                                                    class="badge badge-sm bg-gradient-success">{{ $devolucion->status }}</span>
-                                            @endif
+                                            <p class="text-sm font-weight-bold mb-0">
+                                                {{ $devolucion->cantidad_devuelta }}
+                                            </p>
                                         </td>
+
                                         <td>
                                             <button type="button" class="btn bg-gradient-info mt-3" data-bs-toggle="modal"
                                                 data-bs-target="#modal-edit-status-{{ $devolucion->id }}">
@@ -140,7 +144,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6">No se encontraron devoluciones</td>
+                                        <td colspan="8">No se encontraron devoluciones</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -187,21 +191,20 @@
                     <div class="modal-body p-0">
                         <div class="card card-plain">
                             <div class="card-header pb-0 text-left">
-                                <h3 class="font-weight-bolder text-info text-gradient">Editar estado</h3>
+                                <h3 class="font-weight-bolder text-info text-gradient">Editar motivo</h3>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('actualizar-estado-devolucion', $devolucion->id) }}"
+                                <form action="{{ route('actualizar-motivo-devolucion', $devolucion->id) }}"
                                     method="POST">
                                     @csrf
                                     @method('put')
-                                    <label class="mb-2">Nuevo estado:</label>
                                     <div class="input-group mb-3">
-                                        <select class="form-select" name="status" required>
-                                            <option value="Aprobada">Aprobada</option>
-                                            <option value="Inhabilitada">Inhabilitada</option>
-                                            <option value="Pendiente">Pendiente</option>
-                                            <option value="Iniciada">Iniciada</option>
-                                        </select>
+                                        <div class="form-group">
+                                            <h6 for="motivo_devolucion">Ingresa el motivo de la devolución</h6>
+                                            <input type="text" placeholder=" Motivo de la devolución"
+                                                class="form-control" id="motivo_devolucion" name="motivo_devolucion"
+                                                value="{{ old('motivo_devolucion') }}">
+                                        </div>
                                     </div>
                                     <div class="text-center">
                                         <button type="submit"
@@ -216,7 +219,6 @@
         </div>
     @endforeach
 
-    {{-- Modal de éxito --}}
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -226,12 +228,48 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    @if (session('success'))
-                        <img src="{{ asset('images/icons/icon-success.svg') }}" alt="icono de exito" class="mb-2"
-                            width="70%">
-                        {{ session('success') }}
-                    @endif
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    <img src="{{ asset('images/icons/icon-success.svg') }}" alt="icono de exito" class="mb-2"
+                        width="70%">
+                    {{ session('success') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="warningModalLabel">¡Cuidado!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    <img src="{{ asset('images/icons/icon-warning.svg') }}" alt="icono de warning" class="mb-2"
+                        width="70%">
+                    {{ session('warning') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">¡Algo salió mal!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex justify-content-evenly align-content-center flex-wrap">
+                    <img src="{{ asset('images/icons/icon-error.svg') }}" alt="icono de error" class="mb-2"
+                        width="70%">
+                    {{ session('error') }}
                 </div>
             </div>
         </div>
@@ -246,6 +284,27 @@
     <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
     {{-- Modales --}}
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            @if (session('success'))
+                $('#successModal').modal('show');
+                setTimeout(function() {
+                    $('#successModal').modal('hide');
+                }, 6000);
+            @elseif (session('warning'))
+                $('#warningModal').modal('show');
+                setTimeout(function() {
+                    $('#warningModal').modal('hide');
+                }, 6000);
+            @elseif (session('error'))
+                $('#errorModal').modal('show');
+                setTimeout(function() {
+                    $('#errorModal').modal('hide');
+                }, 6000);
+            @endif
+        });
+    </script>
 
     {{-- Este script permite modificar los textos de el datatable --}}
     <script>
@@ -284,18 +343,6 @@
                     "infoFiltered": "" // Remove the "(filtered from x total entries)" text
                 }
             });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            // Verificar si hay un mensaje en sesión y mostrar el modal
-            @if (session('success'))
-                $('#successModal').modal('show');
-                setTimeout(function() {
-                    $('#successModal').modal('hide');
-                }, 6000);
-            @endif
         });
     </script>
 @endpush

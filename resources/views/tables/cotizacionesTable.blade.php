@@ -192,7 +192,6 @@
                         </button>
                     </div>
                     <div class="modal-footer">
-                        <!-- Form to handle the cotizacion deletion -->
                         <form action="{{ route('eliminar-cotizacion', $cotizacion->id) }}" method="POST">
                             @csrf
                             @method('delete')

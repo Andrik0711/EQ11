@@ -402,7 +402,8 @@
                                                             <td>
                                                                 <div
                                                                     class="d-flex justify-content-center align-items-center">
-                                                                    <form action="{{ route('eliminar-cotizacion') }}"
+                                                                    <form
+                                                                        action="{{ route('eliminar-producto-cotizacion') }}"
                                                                         method="POST">
                                                                         @csrf
                                                                         @method('DELETE')

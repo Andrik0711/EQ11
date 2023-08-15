@@ -33,6 +33,23 @@ class CotizacionController extends Controller
         return view('forms.cotizacionForm', compact('clientes', 'categorias', 'todosLosProductos'));
     }
 
+    // Eliminar una cotizacion
+    public function eliminarCotizacion($id)
+    {
+        // Buscar la cotizacion en la base de datos
+        $cotizacion = Cotizacion::findOrFail($id);
+
+        // Eliminar primero los registros relacionados en la tabla cotizacion_productos
+        $cotizacion->productos()->detach();
+
+        // Luego eliminar la cotizacion de la base de datos
+        $cotizacion->delete();
+
+        // Redireccionar a la vista de cotizaciones
+        return back()->with('success', 'Cotización eliminada correctamente');
+    }
+
+
     // Metodo para hacer el filtrado de productos por categoria
     public function filtrarProductosCotizacion($categoriaId)
     {

@@ -229,12 +229,13 @@ Route::group(['middleware' => 'auth'], function () {
 	// Ruta para agregar productos a la cotización
 	Route::post('/agregar-a-cotizacion', [CotizacionController::class, 'agregarProductoCotizacion'])->name('agregar-cotizacion');
 	// Ruta para eliminar productos de la cotización
-	Route::delete('/eliminar-de-cotizacion', [CotizacionController::class, 'eliminarProductoCotizacion'])->name('eliminar-cotizacion');
+	Route::delete('/eliminar-de-cotizacion', [CotizacionController::class, 'eliminarProductoCotizacion'])->name('eliminar-producto-cotizacion');
 	// Ruta para guardar la cotización
 	Route::post('/almacenar-cotizacion', [CotizacionController::class, 'almacenarCotizacion'])->name('cotizacion-store');
 	// Ruta para actualizar el estado de la cotización
 	Route::put('/actualizar-estado-cotizacion/{id}', [CotizacionController::class, 'actualizarEstadoCotizacion'])->name('actualizar-estado-cotizacion');
-
+	// Ruta para eliminar una cotización
+	Route::delete('/eliminar-cotizacion/{id}', [CotizacionController::class, 'eliminarCotizacion'])->name('eliminar-cotizacion');
 
 
 	// Ruta para ir a la vista de compras de productos

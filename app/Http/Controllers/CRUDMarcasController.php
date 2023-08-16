@@ -145,7 +145,7 @@ class CRUDMarcasController extends Controller
 
         $marcas = Marca::all();
 
-        $pdf = PDF::loadView('tables.marcas-pdf', compact('marcas'));
+        $pdf = \PDF::loadView('tables.marcas-pdf', compact('marcas'));
         return $pdf->download('marcas.pdf');
     }
 }

@@ -223,7 +223,7 @@ class CRUDProductosController extends Controller
     {
         $productos = Producto::all();
 
-        $pdf = PDF::loadView('tables.productos-pdf', compact('productos'))->setPaper('a4', 'landscape');
+        $pdf = \PDF::loadView('tables.productos-pdf', compact('productos'))->setPaper('a4', 'landscape');
         return $pdf->download('productos.pdf');
     }
 }

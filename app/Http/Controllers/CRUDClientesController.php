@@ -107,9 +107,9 @@ class CRUDClientesController extends Controller
         // validamos los datos 
         $request->validate([
             'nombre_cliente' => 'required',
-            'codigo_cliente' => 'required|unique:clientes,codigo_cliente',
-            'telefono_cliente' => 'required|unique:clientes,telefono_cliente',
-            'email_cliente' => 'required|unique:clientes,email_cliente',
+            'codigo_cliente' => 'required',
+            'telefono_cliente' => 'required',
+            'email_cliente' => 'required',
             'empresa_cliente' => 'required',
             'cliente_creado_por' => 'required',
             'pais_cliente' => 'required',

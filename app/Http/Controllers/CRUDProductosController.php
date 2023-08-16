@@ -149,7 +149,7 @@ class CRUDProductosController extends Controller
             'id_categoria_producto' => 'required',
             'id_subcategoria_producto' => 'required',
             'id_marca_producto' => 'required',
-            'nombre_producto' => 'required|unique:productos,nombre_producto',
+            'nombre_producto' => 'required',
             'descripcion_producto' => 'required',
             'precio_de_compra' => 'required',
             'precio_de_venta' => 'required',

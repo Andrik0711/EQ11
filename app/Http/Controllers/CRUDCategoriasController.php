@@ -156,7 +156,7 @@ class CRUDCategoriasController extends Controller
     {
         $categorias = Categoria::all();
 
-        $pdf = PDF::loadView('tables.categorias-pdf', compact('categorias'));
+        $pdf = \PDF::loadView('tables.categorias-pdf', compact('categorias'));
         return $pdf->download('categorias.pdf');
     }
 }

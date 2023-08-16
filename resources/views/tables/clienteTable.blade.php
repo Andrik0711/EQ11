@@ -22,20 +22,20 @@
 
                                 <div class="d-flex justify-end">
                                     <!-- {{-- Imagen para imprimir --}}
-                                        <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                            <img src="{{ asset('images/icons/icon-printer.svg') }}" alt="print"
-                                                width="30px">
-                                        </a>
+                                            <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                                <img src="{{ asset('images/icons/icon-printer.svg') }}" alt="print"
+                                                    width="30px">
+                                            </a>
 
-                                        {{-- Imagen para exportar pdf --}}
-                                        <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                            <img src="{{ asset('images/icons/icon-pdf.svg') }}" alt="pdf" width="30px">
-                                        </a>
+                                            {{-- Imagen para exportar pdf --}}
+                                            <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                                <img src="{{ asset('images/icons/icon-pdf.svg') }}" alt="pdf" width="30px">
+                                            </a>
 
-                                        {{-- Imagen para exportar XML --}}
-                                        <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                            <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
-                                        </a> -->
+                                            {{-- Imagen para exportar XML --}}
+                                            <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                                <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
+                                            </a> -->
 
                                     {{-- Boton de agregar marca --}}
                                     <a href="{{ route('registrar-cliente-form') }}" class="btn bg-gradient-primary mt-4">
@@ -50,12 +50,12 @@
                                 <table id="clientes-table" class="table align-items-center mb-0 text-center">
                                     <thead>
                                         <tr>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                {{--
+                                            {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" id="check-all">
-                                                </div> --}}
-                                            </th>
+                                                </div>
+                                            </th> --}}
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Nombre</th>
@@ -90,13 +90,13 @@
                                     <tbody>
                                         @forelse ($clientes as $cliente)
                                             <tr>
-                                                <td>
+                                                {{-- <td>
                                                     <!-- Checkbox for each row -->
                                                     <div class="form-check d-flex justify-content-center">
                                                         <input class="form-check-input checkbox-item" type="checkbox"
                                                             id="check-{{ $cliente->id }}">
                                                     </div>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <div class="d-flex px-2 py-1 ">
                                                         <div>
@@ -155,7 +155,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="10">No se encontraron clientes</td>
+                                                <td colspan="9">No se encontraron clientes</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -184,7 +184,6 @@
                         </button>
                     </div>
                     <div class="modal-footer">
-                        <!-- Form to handle the category deletion -->
                         <form action="{{ route('eliminar-cliente', $cliente->id) }}" method="POST">
                             @csrf
                             @method('delete')

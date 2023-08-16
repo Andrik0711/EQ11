@@ -196,7 +196,7 @@ class ComprasController extends Controller
 
         $compras = Compra::all();
 
-        $pdf = PDF::loadView('tables.reporte-compras', compact('compras'))->setPaper('a4', 'landscape');
+        $pdf = \PDF::loadView('tables.reporte-compras', compact('compras'))->setPaper('a4', 'landscape');
         return $pdf->download('compras.pdf');
     }
 }

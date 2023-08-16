@@ -43,7 +43,7 @@ class VentasController extends Controller
 
         $ventas = Venta::all();
 
-        $pdf = PDF::loadView('tables.reporte-ventas', compact('ventas'))->setPaper('a4', 'landscape');
+        $pdf = \PDF::loadView('tables.reporte-ventas', compact('ventas'))->setPaper('a4', 'landscape');
         return $pdf->download('ventas.pdf');
     }
 }

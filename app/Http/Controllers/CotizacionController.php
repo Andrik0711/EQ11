@@ -7,6 +7,7 @@ use App\Models\Producto;
 use App\Models\Categoria;
 use App\Models\Cotizacion;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class CotizacionController extends Controller
 {
@@ -245,5 +246,14 @@ class CotizacionController extends Controller
 
         // Redireccionar a la vista de cotizaciones
         return back()->with('success', 'Estatus de la cotización actualizado correctamente');
+    }
+
+
+    public function ReportePDFCotizaciones()
+    {
+        $cotizaciones = Cotizacion::all();
+
+        $pdf = \PDF::loadView('tables.reporte-cotizaciones', compact('cotizacion'))->setPaper('a4', 'landscape');
+        return $pdf->download('cotizaciones.pdf');
     }
 }

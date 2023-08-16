@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Venta;
 use App\Models\Devolucion;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class DevolucionController extends Controller
 {
@@ -88,8 +89,8 @@ class DevolucionController extends Controller
             }
         } catch (\Exception $e) {
 
-            dd($e->getMessage());
-            return back()->with('error', 'Ha ocurrido un error al realizar la devolución del producto: ' . $e->getMessage());
+            // dd($e->getMessage());
+            return back()->with('error', 'Ha ocurrido un error al realizar la devolución del producto');
         }
     }
 
@@ -100,5 +101,16 @@ class DevolucionController extends Controller
         $devolucion->delete();
 
         return back()->with('success', 'Se ha eliminado la devolución');
+    }
+
+
+
+
+    public function ReportePDFDevoluciones()
+    {
+        $devoluciones = Devolucion::all();
+
+        $pdf = \PDF::loadView('tables.reporte-devoluciones', compact('devoluciones'))->setPaper('a4', 'landscape');
+        return $pdf->download('devoluciones.pdf');
     }
 }

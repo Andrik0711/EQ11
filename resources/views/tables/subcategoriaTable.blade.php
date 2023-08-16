@@ -23,13 +23,14 @@
 
                                 <div class="d-flex justify-end">
                                     {{-- Imagen para imprimir --}}
-                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                    {{-- <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-printer.svg') }}" alt="print"
                                             width="30px">
-                                    </a>
+                                    </a> --}}
 
                                     {{-- Botón para exportar el PDF --}}
-                                    <a href="{{ route('exportar-subcategorias.pdf') }}" class="btn bg-gradient-primary mt-4 mx-2">
+                                    <a href="{{ route('exportar-subcategorias.pdf') }}"
+                                        class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-pdf.svg') }}" alt="pdf" width="30px">
                                     </a>
 
@@ -37,11 +38,13 @@
                                     <label for="xml-file-input-subcategorias" class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="import" width="30px">
                                     </label>
-                                    <form id="import-form-subcategorias" action="{{ route('import-xml-subcategorias') }}" method="POST" enctype="multipart/form-data">
+                                    <form id="import-form-subcategorias" action="{{ route('import-xml-subcategorias') }}"
+                                        method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <input type="file" name="xml_file" accept=".xml" id="xml-file-input-subcategorias" style="display: none;">
+                                        <input type="file" name="xml_file" accept=".xml"
+                                            id="xml-file-input-subcategorias" style="display: none;">
                                     </form>
-                                    
+
 
                                     {{-- Boton de agregar subcategoria --}}
                                     <a href="{{ route('registrar-subcategoria-form') }}"
@@ -56,12 +59,9 @@
                                 <table id="subcategorias-table" class="table align-items-center mb-0 text-center">
                                     <thead>
                                         <tr>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                {{--
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="check-all">
-                                                </div> --}}
-                                            </th>
+                                            {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                
+                                            </th> --}}
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">
                                                 Creada por
@@ -99,13 +99,13 @@
                                     <tbody>
                                         @forelse ($subcategorias as $subcategoria)
                                             <tr>
-                                                <td>
+                                                {{-- <td>
                                                     <!-- Checkbox for each row -->
                                                     <div class="form-check d-flex justify-content-center">
                                                         <input class="form-check-input checkbox-item" type="checkbox"
                                                             id="check-{{ $subcategoria->id }}">
                                                     </div>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <div class="d-flex align-items-center justify-content-center px-2 py-1">
                                                         {{-- <div>
@@ -160,7 +160,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="9">No se encontraron subcategorías</td>
+                                                <td colspan="8">No se encontraron subcategorías</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -361,9 +361,8 @@
         $(document).ready(function() {
             // Abre el navegador de archivos al hacer clic en el botón
             $('#xml-file-input-subcategorias').on('change', function() {
-                $('#import-form-subcategorias').submit(); 
+                $('#import-form-subcategorias').submit();
             });
         });
     </script>
-
 @endpush

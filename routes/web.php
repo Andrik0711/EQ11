@@ -317,3 +317,8 @@ Route::get('/exportar-pdf-productos', [CRUDProductosController::class, 'exportar
 Route::get('/reporte-pdf-compras', [ComprasController::class, 'reportePDFCompras'])->name('reporte-compras.pdf');
 
 Route::get('/reporte-pdf-ventas', [VentasController::class, 'reportePDFVentas'])->name('reporte-ventas.pdf');
+
+
+Route::get('/reporte-pdf-cotizaciones', [CotizacionController::class, 'reportePDFCotizaciones'])->name('reporte-cotizaciones.pdf');
+
+Route::get('/reporte-pdf-devoluciones', [DevolucionController::class, 'reportePDFDevoluciones'])->name('reporte-devoluciones.pdf');

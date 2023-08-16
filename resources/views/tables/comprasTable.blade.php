@@ -19,9 +19,9 @@
                         <h6 class="mb-0">Tabla de compras</h6>
                         <div class="d-flex justify-content-end">
                             <!-- {{-- Imagen para imprimir --}}
-                                            <a href="{{ route('importar-productos') }}" class="btn bg-gradient-primary mt-4 mx-2">
-                                                <img src="{{ asset('images/icons/icon-import.svg') }}" alt="print" width="30px">
-                                            </a> -->
+                                                <a href="{{ route('importar-productos') }}" class="btn bg-gradient-primary mt-4 mx-2">
+                                                    <img src="{{ asset('images/icons/icon-import.svg') }}" alt="print" width="30px">
+                                                </a> -->
 
                             {{-- Botón para exportar el PDF --}}
                             <a href="{{ route('reporte-compras.pdf') }}" class="btn bg-gradient-primary mt-4 mx-2">
@@ -29,9 +29,9 @@
                             </a>
 
                             <!-- {{-- Imagen para exportar XML --}}
-                                            <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                                <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
-                                            </a> -->
+                                                <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                                    <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
+                                                </a> -->
 
                             {{-- Boton de agregar productos --}}
                             <a href="{{ route('compras') }}" class="btn bg-gradient-primary mt-4">Generar compra
@@ -44,12 +44,9 @@
                         <table id="compras-table" class="table align-items-center mb-0 text-center">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        {{--
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="check-all">
-                                                </div> --}}
-                                    </th>
+                                    {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        
+                                    </th> --}}
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Proveedor</th>
@@ -83,13 +80,13 @@
                             <tbody>
                                 @forelse ($compras as $compra)
                                     <tr>
-                                        <td>
+                                        {{-- <td>
                                             <!-- Checkbox for each row -->
                                             <div class="form-check d-flex justify-content-center">
                                                 <input class="form-check-input checkbox-item" type="checkbox"
                                                     id="check-{{ $compra->id }}">
                                             </div>
-                                        </td>
+                                        </td> --}}
                                         <td class="text-center text-sm">
                                             <span
                                                 class="text-secondary text-xs font-weight-bold">{{ $compra->proveedor->nombre_proveedor }}</span>
@@ -144,7 +141,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="10">No se encontraron compras</td>
+                                        <td colspan="9">No se encontraron compras</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -176,8 +173,7 @@
                             @method('delete')
                             <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
                         </form>
-                        <button type="button" class="btn bg-gradient-info ml-auto"
-                            data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn bg-gradient-info ml-auto" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>

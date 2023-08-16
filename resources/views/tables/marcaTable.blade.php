@@ -22,10 +22,10 @@
 
                                 <div class="d-flex justify-end">
                                     {{-- Imagen para imprimir --}}
-                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                    {{-- <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-printer.svg') }}" alt="print"
                                             width="30px">
-                                    </a>
+                                    </a> --}}
 
                                     {{-- Botón para exportar el PDF --}}
                                     <a href="{{ route('exportar-marcas.pdf') }}" class="btn bg-gradient-primary mt-4 mx-2">
@@ -37,9 +37,11 @@
                                     <label for="xml-file-input-marcas" class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="import" width="30px">
                                     </label>
-                                    <form id="import-form-marcas" action="{{ route('import-xml-marcas') }}" method="POST" enctype="multipart/form-data">
+                                    <form id="import-form-marcas" action="{{ route('import-xml-marcas') }}" method="POST"
+                                        enctype="multipart/form-data">
                                         @csrf
-                                        <input type="file" name="xml_file" accept=".xml" id="xml-file-input-marcas" style="display: none;">
+                                        <input type="file" name="xml_file" accept=".xml" id="xml-file-input-marcas"
+                                            style="display: none;">
                                     </form>
 
                                     {{-- Boton de agregar productos --}}
@@ -54,12 +56,9 @@
                                 <table id="marcas-table" class="table align-items-center mb-0 text-center">
                                     <thead>
                                         <tr>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                {{--
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="check-all">
-                                                </div> --}}
-                                            </th>
+                                            {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                
+                                            </th> --}}
                                             <th
                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
                                                 Imagen</th>
@@ -81,13 +80,12 @@
                                     <tbody>
                                         @forelse ($marcas as $marca)
                                             <tr>
-                                                <td>
-                                                    <!-- Checkbox for each row -->
+                                                {{-- <td>
                                                     <div class="form-check d-flex justify-content-center">
                                                         <input class="form-check-input checkbox-item" type="checkbox"
                                                             id="check-{{ $marca->id }}">
                                                     </div>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <img src="{{ asset('marcas') . '/' . $marca->imagen_marca }}"
                                                         alt="{{ $marca->nombre_marca }}" width="60px"
@@ -121,7 +119,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="6">No se encontraron marcas</td>
+                                                <td colspan="5">No se encontraron marcas</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -129,12 +127,6 @@
                             </div>
                         </div>
                     </div>
-                    {{-- Alerta de éxito --}}
-                    @if (session('mensaje'))
-                        <div class="alert alert-success" role="alert">
-                            <strong>Success!</strong> {{ session('mensaje') }}
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -162,8 +154,7 @@
                             @method('delete')
                             <button type="submit" class="btn bg-gradient-danger">Eliminar</button>
                         </form>
-                        <button type="button" class="btn bg-gradient-info ml-auto"
-                            data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn bg-gradient-info ml-auto" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -309,9 +300,8 @@
         $(document).ready(function() {
             // Abre el navegador de archivos al hacer clic en el botón
             $('#xml-file-input-marcas').on('change', function() {
-                $('#import-form-marcas').submit(); 
+                $('#import-form-marcas').submit();
             });
         });
     </script>
-    
 @endpush

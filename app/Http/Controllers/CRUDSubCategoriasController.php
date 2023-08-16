@@ -166,7 +166,7 @@ class CRUDSubCategoriasController extends Controller
     {
         $subcategorias = Subcategoria::all();
 
-        $pdf = PDF::loadView('tables.subcategorias-pdf', compact('subcategorias'));
+        $pdf = \PDF::loadView('tables.subcategorias-pdf', compact('subcategorias'));
         return $pdf->download('subcategorias.pdf');
     }
 }

@@ -19,9 +19,9 @@
                         <h6 class="mb-0">Tabla de ventas</h6>
                         <div class="d-flex justify-end">
                             <!-- {{-- Imagen para imprimir --}}
-                                        <a href="{{ route('importar-productos') }}" class="btn bg-gradient-primary mt-4 mx-2">
-                                            <img src="{{ asset('images/icons/icon-import.svg') }}" alt="print" width="30px">
-                                        </a> -->
+                                            <a href="{{ route('importar-productos') }}" class="btn bg-gradient-primary mt-4 mx-2">
+                                                <img src="{{ asset('images/icons/icon-import.svg') }}" alt="print" width="30px">
+                                            </a> -->
 
                             {{-- Botón para exportar el PDF --}}
                             <a href="{{ route('reporte-ventas.pdf') }}" class="btn bg-gradient-primary mt-4 mx-2">
@@ -29,9 +29,9 @@
                             </a>
 
                             <!-- {{-- Imagen para exportar XML --}}
-                                        <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                            <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
-                                        </a> -->
+                                            <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                                <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
+                                            </a> -->
 
                             {{-- Boton de agregar productos --}}
                             <a href="{{ route('punto-de-venta') }}" class="btn bg-gradient-primary mt-4">Punto de
@@ -45,12 +45,9 @@
                         <table id="productos-table" class="table align-items-center mb-0 text-center">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        {{--
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="check-all">
-                                                </div> --}}
-                                    </th>
+                                    {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        
+                                    </th> --}}
                                     <th
                                         class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Cliente comprador</th>
@@ -90,13 +87,13 @@
 
                                 @forelse ($ventas as $venta)
                                     <tr>
-                                        <td>
+                                        {{-- <td>
                                             <!-- Checkbox for each row -->
                                             <div class="form-check d-flex justify-content-center">
                                                 <input class="form-check-input checkbox-item" type="checkbox"
                                                     id="check-{{ $venta->id }}">
                                             </div>
-                                        </td>
+                                        </td> --}}
                                         <td class="text-center text-sm">
                                             <span
                                                 class="text-secondary text-xs font-weight-bold">{{ $venta->cliente->nombre_cliente }}</span>
@@ -164,7 +161,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="10">No se encontraron ventas</td>
+                                        <td colspan="9">No se encontraron ventas</td>
                                     </tr>
                                 @endforelse
                             </tbody>

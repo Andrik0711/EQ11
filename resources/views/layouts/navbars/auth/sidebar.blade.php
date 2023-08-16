@@ -96,7 +96,7 @@
 
             {{-- Tablas de registros content --}}
             <li class="nav-item mt-2">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Subcategoria</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Subcategoría</h6>
             </li>
 
             {{-- Tabla de subcategorias --}}
@@ -107,7 +107,7 @@
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <img src="{{ asset('images/icons/icon-subcategory.svg') }}" alt="subcategoria" width="15px">
                     </div>
-                    <span class="nav-link-text ms-1">Sub categorias</span>
+                    <span class="nav-link-text ms-1">Subcategoría</span>
                 </a>
             </li>
 

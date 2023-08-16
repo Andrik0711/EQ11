@@ -109,17 +109,6 @@
                                             </div>
                                         </div>
 
-                                        {{-- Rol --}}
-                                        <div class="col-md-6">
-                                            <label class="mb-2">Rol:</label>
-                                            <select class="form-select" name="rol" required>
-                                                <option value="admin" {{ $user->rol === 'admin' ? 'selected' : '' }}>
-                                                    Admin</option>
-                                                <option value="usuario" {{ $user->rol === 'usuario' ? 'selected' : '' }}>
-                                                    Usuario</option>
-                                            </select>
-                                        </div>
-
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <h6>Imagen actual</h6>

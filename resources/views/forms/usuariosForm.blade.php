@@ -107,6 +107,7 @@
                                                 @enderror
                                             </div>
                                         </div>
+
                                         {{-- Password del usuario --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -122,40 +123,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        {{-- Password del usuario --}}
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{-- Label --}}
-                                                <h6 for="password">Contraseña</h6>
-                                                {{-- Input --}}
-                                                <input type="password" placeholder="Contraseña" class="form-control"
-                                                    id="password" name="password" value="{{ old('password') }}" />
 
-                                                {{-- Mensaje de error --}}
-                                                @error('password')
-                                                    <small class="text-danger">{{ $message }}</small>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        {{-- Rol del usuario --}}
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{-- Label --}}
-                                                <h6 for="rol">Rol</h6>
-                                                {{-- Select --}}
-                                                <select class="form-control" id="rol" name="rol">
-                                                    <option value="">Seleccionar Rol</option>
-                                                    <option value="Admin" {{ old('rol') === 'Admin' ? 'selected' : '' }}>
-                                                        Admin</option>
-                                                    <option value="Usuario"
-                                                        {{ old('rol') === 'Usuario' ? 'selected' : '' }}>Usuario</option>
-                                                </select>
-                                                {{-- Mensaje de error --}}
-                                                @error('rol')
-                                                    <small class="text-danger">{{ $message }}</small>
-                                                @enderror
-                                            </div>
-                                        </div>
                                         {{-- Campo oculto para la imagen --}}
                                         <div class="col-md-6">
                                             <input name="imagen" id="imagen" type="hidden"
@@ -174,7 +142,7 @@
                             {{-- Right Column - Dropzone para cargar imagen --}}
                             <div class="col">
                                 <div class="form-group mt-4">
-                                    <form action="{{ route('producto-image-store') }}" method="POST"
+                                    <form action="{{ route('usuario-image-store') }}" method="POST"
                                         enctype="multipart/form-data" id="cargar_imagen"
                                         class="dropzone d-flex justify-content-center items-content-center align-middle border border-success">
                                         @csrf
@@ -185,12 +153,7 @@
                     </div>
                 </div>
             </div>
-            {{-- Alerta de éxito --}}
-            @if (session('mensaje'))
-                <div class="alert alert-success" role="alert">
-                    <strong>Success!</strong> {{ session('mensaje') }}
-                </div>
-            @endif
+
         </div>
     </main>
 @endsection

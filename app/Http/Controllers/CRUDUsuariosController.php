@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Usuario;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 
 class CRUDUsuariosController extends Controller
 {
@@ -46,7 +46,7 @@ class CRUDUsuariosController extends Controller
     // Metodo para mostrar los usuarios registrados
     public function mostrarUsuarios()
     {
-        $users = User::all();
+        $users = Usuario::all();
 
         return view('tables.usuariosTable', compact('users'));
     }
@@ -65,19 +65,19 @@ class CRUDUsuariosController extends Controller
             'telefono' => 'required',
             'email' => 'required',
             'password' => 'required',
-            'rol' => 'required',
+            //'rol' => '',
             'imagen' => 'required',
         ]);
 
         // Creamos al usuario
-        User::create([
+        Usuario::create([
             'name' => $request->name,
             'apellido' => $request->apellido,
             'username' => $request->username,
             'telefono' => $request->telefono,
             'email' => $request->email,
             'password' => $request->password,
-            'rol' => $request->rol,
+            //'rol' => $request->rol,
             'imagen_usuario' => $request->imagen,
         ]);
 
@@ -87,7 +87,7 @@ class CRUDUsuariosController extends Controller
     // Metodo para direccionar a la vista de editar usuarios
     public function editarUsuario($id)
     {
-        $user = User::findOrFail($id);
+        $user = Usuario::findOrFail($id);
 
         return view('update.usuariosUpdate', compact('user'));
     }
@@ -106,12 +106,12 @@ class CRUDUsuariosController extends Controller
             'telefono' => 'required|unique:users,telefono',
             'email' => 'required|',
             'password' => 'required',
-            'rol' => 'required',
+            // 'rol' => 'required',
             'imagen_actual' => '',
             'imagen' => '',
         ]);
 
-        $user = User::findOrFail($id);
+        $user = Usuario::findOrFail($id);
 
         // Verificamos si se cargó una nueva imagen
         if ($request->imagen != null) {
@@ -133,7 +133,7 @@ class CRUDUsuariosController extends Controller
         $user->telefono = $request->input('telefono');
         $user->email = $request->input('email');
         $user->password = $request->input('password');
-        $user->rol = $request->input('rol');
+        //$user->rol = $request->input('rol');
         // $user->imagen_usuario = $request->input('imagen');
 
 
@@ -146,7 +146,7 @@ class CRUDUsuariosController extends Controller
     // Metodo para eliminar usuario
     public function UsuarioDestroy($id)
     {
-        $users = User::findOrFail($id);
+        $users = Usuario::findOrFail($id);
 
         // Eliminar al usuario de la base de datos y la imagen de la carpeta usuarios
         File::delete(public_path('usuarios') . '/' . $users->imagen_usuario);

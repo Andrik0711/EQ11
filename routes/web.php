@@ -22,7 +22,7 @@ use App\Http\Controllers\CRUDProveedoresController;
 use App\Http\Controllers\CRUDSubCategoriasController;
 use App\Http\Controllers\DevolucionController;
 use App\Http\Controllers\XMLImportController;
-use Dompdf\Dompdf;
+use Barryvdh\DomPDF\Facade\PDF;
 
 
 /*

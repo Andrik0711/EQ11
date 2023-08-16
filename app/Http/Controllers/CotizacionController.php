@@ -251,7 +251,7 @@ class CotizacionController extends Controller
 
     public function ReportePDFCotizaciones()
     {
-        $cotizaciones = Cotizacion::all();
+        $cotizacion = Cotizacion::all();
 
         $pdf = \PDF::loadView('tables.reporte-cotizaciones', compact('cotizacion'))->setPaper('a4', 'landscape');
         return $pdf->download('cotizaciones.pdf');

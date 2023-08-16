@@ -21,21 +21,21 @@
                                 <h6 class="mb-0">Tabla de clientes</h6>
 
                                 <div class="d-flex justify-end">
-                                    {{-- Imagen para imprimir --}}
-                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                        <img src="{{ asset('images/icons/icon-printer.svg') }}" alt="print"
-                                            width="30px">
-                                    </a>
+                                    <!-- {{-- Imagen para imprimir --}}
+                                        <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                            <img src="{{ asset('images/icons/icon-printer.svg') }}" alt="print"
+                                                width="30px">
+                                        </a>
 
-                                    {{-- Imagen para exportar pdf --}}
-                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                        <img src="{{ asset('images/icons/icon-pdf.svg') }}" alt="pdf" width="30px">
-                                    </a>
+                                        {{-- Imagen para exportar pdf --}}
+                                        <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                            <img src="{{ asset('images/icons/icon-pdf.svg') }}" alt="pdf" width="30px">
+                                        </a>
 
-                                    {{-- Imagen para exportar XML --}}
-                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
-                                        <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
-                                    </a>
+                                        {{-- Imagen para exportar XML --}}
+                                        <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                            <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="xml" width="30px">
+                                        </a> -->
 
                                     {{-- Boton de agregar marca --}}
                                     <a href="{{ route('registrar-cliente-form') }}" class="btn bg-gradient-primary mt-4">

@@ -298,7 +298,7 @@ Route::get('/login', function () {
 })->name('login');
 
 
-Route::post('/mostrar-categorias', [CRUDCategoriasController::class, 'mostrarCategorias'])->name('mostrar-categorias');
+Route::get('/exportar-categorias-pdf', [PDFController::class, 'PDFController'])->name('exportar-categorias-pdf');
 
 
 Route::post('/import-xml-categorias', [XMLImportController::class, 'importXMLCategorias'])->name('import-xml-categorias');
@@ -314,6 +314,3 @@ Route::get('/exportar-pdf-marcas', [CRUDMarcasController::class, 'exportarPDFMar
 
 Route::get('/exportar-pdf-productos', [CRUDProductosController::class, 'exportarPDFProductos'])->name('exportar-productos.pdf');
 
-Route::get('/reporte-pdf-compras', [ComprasController::class, 'reportePDFCompras'])->name('reporte-compras.pdf');
-
-Route::get('/reporte-pdf-ventas', [VentasController::class, 'reportePDFVentas'])->name('reporte-ventas.pdf');

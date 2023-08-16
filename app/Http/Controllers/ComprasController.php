@@ -10,6 +10,7 @@ use App\Models\Proveedor;
 use Illuminate\Http\Request;
 use App\Models\CompraProducto;
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class ComprasController extends Controller
 {
@@ -127,7 +128,7 @@ class ComprasController extends Controller
                 'cantidad_productos_diferentes' => 'required|numeric',
             ]);
 
-            dd($request->all()); // no entra al dd
+            // dd($request->all()); // no entra al dd
 
             // Creamos la compra
             $compra = new Compra();
@@ -187,5 +188,15 @@ class ComprasController extends Controller
         }
         session()->put('tabla', $tabla);
         return back()->with('success', 'Producto eliminado correctamente');
+    }
+
+
+    public function reportePDFCompras()
+    {
+
+        $compras = Compra::all();
+
+        $pdf = PDF::loadView('tables.reporte-compras', compact('compras'))->setPaper('a4', 'landscape');
+        return $pdf->download('compras.pdf');
     }
 }

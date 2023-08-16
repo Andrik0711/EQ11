@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Barryvdh\DomPDF\Facade\PDF;
+
 
 class CRUDCategoriasController extends Controller
 {
@@ -147,5 +149,14 @@ class CRUDCategoriasController extends Controller
 
         // // Redireccionar a la misma vista con mensaje de exito
         // return back()->with('success', 'Categoria eliminada con exito');
+    }
+
+
+    public function exportarPDFCategorias()
+    {
+        $categorias = Categoria::all();
+
+        $pdf = PDF::loadView('tables.categorias-pdf', compact('categorias'));
+        return $pdf->download('categorias.pdf');
     }
 }

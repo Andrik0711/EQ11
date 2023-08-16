@@ -15,6 +15,7 @@ use App\Models\Devolucion;
 use App\Models\Subcategoria;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Usuario;
 
 class HomeController extends Controller
 {
@@ -33,7 +34,7 @@ class HomeController extends Controller
         $totalProductos = Producto::all();
 
         // Obtenemos el total de usuarios registrados
-        $totalUsuarios = User::all();
+        $totalUsuarios = Usuario::all();
 
         // Obtenemos el total de proveedores registrados
         $totalProveedores = Proveedor::all();

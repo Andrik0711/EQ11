@@ -28,21 +28,23 @@
                                             width="30px">
                                     </a>
 
-                                    {{-- Imagen para exportar pdf --}}
-                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                    {{-- Botón para exportar el PDF --}}
+                                    <a href="{{ route('exportar-categorias.pdf') }}"
+                                        class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-pdf.svg') }}" alt="pdf" width="30px">
                                     </a>
 
-
-                                    {{-- Boton de importar XML --}}
-                                    <label for="xml-file-input" class="btn bg-gradient-primary mt-4 mx-2">
+                                    {{-- Boton de importar XML para Categorias --}}
+                                    <label for="xml-file-input-categorias" class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="import" width="30px">
                                     </label>
-                                    <form id="import-form" action="#" method="POST" enctype="multipart/form-data">
+                                    <form id="import-form-categorias" action="{{ route('import-xml-categorias') }}"
+                                        method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <input type="file" name="xml_file" accept=".xml" id="xml-file-input"
+                                        <input type="file" name="xml_file" accept=".xml" id="xml-file-input-categorias"
                                             style="display: none;">
                                     </form>
+
 
 
                                     {{-- Boton de agregar categorias --}}
@@ -336,8 +338,8 @@
     <script>
         $(document).ready(function() {
             // Abre el navegador de archivos al hacer clic en el botón
-            $('#xml-file-input').on('change', function() {
-                $('#import-form').submit(); // Submit the form on file selection
+            $('#xml-file-input-categorias').on('change', function() {
+                $('#import-form-categorias').submit();
             });
         });
     </script>

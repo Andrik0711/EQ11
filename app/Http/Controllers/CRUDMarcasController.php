@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class CRUDMarcasController extends Controller
 {
@@ -135,5 +136,16 @@ class CRUDMarcasController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'No se puede eliminar la marca porque tiene productos asociados');
         }
+    }
+
+
+
+    public function exportarPDFMarcas()
+    {
+
+        $marcas = Marca::all();
+
+        $pdf = PDF::loadView('tables.marcas-pdf', compact('marcas'));
+        return $pdf->download('marcas.pdf');
     }
 }

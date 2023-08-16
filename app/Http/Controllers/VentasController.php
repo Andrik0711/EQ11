@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Venta;
 use App\Models\VentaProducto;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class VentasController extends Controller
 {
@@ -33,5 +34,16 @@ class VentasController extends Controller
 
         // return response()->json(['message' => 'La venta ha sido eliminada correctamente.']);
         return redirect()->back()->with('success', 'La venta ha sido eliminada correctamente.');
+    }
+
+
+
+    public function reportePDFVentas()
+    {
+
+        $ventas = Venta::all();
+
+        $pdf = PDF::loadView('tables.reporte-ventas', compact('ventas'))->setPaper('a4', 'landscape');
+        return $pdf->download('ventas.pdf');
     }
 }

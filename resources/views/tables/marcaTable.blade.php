@@ -27,20 +27,19 @@
                                             width="30px">
                                     </a>
 
-                                    {{-- Imagen para exportar pdf --}}
-                                    <a href="#" class="btn bg-gradient-primary mt-4 mx-2">
+                                    {{-- Botón para exportar el PDF --}}
+                                    <a href="{{ route('exportar-marcas.pdf') }}" class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-pdf.svg') }}" alt="pdf" width="30px">
                                     </a>
 
 
                                     {{-- Boton de importar XML --}}
-                                    <label for="xml-file-input" class="btn bg-gradient-primary mt-4 mx-2">
+                                    <label for="xml-file-input-marcas" class="btn bg-gradient-primary mt-4 mx-2">
                                         <img src="{{ asset('images/icons/icon-xml.svg') }}" alt="import" width="30px">
                                     </label>
-                                    <form id="import-form" action="#" method="POST" enctype="multipart/form-data">
+                                    <form id="import-form-marcas" action="{{ route('import-xml-marcas') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <input type="file" name="xml_file" accept=".xml" id="xml-file-input"
-                                            style="display: none;">
+                                        <input type="file" name="xml_file" accept=".xml" id="xml-file-input-marcas" style="display: none;">
                                     </form>
 
                                     {{-- Boton de agregar productos --}}
@@ -306,4 +305,13 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            // Abre el navegador de archivos al hacer clic en el botón
+            $('#xml-file-input-marcas').on('change', function() {
+                $('#import-form-marcas').submit(); 
+            });
+        });
+    </script>
+    
 @endpush

@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class CRUDSubCategoriasController extends Controller
 {
@@ -157,5 +158,15 @@ class CRUDSubCategoriasController extends Controller
 
         // // Redireccionar a la misma vista con mensaje de exito
         // return back()->with('success', 'Subcategoria eliminada con éxito');
+    }
+
+
+
+    public function exportarPDFSubCategorias()
+    {
+        $subcategorias = Subcategoria::all();
+
+        $pdf = PDF::loadView('tables.subcategorias-pdf', compact('subcategorias'));
+        return $pdf->download('subcategorias.pdf');
     }
 }

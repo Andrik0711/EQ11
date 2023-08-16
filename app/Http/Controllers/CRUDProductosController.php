@@ -10,6 +10,7 @@ use App\Models\Subcategoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class CRUDProductosController extends Controller
 {
@@ -213,5 +214,16 @@ class CRUDProductosController extends Controller
         $subcategorias = Subcategoria::where('categoria_subcategoria', $categoriaId)->get();
 
         return response()->json($subcategorias);
+    }
+
+
+
+
+    public function exportarPDFProductos()
+    {
+        $productos = Producto::all();
+
+        $pdf = PDF::loadView('tables.productos-pdf', compact('productos'))->setPaper('a4', 'landscape');
+        return $pdf->download('productos.pdf');
     }
 }

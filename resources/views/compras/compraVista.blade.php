@@ -164,7 +164,7 @@
                                                                                 </p>
                                                                             </div>
                                                                             <div
-                                                                                class="input-group input-group-sm ms-2 me-6">
+                                                                                class="input-group input-group-sm ms-2 me-2">
                                                                                 <input class="form-control" type="number"
                                                                                     name="cantidad_compra"
                                                                                     id="cantidad_compra" min="1"
